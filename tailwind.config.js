@@ -9,12 +9,11 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      cal: ["Cal Sans", "Inter var", "sans-serif"],
-    },
     extend: {
       colors: {
         current: "currentColor",
+        ewhite: '#FFFDF5',
+        eblue: '#2A4BCC'
       },
       width: {
         1536: "1536px",
@@ -26,26 +25,11 @@ module.exports = {
         30: "7.5rem",
       },
       fontFamily: {
+        cal: ["Cal Sans", "Inter var", "sans-serif"],
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
         mono: ["Consolas", ...defaultTheme.fontFamily.mono],
       },
-      typography: {
-        DEFAULT: {
-          css: {
-            h1: {
-              fontFamily: "Cal Sans",
-            },
-            h2: {
-              fontFamily: "Cal Sans",
-            },
-            h3: {
-              fontFamily: "Cal Sans",
-            },
-            "blockquote p:first-of-type::before": { content: "none" },
-            "blockquote p:first-of-type::after": { content: "none" },
-          },
-        },
-      },
+      typography: {},
       keyframes: {
         wiggle: {
           "0%, 100%": {

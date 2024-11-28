@@ -3,3 +3,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    h1 {
+        @apply text-eblue text-9xl font-cal font-medium leading-normal;
+    }
+    body {
+      @apply bg-ewhite text-eblue font-cal antialiased;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply font-cal font-semibold py-4 px-6 rounded;
+    }
+    .btn-primary {
+        @apply bg-eblue text-ewhite;
+    }
+    .btn-secondary {
+        @apply bg-ewhite border border-eblue text-eblue;
+    }
+}

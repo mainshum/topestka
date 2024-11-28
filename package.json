@@ -1,9 +1,9 @@
 {
-  "name": "video-course-starter-kit",
+  "name": "topestka",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx prisma generate && next dev",
+    "dev": "next dev",
     "build": "npx prisma generate && npx prisma db push && next build",
     "start": "next start",
     "lint": "next lint",

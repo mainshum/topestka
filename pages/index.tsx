@@ -6,50 +6,18 @@ import { getServerSession } from "next-auth/next"
 import Heading from 'components/Heading'
 import CourseGrid from 'components/CourseGrid'
 
-type HomePageProps = {
-  courses: (Course & {
-    lessons: (Lesson & {
-      video: Video | null;
-    })[];
-  })[]
-}
-
-const Home: NextPage<HomePageProps> = ({ courses }) => {
+const Home: NextPage = () => {
   return (
-    <>
-      {courses.length > 0 ? (<Heading>View these video courses</Heading>) : (<Heading>There are no courses to view</Heading>)}
-      {courses.find(course => course.published === false) && (
-        <Heading as="h4">Draft courses are only visible to you</Heading>
-      )}
-      <CourseGrid courses={courses} />
-    </>
+    <main className='flex justify-center items-center flex-col w-full h-[calc(100vh-80px)]'>
+      <h3>2 akademickie godziny o komunikacji medycznej</h3>
+      <h1>MRKH to pestka!</h1>
+      <h2>dowiedz się w jaki sposób przekazywać <br/> informacje o zespole MRKH</h2>
+      <section className='flex space-x-3 pt-8'>
+        <button className='btn btn-primary'>Kup kurs</button>
+        <button className='btn btn-secondary'>Poznaj program</button>
+      </section>
+    </main>
   )
 }
 
 export default Home
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions)
-
-  const courses = await prisma.course.findMany({
-    where: {
-      OR: [
-        {
-          published: true
-        },
-        {
-          author: {
-            id: session?.user?.id
-          }
-        },
-      ],
-    },
-    include: { lessons: { include: { video: true } } }
-  })
-
-  return {
-    props: {
-      courses
-    },
-  }
-}

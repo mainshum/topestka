@@ -7,12 +7,7 @@ import { prisma } from "utils/prisma"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    })
-  ],
+  providers: [],
   callbacks: {
     async session({ session, token, user }) {
       if (session.user) {
