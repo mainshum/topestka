@@ -16,7 +16,7 @@ const Nav = () => {
 
       <nav className="p-4 border-b-eblue border h-20 flex justify-between items-center">
         <Link href="/" className="underline">to pestka!</Link>
-        <ul className="flex flex-row items-center space-x-12">
+        <ul className="flex flex-row justify-center space-x-12">
           <li>
             <Link href="/" className="underline">
               Program
