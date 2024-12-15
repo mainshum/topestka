@@ -5,37 +5,50 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-        @apply text-9xl font-outfit font-medium leading-normal;
-    }
-    h2 {
-        @apply text-7xl font-outfit font-medium leading-[76.5px];
-    }
-    h3 {
-        @apply text-2xl font-outfit font-medium leading-normal
-    }
-    body {
-      @apply bg-ewhite text-eblue font-outfit antialiased;
-    }
+  body {
+    @apply bg-ewhite text-eblue font-outfit antialiased;
+  }
 }
 
 @layer components {
-    .monarcha-61 {
-        @apply text-[61px] font-monarcha leading-[64px];
-    }
-    .outfit-44 {
-        @apply text-[44px] font-outfit font-normal leading-[44px];
-    }
-    .outfit-22 {
-        @apply text-[22px] font-outfit font-light leading-[28.6px];
-    }
-    .btn {
-        @apply font-cal font-semibold py-4 px-6 rounded;
-    }
-    .btn-primary {
-        @apply bg-eblue text-ewhite;
-    }
-    .btn-secondary {
-        @apply  border border-eblue text-eblue bg-ewhite;
-    }
+  .monarcha-22 {
+    @apply text-[22px] font-monarcha leading-[120%];
+  }
+  .monarcha-29 {
+    @apply text-[29px] font-monarcha leading-[110%];
+  }
+  .monarcha-42 {
+    @apply text-[42px] font-monarcha leading-[46.2px];
+  }
+  .monarcha-61 {
+    @apply text-[61px] font-monarcha leading-[64px];
+  }
+
+  .outfit-22 {
+    @apply text-[22px] font-outfit font-light leading-[28.6px];
+  }
+  .outfit-16 {
+    @apply text-[16px] font-outfit font-medium;
+  }
+  .outfit-60 {
+    @apply text-[60px] font-outfit font-medium;
+  }
+  .outfit-82 {
+    @apply text-[82px] font-outfit font-medium;
+  }
+  .outfit-44 {
+    @apply text-[44px] font-outfit font-normal leading-[44px];
+  }
+  .outfit-128 {
+    @apply text-[128px] font-outfit font-medium leading-[153px];
+  }
+  .btn {
+    @apply font-outfit font-semibold py-4 px-6 rounded-lg;
+  }
+  .btn-primary {
+    @apply bg-eblue text-ewhite;
+  }
+  .btn-secondary {
+    @apply border  text-eblue bg-ewhite;
+  }
 }

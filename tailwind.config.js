@@ -16,22 +16,10 @@ module.exports = {
         electricOrange: "#FBCFA8",
         eblue: '#2A4BCC'
       },
-      width: {
-        1536: "1536px",
-      },
-      height: {
-        150: "37.5rem",
-      },
-      margin: {
-        30: "7.5rem",
-      },
       fontFamily: {
         outfit: ["Outfit", ...defaultTheme.fontFamily.serif],
         monarcha: ["Monarcha", "Inter var",...defaultTheme.fontFamily.serif],
         'monarcha-bold': ["MonarchaBold", ...defaultTheme.fontFamily.serif],
-        cal: ["Cal Sans", "Inter var", "sans-serif"],
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
-        mono: ["Consolas", ...defaultTheme.fontFamily.mono],
       },
       typography: {},
       keyframes: {
