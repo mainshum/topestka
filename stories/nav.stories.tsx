@@ -9,7 +9,7 @@ const meta = {
   component: Nav,
   decorators: [
     (Story) => (
-      <SessionProvider session={{ user: { name: "Test User" } }}>
+      <SessionProvider session={{ user: { id: "Test User" }, expires: '' }}>
             <Story />
       </SessionProvider>
     ),
