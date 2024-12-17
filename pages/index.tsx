@@ -10,11 +10,7 @@ export const HomeSection = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"section">
 >(({ children, className }) => {
-  return (
-    <section className={clsx("min-h-svh", className)}>
-      {children}
-    </section>
-  );
+  return <section className={clsx("min-h-svh", className)}>{children}</section>;
 });
 
 export const PromoVideo = () => {
@@ -84,25 +80,24 @@ const Pitch = () => {
   return (
     <HomeSection className="flex flex-col justify-center items-start bg-eblue pr-5 pl-5 text-ewhite">
       <h3 className="text-electric-400 body-small">
-        Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH,
-        by zapewniać najwyższy standard opieki.
+        Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH, by
+        zapewniać najwyższy standard opieki.
       </h3>
       <h2 className="pt-6 pb-11 heading-03">
         Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny,
         wspierający i budujący poczucie bezpieczeństwa.
       </h2>
-      <button className="btn btn-secondary">
-        Poznaj pełen program{" "}
-      </button>
+      <button className="btn btn-secondary">Poznaj pełen program </button>
     </HomeSection>
   );
 };
 
-
 export const Intro = () => {
   return (
     <HomeSection className="flex flex-col justify-center items-center pr-6 pl-6">
-      <h1 className="font-medium text-nowrap outfit-82 sm:outfit-128">to pestka!</h1>
+      <h1 className="font-medium text-nowrap outfit-82 sm:outfit-128">
+        to pestka!
+      </h1>
       <h2 className="pt-3 pb-10 sm:pb-14 lg:pb-5 text-center lg:monarcha-42 monarcha-22">
         dowiedz się w jaki sposób przekazywać informacje o zespole MRKH
       </h2>
@@ -117,13 +112,36 @@ export const Intro = () => {
   );
 };
 
+const OpisKursu = () => {
+  return (
+    <HomeSection className="flex flex-col justify-center items-center">
+      <h1 className="pr-10 pb-20 pl-10 font-monarcha text-4xl">
+        Nasz kurs dostarczy Ci kompleksowej wiedzy o zespole MRKH w pracy
+        lekarza
+      </h1>
+      <section className="flex flex-col items-center gap-9 pr-7 pl-7">
+      <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
+        Program kursu pogłębia wiedzę o aspekty medyczne i psychologiczne
+        związane z zespołem MRKH.
+      </p>
+      <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
+Dzięki temu lekarze i studenci mogą przekazywać pacjentkom pełne i
+        rzetelne informacje, budując w ten sposób ich poczucie bezpieczeństwa i
+        zapewniając lepszą opiekę medyczną.
+      </p>
+      </section>
+    </HomeSection>
+  );
+};
+
 const Home: NextPage = () => {
   return (
     <>
       <Intro />
       {/* <PromoVideo /> */}
       <Pitch />
-      <PoznajNas />
+      {/* <PoznajNas /> */}
+      <OpisKursu />
     </>
   );
 };
