@@ -13,7 +13,19 @@ module.exports = {
       colors: {
         current: "currentColor",
         ewhite: '#FFFDF5',
-        electricOrange: "#FBCFA8",
+        'electric': {
+          DEFAULT: '#FFD700',
+          '50': '#FFFFFF',
+          '100': '#FFFEF0',
+          '200': '#FFFCB9',
+          '300': '#FFF982',
+          '400': '#FBCFA8',
+          '500': '#F8A054',
+          '600': '#F6892A',
+          '700': '#998500',
+          '800': '#665400',
+          '900': '#332300'
+        },
         eblue: '#2A4BCC'
       },
       fontFamily: {
