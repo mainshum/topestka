@@ -82,17 +82,16 @@ const PoznajNas = () => {
 
 const Pitch = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-start bg-eblue text-ewhite">
-      <h3>
+    <HomeSection className="flex flex-col justify-center items-start bg-eblue pr-5 pl-5 text-ewhite">
+      <h3 className="text-electric-400 body-small">
         Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH,
-        <br />
         by zapewniać najwyższy standard opieki.
       </h3>
-      <h2 className="pt-6 pb-11 font-monarcha-bold">
+      <h2 className="pt-6 pb-11 heading-03">
         Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny,
         wspierający i budujący poczucie bezpieczeństwa.
       </h2>
-      <button className="btn btn-secondary pe-14 ps-14">
+      <button className="btn btn-secondary">
         Poznaj pełen program{" "}
       </button>
     </HomeSection>
@@ -102,15 +101,15 @@ const Pitch = () => {
 
 export const Intro = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-center h-svh">
+    <HomeSection className="flex flex-col justify-center items-center pr-6 pl-6">
       <h1 className="font-medium text-nowrap outfit-82 sm:outfit-128">to pestka!</h1>
       <h2 className="pt-3 pb-10 sm:pb-14 lg:pb-5 text-center lg:monarcha-42 monarcha-22">
         dowiedz się w jaki sposób przekazywać informacje o zespole MRKH
       </h2>
       <section className="flex lg:flex-row flex-col items-center gap-4 space-x-3">
         {/* todo use a button component */}
-        <button className="btn btn-primary outfit-22">Kup kurs</button>
-        <button className="border-orange-300 border btn btn-secondary outfit-22">
+        <button className="text-xl btn btn-primary">Kup kurs</button>
+        <button className="border-electric-500 border text-xl btn btn-secondary">
           Poznaj program
         </button>
       </section>
@@ -122,7 +121,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Intro />
-      <PromoVideo />
+      {/* <PromoVideo /> */}
       <Pitch />
       <PoznajNas />
     </>
