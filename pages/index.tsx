@@ -142,6 +142,29 @@ const Home: NextPage = () => {
       <Pitch />
       {/* <PoznajNas /> */}
       <OpisKursu />
+      <HomeSection className="flex flex-col justify-center bg-eblue pr-10 pl-10 text-ewhite">
+        <h1 className="pb-12 font-outfit text-4xl/none">
+        Dowiedz się jak kluczowe znaczenie ma:
+        </h1>
+        <section className="pb-8 font-monarcha">
+          <h2 className="pb-1 border-b-[1.5px] border-b-electric-500 text-xl/tight"> 
+            Empatyczne <br/>przekazywanie diagnozy
+            </h2>
+          <p className="pt-4 text-base/tight">
+          Dowiedz się, jak rzetelnie i z szacunkiem przekazać diagnozę zespołu MRKH. 
+          Kurs dostarcza wskazówek, jak prowadzić rozmowy w sposób wspierający, uwzględniając emocje pacjentki i budując z nią poczucie zaufania.
+          </p>
+        </section>
+        <section className="font-monarcha">
+          <h2 className="pb-1 border-b-[1.5px] border-b-electric-500 text-lg/tight"> 
+          Wsparcie psychiczne i zrozumienie pacjentek
+          </h2>
+          <p className="pt-4 text-base/tight">
+          Kurs pozwala głębiej zrozumieć psychologiczne wyzwania i potrzeby pacjentek z zespołem MRKH. 
+          Dzięki wiedzy od osób z własnym doświadczeniem, nauczysz się, jak okazać prawdziwe wsparcie, które ułatwia pacjentkom proces akceptacji diagnozy.
+          </p>
+        </section>
+      </HomeSection>
     </>
   );
 };
