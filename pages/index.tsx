@@ -4,6 +4,18 @@ import React from "react";
 import Image from "next/image";
 import kapczuk from "../public/images/kapczuk.jpeg";
 import pestki from "../public/images/dziewczyny.jpeg";
+import bwPestki from "../public/images/bw-pestki.png";
+import bwKapczuk from "../public/images/bw-kapczuk.png";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "../components/Accordion";
+import { AccordionTrigger as RadixTrigger } from "@radix-ui/react-accordion";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { ChevronRight } from "lucide-react";
+import { cn } from "@/utils/misc";
 
 // eslint-disable-next-line react/display-name
 export const HomeSection = React.forwardRef<
@@ -120,19 +132,43 @@ const OpisKursu = () => {
         lekarza
       </h1>
       <section className="flex flex-col items-center gap-9 pr-7 pl-7">
-      <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
-        Program kursu pogłębia wiedzę o aspekty medyczne i psychologiczne
-        związane z zespołem MRKH.
-      </p>
-      <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
-Dzięki temu lekarze i studenci mogą przekazywać pacjentkom pełne i
-        rzetelne informacje, budując w ten sposób ich poczucie bezpieczeństwa i
-        zapewniając lepszą opiekę medyczną.
-      </p>
+        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
+          Program kursu pogłębia wiedzę o aspekty medyczne i psychologiczne
+          związane z zespołem MRKH.
+        </p>
+        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
+          Dzięki temu lekarze i studenci mogą przekazywać pacjentkom pełne i
+          rzetelne informacje, budując w ten sposób ich poczucie bezpieczeństwa
+          i zapewniając lepszą opiekę medyczną.
+        </p>
       </section>
     </HomeSection>
   );
 };
+
+const OfferingList = ({ items }: { items: string[] }) => {
+  return (
+    <ul className="space-y-2 p-0 pb-4 border-b-[1.5px] border-b-ewhite list-none" role="list">
+      {items.map((item, index) => (
+        <li key={index} className="flex items-center gap-2">
+          <ChevronRight
+            className="flex-shrink-0"
+            size={16}
+            aria-hidden="true"
+          />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const OfferingSection = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+  <section className={cn("flex flex-col items-stretch gap-8 bg-eblue pt-10 pr-5 pb-10 pl-5 rounded-lg text-ewhite", className)}>
+    {children}
+  </section>
+);
+
 
 const Home: NextPage = () => {
   return (
@@ -140,32 +176,219 @@ const Home: NextPage = () => {
       <Intro />
       {/* <PromoVideo /> */}
       <Pitch />
-      {/* <PoznajNas /> */}
       <OpisKursu />
       <HomeSection className="flex flex-col justify-center bg-eblue pr-10 pl-10 text-ewhite">
         <h1 className="pb-12 font-outfit text-4xl/none">
-        Dowiedz się jak kluczowe znaczenie ma:
+          Dowiedz się jak kluczowe znaczenie ma:
         </h1>
         <section className="pb-8 font-monarcha">
-          <h2 className="pb-1 border-b-[1.5px] border-b-electric-500 text-xl/tight"> 
-            Empatyczne <br/>przekazywanie diagnozy
-            </h2>
+          <h2 className="pb-1 border-b-[1.5px] border-b-electric-500 text-xl/tight">
+            Empatyczne <br />
+            przekazywanie diagnozy
+          </h2>
           <p className="pt-4 text-base/tight">
-          Dowiedz się, jak rzetelnie i z szacunkiem przekazać diagnozę zespołu MRKH. 
-          Kurs dostarcza wskazówek, jak prowadzić rozmowy w sposób wspierający, uwzględniając emocje pacjentki i budując z nią poczucie zaufania.
+            Dowiedz się, jak rzetelnie i z szacunkiem przekazać diagnozę zespołu
+            MRKH. Kurs dostarcza wskazówek, jak prowadzić rozmowy w sposób
+            wspierający, uwzględniając emocje pacjentki i budując z nią poczucie
+            zaufania.
           </p>
         </section>
         <section className="font-monarcha">
-          <h2 className="pb-1 border-b-[1.5px] border-b-electric-500 text-lg/tight"> 
-          Wsparcie psychiczne i zrozumienie pacjentek
+          <h2 className="pb-1 border-b-[1.5px] border-b-electric-500 text-lg/tight">
+            Wsparcie psychiczne i zrozumienie pacjentek
           </h2>
           <p className="pt-4 text-base/tight">
-          Kurs pozwala głębiej zrozumieć psychologiczne wyzwania i potrzeby pacjentek z zespołem MRKH. 
-          Dzięki wiedzy od osób z własnym doświadczeniem, nauczysz się, jak okazać prawdziwe wsparcie, które ułatwia pacjentkom proces akceptacji diagnozy.
+            Kurs pozwala głębiej zrozumieć psychologiczne wyzwania i potrzeby
+            pacjentek z zespołem MRKH. Dzięki wiedzy od osób z własnym
+            doświadczeniem, nauczysz się, jak okazać prawdziwe wsparcie, które
+            ułatwia pacjentkom proces akceptacji diagnozy.
           </p>
         </section>
+      </HomeSection>
+      <HomeSection className="flex flex-col justify-center gap-12 bg-ewhite pr-10 pl-10 text-eblue">
+        <h1 className="font-outfit text-7xl/none">Sprawdź nasz program!</h1>
+        <p className="font-monarcha text-2xl/none">
+          Kurs zawiera elementy przeznaczone do oglądania, czytania oraz część
+          interaktywną.
+        </p>
+        <section>
+          {accordions.map(([title, content]) => (
+            <Accordion key={title} type="single" collapsible>
+              <AccordionItem value={title}>
+                <AccordionTrigger>{title}</AccordionTrigger>
+                <AccordionContent>{content}</AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ))}
+        </section>
+      </HomeSection>
+      <HomeSection className="flex-col items-center gap-16 bg-ewhite pr-10 pl-10 font-outfit text-eblue">
+        <h1 className="font-medium text-7xl/none">Dla kogo?</h1>
+        <p className="text-3xl/none text-electric-400">
+          To kurs dla lekarek, studentów, bliskich oraz specjalistek, dajcie
+          opis:)
+        </p>
+      </HomeSection>
+      <HomeSection className="flex flex-col justify-center gap-16 bg-eblue pr-6 pl-6 font-outfit text-ewhite">
+        <h1 className="font-medium font-monarcha text-5xl/none text-electric-500">
+          Kurs w <br /> liczbach
+        </h1>
+        <section>
+          {kursWLiczbach.map(([liczba, opis]) => (
+            <div
+              className="flex justify-between items-center gap-8 border-ewhite pt-3 pb-3 border-b-[1px]"
+              key={liczba}
+            >
+              <span className="text-6xl">{liczba}</span>
+              <span className="text-right font-normal text-sm">{opis}</span>
+            </div>
+          ))}
+        </section>
+      </HomeSection>
+      <HomeSection className="flex flex-col justify-center bg-ewhite pt-20 pr-10 pl-10 text-eblue">
+        <h1 className="pb-16 font-outfit text-5xl/none">O nas</h1>
+        <AboutUsSection alt="Pestki" img={bwPestki} h1="Fundacja bezpestkowe">
+          <Accordion type="single" collapsible>
+            <p className="pb-8">
+              Bezpestkowe to projekt założony w 2018 roku, którego celem jest
+              nie tylko aktywne wspieranie osób z zespołem
+              Mayera-Rokitansky’ego-Küstera-Hausera, ale również uświadamianie i
+              edukowanie społeczeństwa.
+            </p>
+            <AccordionItem value="kapczuk-akordeon">
+              <AccordionContent className="text-base">
+                Nazwa nawiązuje do pestki owocu i przyrównania jej do macicy —
+                owoce pestkowe różnią się od bezpestkowych tylko posiadaniem
+                pestki, która przecież niczego nie definiuje. W 2022 roku
+                Bezpestkowe zostały sformalizowane i stanowią Fundację.
+              </AccordionContent>
+              <RadixTrigger asChild>
+                <button className="btn btn-primary">Czytaj więcej</button>
+              </RadixTrigger>
+            </AccordionItem>
+          </Accordion>
+        </AboutUsSection>
+        <AboutUsSection
+          alt="Dr Kapczuk"
+          img={bwKapczuk}
+          h1="dr hab. n. med.  Karina Kapczuk"
+        >
+          <Accordion type="single" collapsible>
+            <p className="pb-8">
+              Lekarz, specjalista ginekolog-położnik, endokrynolog oraz
+              ginekolog wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice
+              Ginekologii Uniwersytetu Medycznego (UM) im. K. Marcinkowskiego w
+              Poznaniu w Ginekologiczno-Położniczym Szpitalu Klinicznym UM w
+              Poznaniu.
+            </p>
+            <AccordionItem value="kapczuk-akordeon">
+              <AccordionContent className="text-base">
+                Główny obszar aktywności zawodowej, klinicznej i naukowej,
+                stanowią ginekologia dziecięca i dziewczęca oraz złożone wady
+                rozwojowe żeńskich narządów płciowych, w tym zespół MRKH.Lekarz,
+                specjalista ginekolog-położnik, endokrynolog oraz ginekolog
+                wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice Ginekologii
+                Uniwersytetu Medycznego (UM) im. K. Marcinkowskiego w Poznaniu w
+                Ginekologiczno-Położniczym Szpitalu Klinicznym UM w Poznaniu.
+                Oraz w Klinice Endokrynologii i Reumatologii Wieku Rozwojowego w
+                Szpitalu Klinicznym im. K. Jonschera UM w Poznaniu. Główny
+                obszar aktywności zawodowej, klinicznej i naukowej, stanowią
+                ginekologia dziecięca i dziewczęca oraz złożone wady rozwojowe
+                żeńskich narządów płciowych, w tym zespół MRKH.
+              </AccordionContent>
+              <RadixTrigger asChild>
+                <button className="btn btn-primary">Czytaj więcej</button>
+              </RadixTrigger>
+            </AccordionItem>
+          </Accordion>
+        </AboutUsSection>
+      </HomeSection>
+      <HomeSection className="flex flex-col justify-center gap-12 pr-6 pl-6">
+        <OfferingSection>
+          <h1 className="text-3xl/none text-center">MRKH to pestka!</h1>
+          <div className="flex flex-col flex-grow-2 gap-4 pb-4 border-b-[1.5px] border-b-ewhite">
+            <span>cena</span>
+            <span className="text-3xl/none">299 (PLN brutto)</span>
+          </div>
+          <div className="flex flex-col items-start gap-4 pb-4 border-b-[1.5px] border-b-ewhite">
+            <span className="bg-electric-500 pt-1 pr-2 pb-1 pl-2 rounded-lg grow-0 text-ewhite">
+              cena do końca roku
+            </span>
+            <span className="text-3xl/none">200 (PLN brutto)</span>
+          </div>
+          <button className="text-xl/none btn btn-secondary self-center">
+            Kup kurs
+          </button>
+        </OfferingSection>
+        <OfferingSection className="gap-4">
+          <h1 className="pb-4 border-b-[1.5px] border-b-ewhite text-3xl/none">
+            Kurs zawiera
+          </h1>
+          <OfferingList
+            items={[
+              "ponad godzinny materiał video",
+              "badania dotyczące komunikacji",
+              "materiały edukacyjne na temat zespołu MRKH ",
+              "quiz, dzięk któremu sprawdzisz, czy MRKH to pestka!",
+              "certyfikat ukończenia kursu od Fundacji Bezpestkowe",
+            ]}
+          />
+          <span/>
+          <button className="border-2 border-orange-400 text-xl/none btn btn-primary self-center">
+            Poznaj program
+          </button>
+        </OfferingSection>
       </HomeSection>
     </>
   );
 };
+
+type AboutUsProps = {
+  img: StaticImport;
+  alt: string;
+  h1: string;
+  children: React.ReactNode;
+};
+
+const AboutUsSection = ({ img, children, h1, alt }: AboutUsProps) => (
+  <section className="flex flex-col gap-8 pb-20">
+    <h1 className="pb-3 border-b-[1.5px] border-b-electric-400 text-3xl/none">
+      {h1}
+    </h1>
+    <Image src={img} loading="lazy" alt={alt} />
+    {children}
+  </section>
+);
+
 export default Home;
+
+const kursWLiczbach = [
+  ["70", "tyle minut trwa wideo zawarte w naszym kursie"],
+  ["13", "tyle rodziałów ma nasz kurs "],
+  ["8", "tyle wykładów przeprowadziłyśmy na uczelniach medycznych w Polsce"],
+  [
+    "10K",
+    "to liczba wydrukowanych przez nas broszur, które dystrybuujemy w całej Polsce",
+  ],
+];
+
+const accordions = [
+  [
+    "dwuczęściowe wideo",
+    "dzięki któremu poznasz perspektywę pacjencką i ekspercką na temat komunikacji w gabinecie medycznym",
+  ],
+  [
+    "zestaw fiszek",
+    "stworzonych przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH",
+  ],
+  [
+    "dwie broszury",
+    "stworzone przez Fundację Bezpestkowe na temat zespołu MRKH oraz towarzyszących mu kwestiach",
+  ],
+  [
+    "publikację",
+    "która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami",
+  ],
+  ["quiz", "mający na celu sprawdzenie twojej wiedzy z kursu"],
+  ["certyfikat", "potwierdzający, że MRKH to dla ciebie pestka! "],
+];

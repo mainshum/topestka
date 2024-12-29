@@ -15,7 +15,7 @@ const Nav = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav className="flex justify-end items-center lg:hidden pt-6 pr-6">
+      <nav className="top-0 sticky flex justify-end items-center lg:hidden bg-ewhite p-6">
         <button aria-expanded="false" aria-label="menu">
           <Justify />
         </button>
