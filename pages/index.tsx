@@ -25,6 +25,8 @@ import { AccordionTrigger as RadixTrigger } from "@radix-ui/react-accordion";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/utils/misc";
+import { Input } from "@/components/Input";
+import Link from "next/link";
 
 // eslint-disable-next-line react/display-name
 export const HomeSection = React.forwardRef<
@@ -157,7 +159,10 @@ const OpisKursu = () => {
 
 const OfferingList = ({ items }: { items: string[] }) => {
   return (
-    <ul className="space-y-2 p-0 pb-4 border-b-[1.5px] border-b-ewhite list-none" role="list">
+    <ul
+      className="space-y-2 p-0 pb-4 border-b-[1.5px] border-b-ewhite list-none"
+      role="list"
+    >
       {items.map((item, index) => (
         <li key={index} className="flex items-center gap-2">
           <ChevronRight
@@ -172,12 +177,22 @@ const OfferingList = ({ items }: { items: string[] }) => {
   );
 };
 
-const OfferingSection = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-  <section className={cn("flex flex-col items-stretch gap-8 bg-eblue pt-10 pr-5 pb-10 pl-5 rounded-lg text-ewhite", className)}>
+const OfferingSection = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <section
+    className={cn(
+      "flex flex-col items-stretch gap-8 bg-eblue pt-10 pr-5 pb-10 pl-5 rounded-lg text-ewhite",
+      className
+    )}
+  >
     {children}
   </section>
 );
-
 
 const Home: NextPage = () => {
   return (
@@ -342,32 +357,40 @@ const Home: NextPage = () => {
               "certyfikat ukończenia kursu od Fundacji Bezpestkowe",
             ]}
           />
-          <span/>
+          <span />
           <button className="border-2 border-orange-400 text-xl/none btn btn-primary self-center">
             Poznaj program
           </button>
         </OfferingSection>
       </HomeSection>
       <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 py-20 text-eblue">
-        <p className="text-lg/snug">Dołącz do naszego newslettera aby nie przegapić oferty!</p>
+        <p className="text-lg/snug">
+          Dołącz do naszego newslettera aby nie przegapić oferty!
+        </p>
         <button className="text-sm btn btn-primary">Zapisz się</button>
       </HomeSection>
-      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 pt-36 pb-20 text-ewhite"> 
+      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 pt-36 pb-20 text-ewhite">
         <h1 className="pb-10 text-3xl/none">F.A.Q</h1>
         {faqs.map(([question, answer]) => (
           <Accordion key={question} type="single" collapsible>
             <AccordionItem value={question}>
-              <AccordionTrigger chevProps={{
-                className: "text-ewhite"
-              }} className="border-ewhite border-b-[1px] border-solid text-sm">{question}</AccordionTrigger>
+              <AccordionTrigger
+                chevProps={{
+                  className: "text-ewhite",
+                }}
+                className="border-ewhite border-b-[1px] border-solid text-sm"
+              >
+                {question}
+              </AccordionTrigger>
               <AccordionContent>{answer}</AccordionContent>
             </AccordionItem>
           </Accordion>
         ))}
       </HomeSection>
       <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 text-eblue">
-        <a href="#sponsorzy"/>
-        <h1 className="text-center text-xl/snug">Organizacje partnerskie oraz wspierające nasze działania</h1>
+        <h1 className="text-center text-xl/snug">
+          Organizacje partnerskie oraz wspierające nasze działania
+        </h1>
         <section className="flex flex-wrap justify-center gap-8">
           <Image src={ff} alt="Fundacja Feminoteka" />
           <Image src={kulawa} alt="Kulawa Warszawa" />
@@ -375,6 +398,53 @@ const Home: NextPage = () => {
           <Image src={skrzyneczka} alt="Skrzyneczka" />
           <Image src={kolektyw} alt="Kolektyw Chemia" />
           <Image src={mago} alt="Mago Vox" />
+        </section>
+      </HomeSection>
+      <HomeSection className="flex flex-col justify-center items-center gap-20 bg-eblue px-8 pt-20 pb-5 text-ewhite">
+        <section className="flex flex-col items-center gap-4 w-full">
+          <h1 className="font-monarcha text-2xl/tight">
+            Dołącz do naszego newslettera:
+          </h1>
+          <div className="flex">
+            <Input
+              className="flex-grow border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite rounded-none text-sm placeholder:text-electric-500"
+              type="email"
+              placeholder="Twój email"
+            />
+            <button
+              type="submit"
+              className="px-2 rounded-full focus:ring-2 focus:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+              aria-label="Submit"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </section>
+        <section className="flex flex-col justify-start gap-3 w-full font-medium">
+          <Link href="https://www.bestpestkowe.pl">www.bezpestkowe.pl</Link>
+          <Link href="mailto:bezpestkowe@gmail.com">bezpestkowe@gmail.com</Link>
+          <Link href="https://www.instagram.com/bezpestkowe/">Instagram</Link>
+          <Link href="https://www.facebook.com/groups/bezpestkowe/">
+            Facebook
+          </Link>
+        </section>
+        <section className="flex flex-col gap-4 w-full">
+          <p className="pb-2 border-b-[1px] border-b-ewhite text-electric-500 text-sm">
+            To pestka, to platforma, która powstała z inicjatywy Fundacji
+            Bezpestkowe i stanowi jej własność.
+          </p>
+          <p className="text-sm">
+            Fundacja Bezpestkowe <br />
+            Niska 1E/61, 81-646 Gdynia <br />
+            KRS - 0000951776 <br />
+            NIP - 5862377596 <br />
+            REGON - 521286817 <br />
+          </p>
+        </section>
+        <section className="flex flex-col w-full text-xs">
+          <Link href="">Regulamin</Link>
+          <Link href="">Polityka Prywatności</Link>
+          <Link href="">© 2024 Fundacja Bezpestkowe</Link>
         </section>
       </HomeSection>
     </>
@@ -389,48 +459,17 @@ type AboutUsProps = {
 };
 
 const faqs = [
-  [
-    'Jak mogę zapłacić za kurs?',
-    ''
-  ],
-  [
-    'Czy oferujecie faktury VAT?',
-    ''
-  ],
-  [
-    'Studiuję, czy mogę liczyć na zniżkę?',
-    ''
-  ],
-  [
-    'Nie jestem lekarzem, czy ten kurs jest dla mnie?',
-    ''
-  ],
-  [
-    'Jak mogę wspierać osoby z zespołem MRKH?',
-    ''
-  ],
-  [
-    'Co zawiera kurs i ile trwa?',
-    ''
-  ],
-  [
-    'Kurs dotyczy zespołu MRKH. Czy znajdę w nim uniwersalne treści?',
-    ''
-  ],
-  [
-    'Dlaczego to wy współprowadzicie kurs?',
-    ''
-  ],
-  [
-    'Czy po ukończeniu kursu otrzymam certyfikat?',
-    ''
-  ],
-  [
-    'Czy mogę w jakiś sposób wesprzeć działania fundacji?',
-    ''
-  ]
+  ["Jak mogę zapłacić za kurs?", ""],
+  ["Czy oferujecie faktury VAT?", ""],
+  ["Studiuję, czy mogę liczyć na zniżkę?", ""],
+  ["Nie jestem lekarzem, czy ten kurs jest dla mnie?", ""],
+  ["Jak mogę wspierać osoby z zespołem MRKH?", ""],
+  ["Co zawiera kurs i ile trwa?", ""],
+  ["Kurs dotyczy zespołu MRKH. Czy znajdę w nim uniwersalne treści?", ""],
+  ["Dlaczego to wy współprowadzicie kurs?", ""],
+  ["Czy po ukończeniu kursu otrzymam certyfikat?", ""],
+  ["Czy mogę w jakiś sposób wesprzeć działania fundacji?", ""],
 ];
-
 
 const AboutUsSection = ({ img, children, h1, alt }: AboutUsProps) => (
   <section className="flex flex-col gap-8 pb-20">
