@@ -339,6 +339,23 @@ const Home: NextPage = () => {
           </button>
         </OfferingSection>
       </HomeSection>
+      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 py-20 min-h-0 text-eblue">
+        <p className="text-lg/snug">Dołącz do naszego newslettera aby nie przegapić oferty!</p>
+        <button className="text-sm btn btn-primary">Zapisz się</button>
+      </HomeSection>
+      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 pt-36 text-ewhite"> 
+        <h1 className="pb-10 text-3xl/none">F.A.Q</h1>
+        {faqs.map(([question, answer]) => (
+          <Accordion key={question} type="single" collapsible>
+            <AccordionItem value={question}>
+              <AccordionTrigger chevProps={{
+                className: "text-ewhite"
+              }} className="border-ewhite border-b-[1px] border-solid text-sm">{question}</AccordionTrigger>
+              <AccordionContent>{answer}</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ))}
+      </HomeSection>
     </>
   );
 };
@@ -349,6 +366,50 @@ type AboutUsProps = {
   h1: string;
   children: React.ReactNode;
 };
+
+const faqs = [
+  [
+    'Jak mogę zapłacić za kurs?',
+    ''
+  ],
+  [
+    'Czy oferujecie faktury VAT?',
+    ''
+  ],
+  [
+    'Studiuję, czy mogę liczyć na zniżkę?',
+    ''
+  ],
+  [
+    'Nie jestem lekarzem, czy ten kurs jest dla mnie?',
+    ''
+  ],
+  [
+    'Jak mogę wspierać osoby z zespołem MRKH?',
+    ''
+  ],
+  [
+    'Co zawiera kurs i ile trwa?',
+    ''
+  ],
+  [
+    'Kurs dotyczy zespołu MRKH. Czy znajdę w nim uniwersalne treści?',
+    ''
+  ],
+  [
+    'Dlaczego to wy współprowadzicie kurs?',
+    ''
+  ],
+  [
+    'Czy po ukończeniu kursu otrzymam certyfikat?',
+    ''
+  ],
+  [
+    'Czy mogę w jakiś sposób wesprzeć działania fundacji?',
+    ''
+  ]
+];
+
 
 const AboutUsSection = ({ img, children, h1, alt }: AboutUsProps) => (
   <section className="flex flex-col gap-8 pb-20">
