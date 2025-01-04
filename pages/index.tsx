@@ -6,6 +6,15 @@ import kapczuk from "../public/images/kapczuk.jpeg";
 import pestki from "../public/images/dziewczyny.jpeg";
 import bwPestki from "../public/images/bw-pestki.png";
 import bwKapczuk from "../public/images/bw-kapczuk.png";
+
+// sponsorzy
+import ff from "../public/images/ff.png";
+import kulawa from "../public/images/kulawa.png";
+import tranzycja from "../public/images/tranzycja.png";
+import skrzyneczka from "../public/images/skrzyneczka.png";
+import kolektyw from "../public/images/kolektyw-chemia.png";
+import mago from "../public/images/mago-vox.png";
+
 import {
   Accordion,
   AccordionItem,
@@ -339,11 +348,11 @@ const Home: NextPage = () => {
           </button>
         </OfferingSection>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 py-20 min-h-0 text-eblue">
+      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 py-20 text-eblue">
         <p className="text-lg/snug">Dołącz do naszego newslettera aby nie przegapić oferty!</p>
         <button className="text-sm btn btn-primary">Zapisz się</button>
       </HomeSection>
-      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 pt-36 text-ewhite"> 
+      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 pt-36 pb-20 text-ewhite"> 
         <h1 className="pb-10 text-3xl/none">F.A.Q</h1>
         {faqs.map(([question, answer]) => (
           <Accordion key={question} type="single" collapsible>
@@ -355,6 +364,18 @@ const Home: NextPage = () => {
             </AccordionItem>
           </Accordion>
         ))}
+      </HomeSection>
+      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 text-eblue">
+        <a href="#sponsorzy"/>
+        <h1 className="text-center text-xl/snug">Organizacje partnerskie oraz wspierające nasze działania</h1>
+        <section className="flex flex-wrap justify-center gap-8">
+          <Image src={ff} alt="Fundacja Feminoteka" />
+          <Image src={kulawa} alt="Kulawa Warszawa" />
+          <Image src={tranzycja} alt="Tranzycja" />
+          <Image src={skrzyneczka} alt="Skrzyneczka" />
+          <Image src={kolektyw} alt="Kolektyw Chemia" />
+          <Image src={mago} alt="Mago Vox" />
+        </section>
       </HomeSection>
     </>
   );
