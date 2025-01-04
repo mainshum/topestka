@@ -1,11 +1,51 @@
+'use client';
+
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Justify from "./icons";
+import { useEffect, useState } from "react";
+import { cn } from "@/utils/misc";
+
+const SCROLL = 80;
+
+const resetScroll = (pos: number) => ({
+  scrollDownStart: pos,
+  currentScrollDown: pos,
+});
 
 const Nav = () => {
   const { data: session } = useSession();
+
+  // track scroll postion
+
+  const [lastScrollPos, setLastScrollPos] = useState(resetScroll(window.scrollY));
+
+  useEffect(() => {
+
+    const onScroll = () => {
+      const currentScrollPos = window.scrollY;
+      setLastScrollPos(({scrollDownStart, currentScrollDown}) => {
+        if (currentScrollPos > currentScrollDown) { 
+          return {
+            scrollDownStart,
+            currentScrollDown: currentScrollPos,
+          }
+        } else {
+          return resetScroll(currentScrollPos);
+        }
+      })
+    }
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    }
+
+  }, [])
+
+  const navHidden = (lastScrollPos.currentScrollDown - lastScrollPos.scrollDownStart) > SCROLL;
 
   return (
     <>
@@ -15,7 +55,8 @@ const Nav = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav className="top-0 sticky flex justify-end items-center lg:hidden bg-ewhite p-6">
+      <nav hidden={navHidden} className={cn("top-0 sticky flex transition-transform duration-200 translate-y-0 justify-between items-center lg:hidden bg-ewhite p-6", navHidden && 'translate-y-[-80px]' )}>
+        <span className="font-monarcha font-semibold text-xl">to pestka</span>
         <button aria-expanded="false" aria-label="menu">
           <Justify />
         </button>
