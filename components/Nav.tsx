@@ -19,7 +19,7 @@ const Nav = () => {
 
   // track scroll postion
 
-  const [lastScrollPos, setLastScrollPos] = useState(resetScroll(window.scrollY));
+  const [lastScrollPos, setLastScrollPos] = useState(resetScroll(typeof window !== 'undefined' ? window.scrollY : 0));
 
   useEffect(() => {
 
@@ -42,7 +42,6 @@ const Nav = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     }
-
   }, [])
 
   const navHidden = (lastScrollPos.currentScrollDown - lastScrollPos.scrollDownStart) > SCROLL;
