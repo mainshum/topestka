@@ -1,0 +1,64 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - dev
+
+env:
+  NODE_VERSION: 18.20.4
+  DEPLOY_PATH: /root/repo/topestka
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          # Install SSH key
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          # Add host to known hosts
+          ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+          
+          # Create a temporary directory for the build
+          ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "mkdir -p $DEPLOY_PATH.tmp"
+          
+          # Copy the build files
+          scp -i ~/.ssh/deploy_key -r .next package*.json $SSH_USER@$SSH_HOST:$DEPLOY_PATH.tmp/
+          
+          # Install production dependencies on the server
+          ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH.tmp && npm ci --production"
+          
+          # Swap the directories and restart PM2
+          ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "\
+            if [ -d $DEPLOY_PATH ]; then rm -rf $DEPLOY_PATH.old; fi && \
+            if [ -d $DEPLOY_PATH ]; then mv $DEPLOY_PATH $DEPLOY_PATH.old; fi && \
+            mv $DEPLOY_PATH.tmp $DEPLOY_PATH && \
+            cd $DEPLOY_PATH && \
+            if pm2 list | grep -q next; then \
+              pm2 restart next; \
+            else \
+              pm2 start npm --name next -- start; \
+            fi"
