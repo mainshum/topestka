@@ -54,10 +54,10 @@ const Nav = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav hidden={navHidden} className={cn("top-0 sticky flex transition-transform duration-200 translate-y-0 justify-between items-center lg:hidden bg-ewhite p-6", navHidden && 'translate-y-[-80px]' )}>
+      <nav hidden={navHidden} className={cn("top-0 text-electric-500 sticky flex transition-transform duration-200 translate-y-0 justify-between items-center lg:hidden bg-transparent p-6", navHidden && 'translate-y-[-80px]' )}>
         <span className="font-monarcha font-semibold text-xl">to pestka</span>
         <button aria-expanded="false" aria-label="menu">
-          <Justify />
+          <Justify  />
         </button>
       </nav>
 

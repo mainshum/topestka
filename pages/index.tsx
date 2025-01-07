@@ -14,6 +14,7 @@ import tranzycja from "../public/images/tranzycja.png";
 import skrzyneczka from "../public/images/skrzyneczka.png";
 import kolektyw from "../public/images/kolektyw-chemia.png";
 import mago from "../public/images/mago-vox.png";
+import { LandingPage } from "@/components/components/landingPage/LandingPage";
 
 import {
   Accordion,
@@ -33,7 +34,11 @@ export const HomeSection = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"section">
 >(({ children, className }) => {
-  return <section className={clsx("min-h-svh", className)}>{children}</section>;
+  return (
+    <section className={clsx("pt-36 pb-20 min-h-svh", className)}>
+      {children}
+    </section>
+  );
 });
 
 export const PromoVideo = () => {
@@ -99,30 +104,12 @@ const PoznajNas = () => {
   );
 };
 
-const Pitch = () => {
-  return (
-    <HomeSection className="flex flex-col justify-center items-start bg-eblue pr-5 pl-5 text-ewhite">
-      <h3 className="text-electric-400 body-small">
-        Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH, by
-        zapewniać najwyższy standard opieki.
-      </h3>
-      <h2 className="pt-6 pb-11 heading-03">
-        Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny,
-        wspierający i budujący poczucie bezpieczeństwa.
-      </h2>
-      <button className="btn btn-secondary">Poznaj pełen program </button>
-    </HomeSection>
-  );
-};
-
 export const Intro = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-center pr-6 pl-6">
-      <h1 className="font-medium text-nowrap outfit-82 sm:outfit-128">
-        to pestka!
-      </h1>
-      <h2 className="pt-3 pb-10 sm:pb-14 lg:pb-5 text-center lg:monarcha-42 monarcha-22">
-        dowiedz się w jaki sposób przekazywać informacje o zespole MRKH
+    <HomeSection className="flex flex-col justify-center items-center px-6">
+      <h1 className="font-medium text-7xl/none text-nowrap">to pestka!</h1>
+      <h2 className="pt-6 pb-16 sm:pb-14 lg:pb-5 font-monarcha text-center text-lg/tight lg:monarcha-42">
+        dowiedz się w jaki sposób przekazywać informacje o <br /> zespole MRKH
       </h2>
       <section className="flex lg:flex-row flex-col items-center gap-4 space-x-3">
         {/* todo use a button component */}
@@ -135,19 +122,35 @@ export const Intro = () => {
   );
 };
 
+const Pitch = () => {
+  return (
+    <HomeSection className="flex flex-col justify-center items-start bg-eblue pr-5 pl-5 font-monarcha text-ewhite">
+      <h3 className="text-electric-500 text-sm">
+        Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH, by
+        zapewniać najwyższy standard opieki.
+      </h3>
+      <h2 className="pt-6 pb-11 text-2xl/tight">
+        Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny, <br />
+        wspierający i budujący poczucie bezpieczeństwa.
+      </h2>
+      <button className="btn btn-secondary">Poznaj pełen program </button>
+    </HomeSection>
+  );
+};
+
 const OpisKursu = () => {
   return (
     <HomeSection className="flex flex-col justify-center items-center">
-      <h1 className="pr-10 pb-20 pl-10 font-monarcha text-4xl">
-        Nasz kurs dostarczy Ci kompleksowej wiedzy o zespole MRKH w pracy
+      <h1 className="px-10 pb-20 font-monarcha text-3xl/tight">
+        Nasz kurs dostarczy Ci kompleksowej wiedzy o <br /> zespole MRKH w pracy
         lekarza
       </h1>
       <section className="flex flex-col items-center gap-9 pr-7 pl-7">
-        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
+        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-600 text-normal">
           Program kursu pogłębia wiedzę o aspekty medyczne i psychologiczne
           związane z zespołem MRKH.
         </p>
-        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-500 text-xl">
+        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-600 text-normal">
           Dzięki temu lekarze i studenci mogą przekazywać pacjentkom pełne i
           rzetelne informacje, budując w ten sposób ich poczucie bezpieczeństwa
           i zapewniając lepszą opiekę medyczną.
@@ -229,9 +232,11 @@ const Home: NextPage = () => {
           </p>
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center gap-12 bg-ewhite pr-10 pl-10 text-eblue">
-        <h1 className="font-outfit text-7xl/none">Sprawdź nasz program!</h1>
-        <p className="font-monarcha text-2xl/none">
+      <HomeSection className="flex flex-col justify-center gap-12 bg-ewhite px-10 pb-0 text-eblue">
+        <h1 className="font-medium font-outfit text-6xl/none">
+          Sprawdź nasz program!
+        </h1>
+        <p className="font-monarcha text-lg/tight">
           Kurs zawiera elementy przeznaczone do oglądania, czytania oraz część
           interaktywną.
         </p>
@@ -239,18 +244,19 @@ const Home: NextPage = () => {
           {accordions.map(([title, content]) => (
             <Accordion key={title} type="single" collapsible>
               <AccordionItem value={title}>
-                <AccordionTrigger>{title}</AccordionTrigger>
+                <AccordionTrigger className="pb-4 font-medium">
+                  {title}
+                </AccordionTrigger>
                 <AccordionContent>{content}</AccordionContent>
               </AccordionItem>
             </Accordion>
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex-col items-center gap-16 bg-ewhite pr-10 pl-10 font-outfit text-eblue">
+      <HomeSection className="flex flex-col justify-center items-center gap-20 bg-ewhite px-10 pt-0 pb-0 font-outfit text-eblue">
         <h1 className="font-medium text-7xl/none">Dla kogo?</h1>
-        <p className="text-3xl/none text-electric-400">
-          To kurs dla lekarek, studentów, bliskich oraz specjalistek, dajcie
-          opis:)
+        <p className="text-3xl/tight text-electric-500">
+          To kurs dla lekarek, studentów, bliskich oraz specjalistek, dajcie opis :)
         </p>
       </HomeSection>
       <HomeSection className="flex flex-col justify-center gap-16 bg-eblue pr-6 pl-6 font-outfit text-ewhite">
