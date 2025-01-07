@@ -14,7 +14,6 @@ import tranzycja from "../public/images/tranzycja.png";
 import skrzyneczka from "../public/images/skrzyneczka.png";
 import kolektyw from "../public/images/kolektyw-chemia.png";
 import mago from "../public/images/mago-vox.png";
-import { LandingPage } from "@/components/components/landingPage/LandingPage";
 
 import {
   Accordion,
@@ -35,7 +34,7 @@ export const HomeSection = React.forwardRef<
   React.ComponentPropsWithoutRef<"section">
 >(({ children, className }) => {
   return (
-    <section className={clsx("pt-36 pb-20 min-h-svh", className)}>
+    <section className={clsx("px-6 pt-36 pb-20 min-h-svh", className)}>
       {children}
     </section>
   );
@@ -163,11 +162,11 @@ const OpisKursu = () => {
 const OfferingList = ({ items }: { items: string[] }) => {
   return (
     <ul
-      className="space-y-2 p-0 pb-4 border-b-[1.5px] border-b-ewhite list-none"
+      className="space-y-2 py-4 p-0 border-b-[1.5px] border-b-ewhite list-none"
       role="list"
     >
       {items.map((item, index) => (
-        <li key={index} className="flex items-center gap-2">
+        <li key={index} className="flex items-center gap-2 font-serif">
           <ChevronRight
             className="flex-shrink-0"
             size={16}
@@ -259,7 +258,7 @@ const Home: NextPage = () => {
           To kurs dla lekarek, studentów, bliskich oraz specjalistek, dajcie opis :)
         </p>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center gap-16 bg-eblue pr-6 pl-6 font-outfit text-ewhite">
+      <HomeSection className="flex flex-col justify-center gap-16 bg-eblue px-6 font-outfit text-ewhite">
         <h1 className="font-medium font-monarcha text-5xl/none text-electric-500">
           Kurs w <br /> liczbach
         </h1>
@@ -275,9 +274,9 @@ const Home: NextPage = () => {
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center bg-ewhite pt-20 pr-10 pl-10 text-eblue">
-        <h1 className="pb-16 font-outfit text-5xl/none">O nas</h1>
-        <AboutUsSection alt="Pestki" img={bwPestki} h1="Fundacja bezpestkowe">
+      <HomeSection className="flex flex-col justify-center bg-ewhite pt-20 text-eblue">
+        <h1 className="pb-16 font-monarcha text-5xl/none">O nas</h1>
+        <AboutUsSection alt="Pestki" img={bwPestki} h1={<span>Fundacja <br /> Bezpestkowe</span>}>
           <Accordion type="single" collapsible>
             <p className="pb-8">
               Bezpestkowe to projekt założony w 2018 roku, którego celem jest
@@ -293,7 +292,7 @@ const Home: NextPage = () => {
                 Bezpestkowe zostały sformalizowane i stanowią Fundację.
               </AccordionContent>
               <RadixTrigger asChild>
-                <button className="btn btn-primary">Czytaj więcej</button>
+                <button className="py-3 btn btn-primary">Czytaj dalej</button>
               </RadixTrigger>
             </AccordionItem>
           </Accordion>
@@ -327,7 +326,7 @@ const Home: NextPage = () => {
                 żeńskich narządów płciowych, w tym zespół MRKH.
               </AccordionContent>
               <RadixTrigger asChild>
-                <button className="btn btn-primary">Czytaj więcej</button>
+                <button className="btn btn-primary">Czytaj dalej</button>
               </RadixTrigger>
             </AccordionItem>
           </Accordion>
@@ -335,7 +334,7 @@ const Home: NextPage = () => {
       </HomeSection>
       <HomeSection className="flex flex-col justify-center gap-12 pr-6 pl-6">
         <OfferingSection>
-          <h1 className="text-3xl/none text-center">MRKH to pestka!</h1>
+          <h1 className="font-serif text-3xl/none text-center">MRKH to pestka!</h1>
           <div className="flex flex-col flex-grow-2 gap-4 pb-4 border-b-[1.5px] border-b-ewhite">
             <span>cena</span>
             <span className="text-3xl/none">299 (PLN brutto)</span>
@@ -346,11 +345,11 @@ const Home: NextPage = () => {
             </span>
             <span className="text-3xl/none">200 (PLN brutto)</span>
           </div>
-          <button className="text-xl/none btn btn-secondary self-center">
+          <button className="py-4 text-xl/none btn btn-secondary self-center">
             Kup kurs
           </button>
         </OfferingSection>
-        <OfferingSection className="gap-4">
+        <OfferingSection className="gap-3">
           <h1 className="pb-4 border-b-[1.5px] border-b-ewhite text-3xl/none">
             Kurs zawiera
           </h1>
@@ -359,30 +358,30 @@ const Home: NextPage = () => {
               "ponad godzinny materiał video",
               "badania dotyczące komunikacji",
               "materiały edukacyjne na temat zespołu MRKH ",
-              "quiz, dzięk któremu sprawdzisz, czy MRKH to pestka!",
+              "quiz, dzięki któremu sprawdzisz, czy MRKH to pestka!",
               "certyfikat ukończenia kursu od Fundacji Bezpestkowe",
             ]}
           />
           <span />
-          <button className="border-2 border-orange-400 text-xl/none btn btn-primary self-center">
+          <button className="border-2 border-orange-400 py-4 text-xl/none btn btn-primary self-center">
             Poznaj program
           </button>
         </OfferingSection>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 py-20 text-eblue">
+      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 pt-0 min-h-0 text-eblue">
         <p className="text-lg/snug">
           Dołącz do naszego newslettera aby nie przegapić oferty!
         </p>
         <button className="text-sm btn btn-primary">Zapisz się</button>
       </HomeSection>
-      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 pt-36 pb-20 text-ewhite">
+      <HomeSection className="flex flex-col gap-2 bg-eblue px-4 text-ewhite">
         <h1 className="pb-10 text-3xl/none">F.A.Q</h1>
         {faqs.map(([question, answer]) => (
           <Accordion key={question} type="single" collapsible>
             <AccordionItem value={question}>
               <AccordionTrigger
                 chevProps={{
-                  className: "text-ewhite",
+                  className: "text-ewhite shrink-0",
                 }}
                 className="border-ewhite border-b-[1px] border-solid text-sm"
               >
@@ -406,14 +405,14 @@ const Home: NextPage = () => {
           <Image src={mago} alt="Mago Vox" />
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-20 bg-eblue px-8 pt-20 pb-5 text-ewhite">
+      <HomeSection className="flex flex-col justify-center items-center gap-20 bg-eblue pt-20 pb-5 text-ewhite">
         <section className="flex flex-col items-center gap-4 w-full">
           <h1 className="font-monarcha text-2xl/tight">
             Dołącz do naszego newslettera:
           </h1>
-          <div className="flex">
+          <div className="flex w-full">
             <Input
-              className="flex-grow border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite rounded-none text-sm placeholder:text-electric-500"
+              className="border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite rounded-none text-sm placeholder:text-electric-500"
               type="email"
               placeholder="Twój email"
             />
@@ -426,7 +425,7 @@ const Home: NextPage = () => {
             </button>
           </div>
         </section>
-        <section className="flex flex-col justify-start gap-3 w-full font-medium">
+        <section className="flex flex-col justify-start gap-3 w-full font-semibold text-xl">
           <Link href="https://www.bestpestkowe.pl">www.bezpestkowe.pl</Link>
           <Link href="mailto:bezpestkowe@gmail.com">bezpestkowe@gmail.com</Link>
           <Link href="https://www.instagram.com/bezpestkowe/">Instagram</Link>
@@ -460,7 +459,7 @@ const Home: NextPage = () => {
 type AboutUsProps = {
   img: StaticImport;
   alt: string;
-  h1: string;
+  h1: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -489,8 +488,8 @@ const AboutUsSection = ({ img, children, h1, alt }: AboutUsProps) => (
 
 export default Home;
 
-const kursWLiczbach = [
-  ["70", "tyle minut trwa wideo zawarte w naszym kursie"],
+const kursWLiczbach: Array<[string, React.ReactNode]> = [
+  ["70", <span key="70">tyle minut trwa wideo<br /> zawarte w naszym kursie</span>],
   ["13", "tyle rodziałów ma nasz kurs "],
   ["8", "tyle wykładów przeprowadziłyśmy na uczelniach medycznych w Polsce"],
   [

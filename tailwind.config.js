@@ -31,9 +31,8 @@ module.exports = {
       fontFamily: {
         outfit: ["Outfit", ...defaultTheme.fontFamily.serif],
         monarcha: ["Monarcha", "Inter var",...defaultTheme.fontFamily.serif],
-        'monarcha-bold': ["MonarchaBold", ...defaultTheme.fontFamily.serif],
       },
-      typography: {},
+      typography: { },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
