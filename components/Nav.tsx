@@ -61,8 +61,8 @@ const Nav = () => {
         </button>
       </nav>
 
-      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electricOrange">
-        <Link href="/" className="monarcha-29">to pestka!</Link>
+      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-500">
+        <Link href="/" className="font-monarcha text-2xl/none">to pestka!</Link>
         <ul className="flex flex-row justify-center items-center space-x-12 outfit-16">
           <li>
             <Link href="/" className="">
@@ -85,13 +85,8 @@ const Nav = () => {
             </Link>
           </li>
         </ul>
-        {session && (
-          <Link href="/admin" className="">
-            Admin
-          </Link>
-        )}
 
-        <Link href="/cart" className="bg-eblue pt-2 pb-2 rounded text-ewhite outfit-16 pe-4 ps ps-4"> Panel logowania </Link>
+        <Link href="/cart" className="bg-eblue py-1 rounded text-ewhite outfit-16 pe-4 ps ps-4"> Panel logowania </Link>
 
       </nav>
     </>

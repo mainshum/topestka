@@ -56,10 +56,10 @@ export const PromoVideo = () => {
 
 export const Intro = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-center px-6">
-      <h1 className="font-medium font-outfit text-7xl/none text-nowrap">to pestka!</h1>
-      <h2 className="pt-6 pb-16 sm:pb-14 lg:pb-5 font-monarcha text-center text-lg/tight lg:monarcha-42">
-        dowiedz się w jaki sposób przekazywać informacje o <br /> zespole MRKH
+    <HomeSection className="flex flex-col justify-center items-center lg:gap-5 px-6">
+      <h1 className="font-medium font-outfit text-7xl/none text-nowrap lg:text-8xl">to pestka!</h1>
+      <h2 className="pt-6 pb-14 lg:pb-5 font-monarcha text-center text-lg/tight lg:text-4xl/tight">
+        dowiedz się w jaki sposób przekazywać <br className="lg:inline hidden"></br> informacje o zespole MRKH
       </h2>
       <section className="flex lg:flex-row flex-col items-center gap-4 space-x-3">
         {/* todo use a button component */}
