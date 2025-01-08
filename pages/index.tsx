@@ -34,7 +34,7 @@ export const HomeSection = React.forwardRef<
   React.ComponentPropsWithoutRef<"section">
 >(({ children, className }) => {
   return (
-    <section className={clsx("px-6 pt-36 pb-20 min-h-svh", className)}>
+    <section className={clsx("px-6 lg:px-32 pt-36 pb-20 min-h-svh", className)}>
       {children}
     </section>
   );
@@ -72,15 +72,18 @@ export const Intro = () => {
   );
 };
 
+const SmLinebreak = () => <br className="lg:hidden" />
+const LgLinebreak = () => <br className="lg:inline hidden" />
+
 const Pitch = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-start bg-eblue pr-5 pl-5 font-monarcha text-ewhite">
+    <HomeSection className="flex flex-col justify-center items-start bg-eblue px-5 lg:px-20 font-monarcha text-ewhite">
       <h3 className="text-electric-500 text-sm">
         Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH, by
         zapewniać najwyższy standard opieki.
       </h3>
-      <h2 className="pt-6 pb-11 text-2xl/tight">
-        Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny, <br />
+      <h2 className="pt-6 pb-11 text-2xl/tight lg:text-5xl/tight">
+        Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny, <SmLinebreak />
         wspierający i budujący poczucie bezpieczeństwa.
       </h2>
       <button className="btn btn-secondary">Poznaj pełen program </button>
@@ -90,17 +93,17 @@ const Pitch = () => {
 
 const OpisKursu = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-center">
-      <h1 className="px-10 pb-20 font-monarcha text-3xl/tight">
-        Nasz kurs dostarczy Ci kompleksowej wiedzy o <br /> zespole MRKH w pracy
+    <HomeSection className="flex flex-col justify-evenly items-center lg:py-0">
+      <h1 className="pb-20 lg:pb-0 font-monarcha text-3xl/tight lg:text-7xl/tight">
+        Nasz kurs dostarczy Ci kompleksowej wiedzy o <SmLinebreak /> zespole MRKH w pracy
         lekarza
       </h1>
-      <section className="flex flex-col items-center gap-9 pr-7 pl-7">
-        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-600 text-normal">
+      <section className="flex flex-col items-start gap-9">
+        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-600 lg:text-2xl">
           Program kursu pogłębia wiedzę o aspekty medyczne i psychologiczne
           związane z zespołem MRKH.
         </p>
-        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-600 text-normal">
+        <p className="pl-3 border-l-[1.5px] border-l-eblue font-normal font-outfit text-electric-600 lg:text-2xl">
           Dzięki temu lekarze i studenci mogą przekazywać pacjentkom pełne i
           rzetelne informacje, budując w ten sposób ich poczucie bezpieczeństwa
           i zapewniając lepszą opiekę medyczną.
