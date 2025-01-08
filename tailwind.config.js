@@ -29,8 +29,8 @@ module.exports = {
         eblue: '#2A4BCC'
       },
       fontFamily: {
-        outfit: ["Outfit", ...defaultTheme.fontFamily.serif],
-        monarcha: ["Monarcha", "Inter var",...defaultTheme.fontFamily.serif],
+        outfit: ["var(--font-outfit)"],
+        monarcha: ["Monarcha",...defaultTheme.fontFamily.serif],
       },
       typography: { },
       keyframes: {
