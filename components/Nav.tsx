@@ -7,7 +7,7 @@ import Justify from "./icons";
 import { useEffect, useState } from "react";
 import { cn } from "@/utils/misc";
 
-const SCROLL = 80;
+const SCROLL = 1;
 
 const resetScroll = (pos: number) => ({
   scrollDownStart: pos,
@@ -46,6 +46,11 @@ const Nav = () => {
 
   const navHidden = (lastScrollPos.currentScrollDown - lastScrollPos.scrollDownStart) > SCROLL;
 
+  // 64 px header
+  // ukryc pestka na pierwszej stronie 
+  // dostosowac czcionki i marginesy
+  // 
+
   return (
     <>
       <Head>
@@ -54,10 +59,10 @@ const Nav = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav hidden={navHidden} className={cn("top-0 text-electric-500 sticky flex transition-transform duration-200 translate-y-0 justify-between items-center lg:hidden bg-transparent p-6", navHidden && 'translate-y-[-80px]' )}>
-        <span className="font-monarcha font-semibold text-xl">to pestka</span>
+      <nav hidden={navHidden} className={cn("top-0 bg-eblue  text-electric-500 sticky flex transition-transform duration-200 translate-y-0 justify-between items-center lg:hidden  p-6", navHidden && 'translate-y-[-80px]' )}>
+        <span className="font-outfit text-xl">to pestka</span>
         <button aria-expanded="false" aria-label="menu">
-          <Justify  />
+          <Justify className="w-5 h-5"  />
         </button>
       </nav>
 

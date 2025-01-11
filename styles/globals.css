@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.accordions:has([data-state="open"]) {
+  * [data-state="closed"] {
+    opacity: 0.5;
+  }
+}
+
 @layer base {
   body {
     @apply bg-ewhite text-eblue font-outfit antialiased;
@@ -49,7 +55,7 @@
     @apply text-[128px] font-outfit font-medium leading-[153px];
   }
   .btn {
-    @apply font-outfit font-medium py-2 px-6 rounded-lg;
+    @apply font-outfit font-medium py-4 px-6 rounded-lg;
   }
   .btn-primary {
     @apply bg-eblue text-ewhite;

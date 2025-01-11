@@ -9,9 +9,34 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontSize: {
+      sm: ['12px', '150%'],
+      base: ['14px', '140%'],
+      lg: ['16px', '140%'],
+      xl: ['22px', '130%'],
+      '2xl': ['29px', '110%'],
+      '3xl': ['34px', '105%'],
+      '4xl': ['42px', '105%'],
+      '5xl': ['61px', '100%'],
+      '6xl': ['82px', '100%'],
+      '7xl': ['128px', '100%'],
+    },
     extend: {
       colors: {
         current: "currentColor",
+        butter: {
+          DEFAULT: '#FFD700',
+          '50': '#FFFFFF',
+          '100': '#FFFDF0',
+          '200': '#FFF9C7',
+          '300': '#FFF590',
+          '400': '#FFE9B2',
+          '500': '#FFD700',
+          '600': '#FFC200',
+          '700': '#998500',
+          '800': '#665400',
+          '900': '#332300'
+        },
         ewhite: '#FFFDF5',
         'electric': {
           DEFAULT: '#FFD700',
