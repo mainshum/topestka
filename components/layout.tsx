@@ -8,7 +8,7 @@ const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Nav />
+      <Nav className={outfit.variable} />
       <main className={cn(outfit.variable, "w-full")}>
         {children}
       </main>
