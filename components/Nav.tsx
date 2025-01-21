@@ -4,11 +4,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Justify from "./icons";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { cn } from "@/utils/misc";
 import React from "react";
 
-const HEADER_H = 64;
+const HEADER_H = 64 * 2;
 const SCROLL = 1;
 
 const resetScroll = (pos: number) => ({
@@ -19,24 +19,19 @@ const resetScroll = (pos: number) => ({
 const Nav = React.forwardRef<any, any>(({ className }, ref) => {
   const { data: session } = useSession();
 
-  // track scroll postion
-
-  const [lastScrollPos, setLastScrollPos] = useState(
-    resetScroll(typeof window !== "undefined" ? window.scrollY : 0)
-  );
+  const [lastScrollPos, setLastScrollPos] = useState(resetScroll(0));
 
   useEffect(() => {
+    setLastScrollPos(resetScroll(window.scrollY));
+
     const onScroll = () => {
       const currentScrollPos = window.scrollY;
       setLastScrollPos(({ scrollDownStart, currentScrollDown }) => {
         if (currentScrollPos > currentScrollDown) {
-          return {
-            scrollDownStart,
-            currentScrollDown: currentScrollPos,
-          };
-        } else {
-          return resetScroll(currentScrollPos);
+          return { scrollDownStart, currentScrollDown: currentScrollPos };
         }
+
+        return resetScroll(currentScrollPos);
       });
     };
 
@@ -68,6 +63,16 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {navHiddenDueToTop && (
+        <nav
+          className="absolute flex justify-end items-center lg:hidden p-6 w-full h-16 text-electric-500"
+        >
+          <button aria-expanded="false" aria-label="menu">
+            <Justify className="w-5 h-5" />
+          </button>
+        </nav>
+      )}
+
       <nav className={classNames}>
         <span className="font-outfit text-xl">to pestka</span>
         <button aria-expanded="false" aria-label="menu">
@@ -75,11 +80,11 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
         </button>
       </nav>
 
-      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-500">
-        <Link href="/" className="font-monarcha text-2xl/none">
-          to pestka!
+      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-500 font-medium">
+        <Link href="/" className="font-outfit text-2xl">
+          to pestka
         </Link>
-        <ul className="flex flex-row justify-center items-center space-x-12 outfit-16">
+        <ul className="flex flex-row justify-center items-center space-x-12 text-lg">
           <li>
             <Link href="/" className="">
               Program
@@ -104,7 +109,7 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
 
         <Link
           href="/cart"
-          className="bg-eblue py-1 rounded text-ewhite outfit-16 pe-4 ps ps-4"
+          className="bg-eblue py-1 rounded text-ewhite text-lg pe-4 ps ps-4"
         >
           {" "}
           Panel logowania{" "}

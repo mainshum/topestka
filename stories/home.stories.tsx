@@ -52,7 +52,7 @@ export const Mobile: Story = {
     viewport: { defaultViewport: "mobile" },
     design: {
       type: "figma",
-      url: "https://www.figma.com/design/DQ4mu9HopW1czoOcnFiQfk/toPestka?node-id=1003-1780&t=Bojun3z9N1B44wbK-4",
+      url: "https://www.figma.com/design/DQ4mu9HopW1czoOcnFiQfk/toPestka?node-id=1003-1780&t=8AjxZTmo6kCTk8aN-4",
     },
   },
 };

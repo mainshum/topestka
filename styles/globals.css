@@ -21,6 +21,15 @@ html {
 }
 
 @layer components {
+  .dowiedz-sie {
+    @apply pb-8 font-monarcha;
+    & h2 {
+      @apply pb-1 md:pb-4 border-b-[1.5px] border-b-electric-600 text-xl md:text-3xl;
+    }
+    & p {
+      @apply pt-4 font-outfit text-lg md:text-xl;
+    }
+  }
   .body-small {
     @apply font-monarcha text-[14px] leading-[140%];
   }
