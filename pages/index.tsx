@@ -1,9 +1,6 @@
 import type { NextPage } from "next";
-import clsx from "clsx";
 import React from "react";
 import Image from "next/image";
-import kapczuk from "../public/images/kapczuk.jpeg";
-import pestki from "../public/images/dziewczyny.jpeg";
 import bwPestki from "../public/images/bw-pestki.png";
 import bwKapczuk from "../public/images/bw-kapczuk.png";
 
@@ -14,6 +11,7 @@ import tranzycja from "../public/images/tranzycja.png";
 import skrzyneczka from "../public/images/skrzyneczka.png";
 import kolektyw from "../public/images/kolektyw-chemia.png";
 import mago from "../public/images/mago-vox.png";
+import '../public/trailer.mp4';
 
 import {
   Accordion,
@@ -22,7 +20,6 @@ import {
   AccordionContent,
 } from "../components/Accordion";
 import { AccordionTrigger as RadixTrigger } from "@radix-ui/react-accordion";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/utils/misc";
 import { Input } from "@/components/Input";
@@ -42,20 +39,6 @@ export const HomeSection = React.forwardRef<
     </section>
   );
 });
-
-export const PromoVideo = () => {
-  return (
-    <HomeSection className="flex justify-center items-center bg-ewhite">
-      <video
-        className="rounded"
-        controls
-        poster="/images/pestki.png"
-        width="400"
-        height="300"
-      />
-    </HomeSection>
-  );
-};
 
 export const Intro = () => {
   return (
@@ -91,8 +74,8 @@ const Pitch = () => {
       className="flex flex-col justify-center items-start bg-eblue px- md:px-40 font-monarcha text-ewhite"
     >
       <h3 className="text-base text-electric-600 md:text-xl">
-        Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH, <LgLinebreak /> by
-        zapewniać najwyższy standard opieki.
+        Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH,{" "}
+        <LgLinebreak /> by zapewniać najwyższy standard opieki.
       </h3>
       <h2 className="pt-6 pb-11 text-2xl md:text-5xl">
         Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny,{" "}
@@ -108,7 +91,7 @@ const Pitch = () => {
 
 const OpisKursu = () => {
   return (
-    <HomeSection className="flex flex-col justify-evenly items-center px-10 md:px-24"> 
+    <HomeSection className="flex flex-col justify-evenly items-center px-10 md:px-24">
       <h1 className="pb-20 font-monarcha text-4xl md:text-6xl">
         Nasz kurs dostarczy Ci kompleksowej wiedzy o <SmLinebreak /> zespole
         MRKH w pracy lekarza
@@ -131,7 +114,7 @@ const OpisKursu = () => {
 const OfferingList = ({ items }: { items: string[] }) => {
   return (
     <ul
-      className="space-y-2 py-2 p-0 border-b-[1.5px] border-b-ewhite font-monarcha text-xl list-none"
+      className="space-y-2 py-2 p-0 md:pb-5 border-b-[1.5px] border-b-ewhite font-monarcha text-xl md:text-3xl list-none"
       role="list"
     >
       {items.map((item, index) => (
@@ -173,18 +156,17 @@ const Home: NextPage = () => {
         <video
           className="md:hidden"
           controls
-          poster="/video/trailer.mp4"
-          src="/video/trailer.mp4"
+          src="/_next/static/media/trailer.mp4"
           width="300"
         />
-        <video
+        {/* <video
           className="md:block hidden rounded"
           controls
           poster="/video/trailer-d.mp4"
-          src="/video/trailer-d.mp4"
+          src="trailer-d.mp4"
           width="960"
           height="540"
-        />
+        /> */}
       </HomeSection>
       <Pitch />
       <OpisKursu />
@@ -205,10 +187,8 @@ const Home: NextPage = () => {
           </p>
         </section>
         <section className="dowiedz-sie">
-          <h2 >
-            Wsparcie psychiczne i zrozumienie pacjentek
-          </h2>
-          <p >
+          <h2>Wsparcie psychiczne i zrozumienie pacjentek</h2>
+          <p>
             Kurs pozwala głębiej zrozumieć psychologiczne wyzwania i potrzeby
             pacjentek z zespołem MRKH. Dzięki wiedzy od osób z własnym
             doświadczeniem, nauczysz się, jak okazać prawdziwe wsparcie, które
@@ -252,9 +232,10 @@ const Home: NextPage = () => {
       <HomeSection className="flex flex-col justify-center items-center gap-20 md:grid md:grid-cols-2 bg-ewhite px-10 pt-40 pb-40 font-outfit text-eblue">
         <h1 className="font-medium text-6xl md:text-7xl">Dla kogo?</h1>
         <p className="md:order-3 md:font-light text-electric-600 text-xl md:text-2xl">
-          Dla wszystkich osób chcących usprawnić komunikację w gabinetach lekarskich oraz chcących zgłębić swoją wiedzę na temat zespołu MRKH.
+          Dla wszystkich osób chcących usprawnić komunikację w gabinetach
+          lekarskich oraz chcących zgłębić swoją wiedzę na temat zespołu MRKH.
         </p>
-        <Accordions 
+        <Accordions
           items={[
             [
               "Lekarek i lekarzy",
@@ -295,7 +276,9 @@ const Home: NextPage = () => {
       </HomeSection>
       <HomeSection className="flex flex-col justify-center bg-ewhite pt-20 text-eblue">
         <h1 className="md:hidden pb-16 font-monarcha text-5xl">O nas</h1>
-        <h1 className="md:inline hidden pb-24 font-monarcha text-5xl">Poznaj nas</h1>
+        <h1 className="md:inline hidden pb-24 font-monarcha text-5xl">
+          Poznaj nas
+        </h1>
         <AboutUsSection
           alt="Pestki"
           img={bwPestki}
@@ -305,7 +288,11 @@ const Home: NextPage = () => {
             </span>
           }
         >
-          <Accordion className="md:order-3 md:font-light text-base md:text-xl" type="single" collapsible>
+          <Accordion
+            className="md:order-3 md:font-light text-base md:text-xl"
+            type="single"
+            collapsible
+          >
             <p>
               Bezpestkowe to projekt założony w 2018 roku, którego celem jest
               nie tylko aktywne wspieranie osób z zespołem
@@ -332,7 +319,11 @@ const Home: NextPage = () => {
           img={bwKapczuk}
           h1="dr hab. n. med.  Karina Kapczuk"
         >
-          <Accordion className="md:order-3 md:font-light text-base md:text-xl" type="single" collapsible>
+          <Accordion
+            className="md:order-3 md:font-light text-base md:text-xl"
+            type="single"
+            collapsible
+          >
             <p>
               Lekarz, specjalista ginekolog-położnik, endokrynolog oraz
               ginekolog wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice
@@ -364,29 +355,37 @@ const Home: NextPage = () => {
           </Accordion>
         </AboutUsSection>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center gap-12 pr-6 pl-6">
-        <OfferingSection>
-          <h1 className="font-monarcha text-3xl text-center">
-            MRKH to pestka!
-          </h1>
-          <Cena
-            cena={<span className="pl-2 font-monarcha">cena</span>}
-            koszt="299"
-          />
-          <Cena
-            cena={
-              <span className="bg-electric-600 px-2 py-1 rounded-md w-fit font-monarcha">
-                cena do końca stycznia
-              </span>
-            }
-            koszt="200"
-          />
-          <button className="py-4 text-xl/none btn btn-secondary self-center">
-            Kup kurs
-          </button>
-        </OfferingSection>
-        <OfferingSection className="gap-3">
-          <h1 className="pb-4 border-b-[1.5px] border-b-ewhite text-3xl/none">
+      <HomeSection className="flex flex-col justify-center gap-12 md:grid grid-cols-[45%_55%] px-6 md:px-20">
+        <section className="md:grid-rows-subgrid">
+          <OfferingSection>
+            <h1 className="font-monarcha text-3xl text-center md:text-5xl">
+              MRKH to pestka!
+            </h1>
+            <Cena
+              cena={<span className="pl-2 font-monarcha">cena</span>}
+              koszt="299"
+            />
+            <Cena
+              cena={
+                <span className="bg-electric-600 px-2 py-1 rounded-md w-fit font-monarcha">
+                  cena do końca lutego
+                </span>
+              }
+              koszt="200"
+            />
+            <button className="py-4 text-xl/none btn btn-secondary self-center">
+              Kup kurs
+            </button>
+          </OfferingSection>
+          <section className="flex md:px-10 md:py-16">
+            <p className="font-medium text-xl">
+              Dołącz do naszego newslettera aby nie przegapić oferty!
+            </p>
+            <button className="px-10 py-4 text-lg text-nowrap btn btn-primary">Zapisz się</button>
+          </section>
+        </section>
+        <OfferingSection className="gap-3 md:px-10">
+          <h1 className="pb-4 border-b-[1.5px] border-b-ewhite font-outfit text-3xl md:text-5xl">
             Kurs zawiera
           </h1>
           <OfferingList
@@ -400,18 +399,13 @@ const Home: NextPage = () => {
           />
           <a
             href="#program"
-            className="border-2 border-orange-400 mt-4 py-4 text-xl btn btn-primary self-center"
+            className="border-2 border-orange-400 mt-4 py-4 text-xl md:text-4xl btn btn-primary self-center"
           >
             Poznaj program
           </a>
         </OfferingSection>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite pt-0 min-h-0 text-eblue">
-        <p className="font-medium text-xl">
-          Dołącz do naszego newslettera aby nie przegapić oferty!
-        </p>
-        <button className="py-4 text-lg btn btn-primary">Zapisz się</button>
-      </HomeSection>
+      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite pt-0 min-h-0 text-eblue"></HomeSection>
       <HomeSection className="flex flex-col gap-2 bg-eblue px-4 text-ewhite">
         <h1 className="pb-10 text-3xl">F.A.Q</h1>
         <section className="accordions">
@@ -600,7 +594,12 @@ const AboutUsSection = ({ img, children, h1, alt }: any) => (
     <h1 className="md:order-2 pb-3 border-b-[1.5px] border-b-electric-400 text-3xl md:text-4xl">
       {h1}
     </h1>
-    <Image src={img} loading="lazy" alt={alt} className="md:order-1 row-span-2" />
+    <Image
+      src={img}
+      loading="lazy"
+      alt={alt}
+      className="md:order-1 row-span-2"
+    />
     {children}
   </section>
 );
@@ -649,7 +648,7 @@ function Cena({ cena, koszt }: { cena: React.ReactNode; koszt: string }) {
     <div className="flex flex-col flex-grow-2 gap-4 pb-4 pl-2 border-b-[1.5px] border-b-butter-100">
       {cena}
       <div>
-        <span className="pr-2 font-outfit text-3xl">{koszt}</span>
+        <span className="pr-2 font-outfit text-3xl md:text-4xl">{koszt}</span>
         <span className="font-outfit text-xl">(PLN brutto)</span>
       </div>
     </div>
@@ -661,7 +660,10 @@ function Accordions({ items }: { items: string[][] }) {
     <section className="flex flex-col gap-4 row-span-2 w-full accordions">
       {items.map(([key, val]) => (
         <Accordion key={key} type="single" collapsible>
-          <AccordionItem className="border-eblue md:pb-4 border-b text-xl" value={key}>
+          <AccordionItem
+            className="border-eblue md:pb-4 border-b text-xl"
+            value={key}
+          >
             <AccordionTrigger
               chevProps={{ className: "w-6 h-6 text-eblue" }}
               className="font-monarcha font-normal text-xl md:text-4xl"
