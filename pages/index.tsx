@@ -438,7 +438,7 @@ const Home: NextPage = () => {
           <Image src={mago} alt="Mago Vox" />
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-20 bg-eblue pt-20 pb-5 text-ewhite">
+      <HomeSection id="kontakt" className="flex flex-col justify-center items-center gap-20 bg-eblue pt-20 pb-5 text-ewhite">
         <section className="flex flex-col items-center gap-4 w-full">
           <h1 className="font-monarcha text-2xl/tight">
             Dołącz do naszego newslettera:

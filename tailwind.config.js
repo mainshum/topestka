@@ -23,6 +23,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        fake: '#f8a05440',
         current: "currentColor",
         butter: {
           DEFAULT: '#FFD700',

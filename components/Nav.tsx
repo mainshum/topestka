@@ -7,8 +7,10 @@ import Justify from "./icons";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { cn } from "@/utils/misc";
 import React from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./Accordion";
+import { AccordionTrigger as RadixTrigger, Content } from "@radix-ui/react-accordion";
 
-const HEADER_H = 64 * 2;
+const HEADER_H = 500;
 const SCROLL = 1;
 
 const resetScroll = (pos: number) => ({
@@ -47,10 +49,16 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
 
   const navHiddenDueToTop = lastScrollPos.currentScrollDown < HEADER_H;
 
+  const accordionRef = React.useRef<HTMLDivElement>(null);
+
+  const pxTransition = accordionRef.current?.getAttribute('data-state') === 'open' 
+    ? 'translate-y-[-395px]' 
+    : 'translate-y-[-72px]'
+
   const classNames = cn(
     cn(
-      "top-0 bg-eblue h-16  text-electric-500 sticky flex transition-transform duration-200 translate-y-0 justify-between items-center lg:hidden  p-6",
-      (navHiddenDueToScroll || navHiddenDueToTop) && "translate-y-[-64px]",
+      "top-0 [&>*]:bg-eblue h-16 z-20  text-electric-500 sticky transition-transform duration-200 translate-y-0 lg:hidden",
+      (navHiddenDueToScroll || navHiddenDueToTop) && pxTransition,
       className
     )
   );
@@ -73,12 +81,32 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
         </nav>
       )}
 
-      <nav className={classNames}>
-        <span className="font-outfit text-xl">to pestka</span>
-        <button aria-expanded="false" aria-label="menu">
-          <Justify className="w-5 h-5" />
-        </button>
-      </nav>
+        <Accordion collapsible className={classNames} type="single">
+          <AccordionItem ref={accordionRef} value="hamburger">
+            <div className="flex justify-between px-6 py-4 w-full">
+              <span className="text-xl">to pestka</span>
+              <RadixTrigger  asChild>
+                <button aria-label="menu">
+                  <Justify className="w-5 h-5" />
+                </button>
+              </RadixTrigger>
+            </div>
+            <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]" >
+              <div className="pb-0 border-t-[1px] border-t-fake">
+                <ul className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg">
+                  <li>
+                    <Link href="#program"> Program </Link>
+                  </li>
+                  <li>O prowadzących</li>
+                  <li>Kup kurs</li>
+                  <li>
+                    <Link href="#kontakt"> Kontakt </Link>
+                  </li>
+                </ul>
+              </div>
+            </Content>
+          </AccordionItem>
+        </Accordion>
 
       <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-500 font-medium">
         <Link href="/" className="font-outfit text-2xl">
