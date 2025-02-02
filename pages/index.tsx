@@ -24,6 +24,7 @@ import { ChevronRight } from "lucide-react";
 import { cn } from "@/utils/misc";
 import { Input } from "@/components/Input";
 import Link from "next/link";
+import clsx from "clsx";
 
 // eslint-disable-next-line react/display-name
 export const HomeSection = React.forwardRef<
@@ -159,24 +160,23 @@ const Home: NextPage = () => {
           src="/_next/static/media/trailer.mp4"
           width="300"
         />
-        {/* <video
+        <video
           className="md:block hidden rounded"
           controls
-          poster="/video/trailer-d.mp4"
-          src="trailer-d.mp4"
+          src="/_next/static/media/trailer.mp4"
           width="960"
           height="540"
-        /> */}
+        />
       </HomeSection>
       <Pitch />
       <OpisKursu />
-      <HomeSection className="flex flex-col justify-center bg-eblue px-10 text-butter-100">
+      <HomeSection className="flex flex-col justify-center bg-eblue px-10 md:pr-96 text-butter-100">
         <h1 className="pb-12 font-outfit text-4xl md:text-6xl">
           Dowiedz się jak kluczowe znaczenie ma:
         </h1>
         <section className="dowiedz-sie">
           <h2>
-            Empatyczne <br />
+            Empatyczne <SmLinebreak />
             przekazywanie diagnozy
           </h2>
           <p>
@@ -215,13 +215,13 @@ const Home: NextPage = () => {
                   chevProps={{
                     className: "w-6 h-6 text-electric-600",
                   }}
-                  className="pb-4 font-normal font-outfit text-xl"
+                  className="pb-4 font-normal font-outfit text-xl md:text-4xl"
                 >
                   <span className="before:content-['•'] before:pr-4 before:pl-2">
                     {title}
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="pr-8 pl-8 text-base">
+                <AccordionContent className="pr-8 pl-8 font-light text-base md:text-2xl">
                   {content}
                 </AccordionContent>
               </AccordionItem>
@@ -229,7 +229,7 @@ const Home: NextPage = () => {
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-20 md:grid md:grid-cols-2 bg-ewhite px-10 pt-40 pb-40 font-outfit text-eblue">
+      <HomeSection className="flex flex-col justify-center items-center gap-20 md:grid grid-cols-[auto_50%] bg-ewhite px-10 pt-40 pb-40 font-outfit text-eblue">
         <h1 className="font-medium text-6xl md:text-7xl">Dla kogo?</h1>
         <p className="md:order-3 md:font-light text-electric-600 text-xl md:text-2xl">
           Dla wszystkich osób chcących usprawnić komunikację w gabinetach
@@ -300,14 +300,14 @@ const Home: NextPage = () => {
               edukowanie społeczeństwa.
             </p>
             <AccordionItem value="kapczuk-akordeon">
-              <AccordionContent>
+              <AccordionContent className="md:text-xl">
                 Nazwa nawiązuje do pestki owocu i przyrównania jej do macicy —
                 owoce pestkowe różnią się od bezpestkowych tylko posiadaniem
                 pestki, która przecież niczego nie definiuje. W 2022 roku
                 Bezpestkowe zostały sformalizowane i stanowią Fundację.
               </AccordionContent>
               <RadixTrigger asChild>
-                <button className="mt-8 py-3 btn btn-primary">
+                <button className="mt-8 py-3 hover:text-electric-600 btn btn-primary">
                   Czytaj dalej
                 </button>
               </RadixTrigger>
@@ -332,7 +332,7 @@ const Home: NextPage = () => {
               Poznaniu.
             </p>
             <AccordionItem value="kapczuk-akordeon">
-              <AccordionContent>
+              <AccordionContent className="md:text-xl">
                 Główny obszar aktywności zawodowej, klinicznej i naukowej,
                 stanowią ginekologia dziecięca i dziewczęca oraz złożone wady
                 rozwojowe żeńskich narządów płciowych, w tym zespół MRKH.Lekarz,
@@ -347,7 +347,7 @@ const Home: NextPage = () => {
                 żeńskich narządów płciowych, w tym zespół MRKH.
               </AccordionContent>
               <RadixTrigger asChild>
-                <button className="mt-8 py-3 btn btn-primary">
+                <button className="mt-8 py-3 hover:text-electric-600 btn btn-primary">
                   Czytaj dalej
                 </button>
               </RadixTrigger>
@@ -405,22 +405,21 @@ const Home: NextPage = () => {
           </a>
         </OfferingSection>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite pt-0 min-h-0 text-eblue"></HomeSection>
       <HomeSection className="flex flex-col gap-2 bg-eblue px-4 text-ewhite">
         <h1 className="pb-10 text-3xl">F.A.Q</h1>
-        <section className="accordions">
+        <section className={clsx('accordions')}>
           {faqs.map(([question, answer]) => (
-            <Accordion key={question} type="single" collapsible>
-              <AccordionItem value={question}>
+            <Accordion orientation="horizontal" key={question} type="single" collapsible>
+              <AccordionItem className="md:gap-10 md:grid grid-cols-2"  value={question}>
                 <AccordionTrigger
                   chevProps={{
-                    className: "text-ewhite shrink-0",
+                    className: "text-ewhite shrink-0 transform -rotate-90 ",
                   }}
-                  className="border-ewhite border-b-[1px] border-solid font-outfit text-base"
+                  className="border-ewhite border-b-[1px] border-solid [&[data-state=open]>svg]:rotate-90 font-outfit text-base md:text-xl"
                 >
                   {question}
                 </AccordionTrigger>
-                <AccordionContent>{answer}</AccordionContent>
+                <AccordionContent className="md:text-xl" >{answer}</AccordionContent>
               </AccordionItem>
             </Accordion>
           ))}
@@ -670,7 +669,7 @@ function Accordions({ items }: { items: string[][] }) {
             >
               {key}
             </AccordionTrigger>
-            <AccordionContent className="font-light text-lg">
+                <AccordionContent className="pr-8 font-light text-base md:text-2xl">
               {val}
             </AccordionContent>
           </AccordionItem>
