@@ -21,6 +21,22 @@ html {
 }
 
 @layer components {
+  section.regulamin {
+    @apply p-20;
+  }
+  .regulamin h1 {
+    @apply pb-10 font-bold font-outfit text-2xl
+  }
+  .regulamin ul > li {
+      @apply ml-5
+  }
+  .regulamin ul {
+    @apply list-disc;
+
+  }
+  .regulamin > ol > li {
+      @apply pb-4
+  }
   .dowiedz-sie {
     @apply pb-8 font-monarcha;
     & h2 {

@@ -480,8 +480,8 @@ const Home: NextPage = () => {
           </p>
         </section>
         <section className="flex flex-col w-full text-base">
-          <Link href="">Regulamin</Link>
-          <Link href="">Polityka Prywatności</Link>
+          <Link href="/regulamin">Regulamin</Link>
+          <Link href="/polityka-prywatnosci">Polityka Prywatności</Link>
           <Link href="">© 2024 Fundacja Bezpestkowe</Link>
         </section>
       </HomeSection>
