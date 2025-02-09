@@ -34,6 +34,9 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
         run: |
           # Install SSH key
           mkdir -p ~/.ssh
@@ -65,12 +68,24 @@ jobs:
             if [ -d $DEPLOY_PATH ]; then rm -rf $DEPLOY_PATH.old; fi
             if [ -d $DEPLOY_PATH ]; then mv $DEPLOY_PATH $DEPLOY_PATH.old; fi
             mv $DEPLOY_PATH.tmp $DEPLOY_PATH
-            
+
             # Restart or start PM2
             cd $DEPLOY_PATH
+
+            rm -f .env
+
+            touch .env
+            echo "EMAIL_PASS=$EMAIL_PASS" >> .env
+            echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+            echo "NEXTAUTH_URL=https://topestka.org" >> .env
+
+            echo "DB_NAME=$DB_NAME" >> .env
+            echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+            echo "DB_USER=$DB_USER" >> .env
+
             if pm2 list | grep -q next; then
-              pm2 restart next
+              pm2 restart next --update-env
             else
-              pm2 start npm --name next -- start
+              pm2 start npm --name next -- start 
             fi
           "

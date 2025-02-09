@@ -5,10 +5,10 @@ export default defineConfig({
   schema: "./utils/db/schema.ts",
   out: "./drizzle",
   dbCredentials: {
-    database: "u556212339_topestka",
+    database: process.env.DB_NAME!,
     host: "bezpestkowe.pl",
-    password: "bpn5yvx@jgk5FPC*dbv",
     port: 3306,
-    user: "u556212339_topestka_admin",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
   }
 });

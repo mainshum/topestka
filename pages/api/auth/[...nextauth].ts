@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db, accounts, users, verificationTokens } from "../../../utils/db/schema";
 import EmailProvider from "next-auth/providers/email";
-import nodemailer from  "nodemailer";
 
 const transportObj = {
   host: "smtp.hostinger.com",
@@ -13,8 +12,6 @@ const transportObj = {
     pass: process.env.EMAIL_PASS,
   },
 }
-
-const transporter = nodemailer.createTransport(transportObj);
 
 export default NextAuth({
   // TODO fix: https://github.com/nextauthjs/next-auth/issues/8280#issuecomment-2094369316
@@ -29,4 +26,5 @@ export default NextAuth({
       server: transportObj,
     })
   ],
+  secret: process.env.NEXTAUTH_SECRET,
 });
