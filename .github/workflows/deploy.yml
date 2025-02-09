@@ -33,6 +33,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
         run: |
           # Install SSH key
           mkdir -p ~/.ssh

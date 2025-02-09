@@ -43,7 +43,7 @@ export const HomeSection = React.forwardRef<
 
 export const Intro = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-center md:gap-5 px-6">
+    <HomeSection className="flex flex-col justify-center items-center md:gap-5 px-6 pt-0">
       <h1 className="font-medium font-outfit text-6xl text-nowrap md:text-7xl">
         to pestka!
       </h1>
@@ -56,7 +56,7 @@ export const Intro = () => {
         <button className="text-xl btn btn-primary">Kup kurs</button>
         <a
           href="#program"
-          className="border-electric-600 border text-xl btn btn-secondary"
+          className="border-electric-400 border text-xl btn btn-secondary"
         >
           Poznaj program
         </a>
@@ -198,12 +198,12 @@ const Home: NextPage = () => {
       </HomeSection>
       <HomeSection
         id="program-full"
-        className="flex flex-col justify-center gap-12 bg-ewhite px-6 md:px-24 pb-0 text-eblue"
+        className="px-6 md:!pr-42 pb-0 md:pl-24 text-eblue"
       >
-        <h1 className="md:pb-4 font-medium font-outfit text-6xl md:text-7xl">
+        <h1 className="md:pb-16 font-medium font-outfit text-6xl md:text-7xl">
           Sprawdź nasz program!
         </h1>
-        <p className="md:pb-12 font-monarcha text-xl md:text-3xl">
+        <p className="md:pb-24 font-monarcha text-xl md:text-3xl">
           Kurs zawiera elementy przeznaczone do oglądania, czytania oraz część
           interaktywną.
         </p>
@@ -221,7 +221,7 @@ const Home: NextPage = () => {
                     {title}
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="pr-8 pl-8 font-light text-base md:text-2xl">
+                <AccordionContent className="pr-8 pl-10 font-light text-base md:text-2xl">
                   {content}
                 </AccordionContent>
               </AccordionItem>
@@ -229,7 +229,7 @@ const Home: NextPage = () => {
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-20 md:grid grid-cols-[auto_50%] bg-ewhite px-10 pt-40 pb-40 font-outfit text-eblue">
+      <HomeSection className="flex flex-col justify-center items-center gap-20 md:grid grid-cols-[auto_50%] px-10 pt-40 pb-40 font-outfit text-eblue">
         <h1 className="font-medium text-6xl md:text-7xl">Dla kogo?</h1>
         <p className="md:order-3 md:font-light text-electric-600 text-xl md:text-2xl">
           Dla wszystkich osób chcących usprawnić komunikację w gabinetach
@@ -274,7 +274,7 @@ const Home: NextPage = () => {
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center bg-ewhite pt-20 text-eblue">
+      <HomeSection className="flex flex-col justify-center pt-20 text-eblue">
         <h1 className="md:hidden pb-16 font-monarcha text-5xl">O nas</h1>
         <h1 className="md:inline hidden pb-24 font-monarcha text-5xl">
           Poznaj nas
@@ -425,7 +425,7 @@ const Home: NextPage = () => {
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center items-center gap-8 bg-ewhite px-8 text-eblue">
+      <HomeSection className="flex flex-col justify-center items-center gap-8 px-8 text-eblue">
         <h1 className="text-center text-xl/snug">
           Organizacje partnerskie oraz wspierające nasze działania
         </h1>

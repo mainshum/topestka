@@ -108,7 +108,7 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
           </AccordionItem>
         </Accordion>
 
-      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-500 font-medium">
+      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-400 font-medium">
         <Link href="/" className="font-outfit text-2xl">
           to pestka
         </Link>
@@ -135,13 +135,15 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
           </li>
         </ul>
 
-        <Link
-          href="/cart"
-          className="bg-eblue py-1 rounded text-ewhite text-lg pe-4 ps ps-4"
-        >
-          {" "}
-          Panel logowania{" "}
-        </Link>
+        
+          <Link
+            href={session ? "/api/auth/signout" : "/login"}
+            className="bg-eblue py-1 rounded text-ewhite text-lg pe-4 ps ps-4"
+          >
+            {session ? "Wyloguj" : "Panel logowania"}
+          </Link>
+
+
       </nav>
     </>
   );

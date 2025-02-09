@@ -16,7 +16,7 @@ html {
 
 @layer base {
   body {
-    @apply bg-ewhite font-outfit text-eblue antialiased;
+    @apply bg-butter-100 font-outfit text-eblue antialiased;
   }
 }
 
@@ -38,7 +38,8 @@ html {
       @apply pb-4
   }
   .dowiedz-sie {
-    @apply pb-8 font-monarcha;
+    
+    @apply pb-8 font-monarcha text-butter-100;
     & h2 {
       @apply pb-1 md:pb-4 border-b-2 border-b-electric-600 text-xl md:text-3xl;
     }
