@@ -34,9 +34,11 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
+          DB_HOST: ${{ secrets.DB_HOST }}
         run: |
           # Install SSH key
           mkdir -p ~/.ssh
@@ -75,6 +77,7 @@ jobs:
             rm -f .env
 
             touch .env
+
             echo "EMAIL_PASS=$EMAIL_PASS" >> .env
             echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
             echo "NEXTAUTH_URL=https://topestka.org" >> .env
@@ -82,6 +85,7 @@ jobs:
             echo "DB_NAME=$DB_NAME" >> .env
             echo "DB_PASSWORD=$DB_PASSWORD" >> .env
             echo "DB_USER=$DB_USER" >> .env
+            echo "DB_HOST=$DB_HOST" >> .env
 
             if pm2 list | grep -q next; then
               pm2 restart next --update-env

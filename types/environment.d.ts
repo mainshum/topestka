@@ -2,6 +2,10 @@ declare namespace NodeJS {
   interface ProcessEnv {
     DATABASE_URL: string;
     GITHUB_ID: string;
+    DB_NAME: string;
+    DB_HOST: string;
+    DB_USER: string;
+    DB_PASSWORD: string;
     GITHUB_SECRET: string;
     MUX_TOKEN_ID: string;
     MUX_TOKEN_SECRET: string;

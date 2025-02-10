@@ -1,7 +1,9 @@
 import NextAuth from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db, accounts, users, verificationTokens } from "../../../utils/db/schema";
+import { createDb, accounts, users, verificationTokens } from "../../../utils/db/schema";
 import EmailProvider from "next-auth/providers/email";
+
+const db = await createDb();
 
 const transportObj = {
   host: "smtp.hostinger.com",
