@@ -6,19 +6,7 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import mysql from "mysql2/promise";
-import { drizzle } from "drizzle-orm/mysql2";
 
-export const createDb = async () => {
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
-
-  return await drizzle(connection);
-}
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 })
