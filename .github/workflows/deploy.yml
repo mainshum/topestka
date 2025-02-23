@@ -33,12 +33,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_HOST: ${{ secrets.DB_HOST }}
         run: |
           # Install SSH key
           mkdir -p ~/.ssh
@@ -74,9 +68,7 @@ jobs:
             # Restart or start PM2
             cd $DEPLOY_PATH
 
-            rm -f .env
-
-            mv /root/repo/.env .env
+            cp ~/.env .env
 
             if pm2 list | grep -q next; then
               pm2 restart next --update-env
