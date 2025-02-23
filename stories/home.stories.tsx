@@ -11,7 +11,9 @@ const meta = {
   component: Home,
   decorators: [
     (Story) => (
-      <SessionProvider session={{user: {id: 'seagal'}, expires: ''}}>
+      <SessionProvider
+        session={{ user: { id: "seagal", hasAccess: true }, expires: "" }}
+      >
         <Layout>
           <Story />
         </Layout>

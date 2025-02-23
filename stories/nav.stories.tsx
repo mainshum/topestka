@@ -9,8 +9,10 @@ const meta = {
   component: Nav,
   decorators: [
     (Story) => (
-      <SessionProvider session={{ user: { id: "Test User" }, expires: '' }}>
-            <Story />
+      <SessionProvider
+        session={{ user: { id: "Test User", hasAccess: true }, expires: "" }}
+      >
+        <Story />
       </SessionProvider>
     ),
   ],
@@ -29,11 +31,10 @@ type Story = StoryObj<typeof meta>;
 export const Desktop: Story = {};
 export const Mobile: Story = {
   parameters: {
-    viewport: { defaultViewport: 'mobile' },
+    viewport: { defaultViewport: "mobile" },
     design: {
       type: "figma",
       url: "https://www.figma.com/design/DQ4mu9HopW1czoOcnFiQfk/toPestka?node-id=636-427&t=mR2XtShJEhtm5Nax-4",
     },
   },
 };
-
