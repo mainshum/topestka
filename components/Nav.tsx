@@ -51,8 +51,8 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
 
   const accordionRef = React.useRef<HTMLDivElement>(null);
 
-  const pxTransition = accordionRef.current?.getAttribute('data-state') === 'open' 
-    ? 'translate-y-[-395px]' 
+  const pxTransition = accordionRef.current?.getAttribute('data-state') === 'open'
+    ? 'translate-y-[-395px]'
     : 'translate-y-[-72px]'
 
   const classNames = cn(
@@ -81,32 +81,32 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
         </nav>
       )}
 
-        <Accordion collapsible className={classNames} type="single">
-          <AccordionItem ref={accordionRef} value="hamburger">
-            <div className="flex justify-between px-6 py-4 w-full">
-              <span className="text-xl">to pestka</span>
-              <RadixTrigger  asChild>
-                <button aria-label="menu">
-                  <Justify className="w-5 h-5" />
-                </button>
-              </RadixTrigger>
+      <Accordion collapsible className={classNames} type="single">
+        <AccordionItem ref={accordionRef} value="hamburger">
+          <div className="flex justify-between px-6 py-4 w-full">
+            <span className="text-xl">to pestka</span>
+            <RadixTrigger asChild>
+              <button aria-label="menu">
+                <Justify className="w-5 h-5" />
+              </button>
+            </RadixTrigger>
+          </div>
+          <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]" >
+            <div className="pb-0 border-t-[1px] border-t-fake">
+              <ul className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg">
+                <li>
+                  <Link href="#program"> Program </Link>
+                </li>
+                <li>O prowadzących</li>
+                <li>Kup kurs</li>
+                <li>
+                  <Link href="#kontakt"> Kontakt </Link>
+                </li>
+              </ul>
             </div>
-            <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]" >
-              <div className="pb-0 border-t-[1px] border-t-fake">
-                <ul className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg">
-                  <li>
-                    <Link href="#program"> Program </Link>
-                  </li>
-                  <li>O prowadzących</li>
-                  <li>Kup kurs</li>
-                  <li>
-                    <Link href="#kontakt"> Kontakt </Link>
-                  </li>
-                </ul>
-              </div>
-            </Content>
-          </AccordionItem>
-        </Accordion>
+          </Content>
+        </AccordionItem>
+      </Accordion>
 
       <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-400 font-medium">
         <Link href="/" className="font-outfit text-2xl">
@@ -135,13 +135,26 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
           </li>
         </ul>
 
-        
+
+        <div className="flex gap-4">
+
+          {session && (
+            <Link
+              href="/kurs"
+              className="bg-eblue py-1 rounded text-ewhite text-lg pe-4 ps ps-4"
+            >
+              Kurs
+            </Link>
+          )}
           <Link
             href={session ? "/api/auth/signout" : "/login"}
             className="bg-eblue py-1 rounded text-ewhite text-lg pe-4 ps ps-4"
           >
             {session ? "Wyloguj" : "Panel logowania"}
           </Link>
+
+        </div>
+
 
 
       </nav>

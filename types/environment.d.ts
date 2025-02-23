@@ -12,8 +12,11 @@ declare namespace NodeJS {
     MUX_WEBHOOK_SECRET: string;
     NEXTAUTH_URL: string;
     NEXTAUTH_SECRET: string;
-    NODE_ENV: 'development' | 'production';
+    NODE_ENV: "development" | "production";
     PORT?: string;
     PWD: string;
+    MUX_SIGNING_KEY: string;
+    MUX_PRIVATE_KEY: string;
+    MUX_AUDIENCE: string;
   }
 }

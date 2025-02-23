@@ -14,6 +14,7 @@ export const users = mysqlTable("user", {
     .$defaultFn(() => crypto.randomUUID()),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).unique(),
+  hasAccess: boolean("hasAccess").notNull().default(false),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
     fsp: 3,

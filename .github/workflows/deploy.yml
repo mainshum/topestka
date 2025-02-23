@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -44,28 +44,28 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          
+
           # Add host to known hosts
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-          
+
           # Create a temporary directory for the build
           ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "mkdir -p $DEPLOY_PATH.tmp"
-          
+
           # Copy the build files
           scp -i ~/.ssh/deploy_key -r .next package*.json $SSH_USER@$SSH_HOST:$DEPLOY_PATH.tmp/
-          
+
           # Install production dependencies and restart PM2 with NVM initialized
           ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "
             # Load NVM
             export NVM_DIR=\"\$HOME/.nvm\"
             [ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"
-            
+
             # Use the correct Node version
             nvm use $NODE_VERSION
-            
+
             # Install dependencies and handle deployment
             cd $DEPLOY_PATH.tmp && npm ci --production
-            
+
             # Swap directories
             if [ -d $DEPLOY_PATH ]; then rm -rf $DEPLOY_PATH.old; fi
             if [ -d $DEPLOY_PATH ]; then mv $DEPLOY_PATH $DEPLOY_PATH.old; fi
@@ -76,20 +76,11 @@ jobs:
 
             rm -f .env
 
-            touch .env
-
-            echo "EMAIL_PASS=$EMAIL_PASS" >> .env
-            echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
-            echo "NEXTAUTH_URL=https://topestka.org" >> .env
-
-            echo "DB_NAME=$DB_NAME" >> .env
-            echo "DB_PASSWORD=$DB_PASSWORD" >> .env
-            echo "DB_USER=$DB_USER" >> .env
-            echo "DB_HOST=$DB_HOST" >> .env
+            mv /root/repo/.env .env
 
             if pm2 list | grep -q next; then
               pm2 restart next --update-env
             else
-              pm2 start npm --name next -- start 
+              pm2 start npm --name next -- start
             fi
           "

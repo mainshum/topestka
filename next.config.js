@@ -1,5 +1,7 @@
+const { withNextVideo } = require('next-video/process')
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withNextVideo({
   webpack: config => {
     config.module.rules.push({
       test: /\.(mp4|webm)$/i,
@@ -20,6 +22,6 @@ const nextConfig = {
       },
     ],
   },
-};
+});
 
 module.exports = nextConfig;

@@ -11,7 +11,7 @@ import tranzycja from "../public/images/tranzycja.png";
 import skrzyneczka from "../public/images/skrzyneczka.png";
 import kolektyw from "../public/images/kolektyw-chemia.png";
 import mago from "../public/images/mago-vox.png";
-import '../public/trailer.mp4';
+import "../public/trailer.mp4";
 
 import {
   Accordion,
@@ -142,7 +142,7 @@ const OfferingSection = ({
   <section
     className={cn(
       "flex flex-col items-stretch gap-8 bg-eblue pt-10 pr-5 pb-10 pl-5 rounded-lg text-ewhite",
-      className
+      className,
     )}
   >
     {children}
@@ -381,7 +381,9 @@ const Home: NextPage = () => {
             <p className="font-medium text-xl">
               Dołącz do naszego newslettera aby nie przegapić oferty!
             </p>
-            <button className="px-10 py-4 text-lg text-nowrap btn btn-primary">Zapisz się</button>
+            <button className="px-10 py-4 text-lg text-nowrap btn btn-primary">
+              Zapisz się
+            </button>
           </section>
         </section>
         <OfferingSection className="gap-3 md:px-10">
@@ -407,10 +409,18 @@ const Home: NextPage = () => {
       </HomeSection>
       <HomeSection className="flex flex-col gap-2 bg-eblue px-4 text-ewhite">
         <h1 className="pb-10 text-3xl">F.A.Q</h1>
-        <section className={clsx('accordions')}>
+        <section className={clsx("accordions")}>
           {faqs.map(([question, answer]) => (
-            <Accordion orientation="horizontal" key={question} type="single" collapsible>
-              <AccordionItem className="md:gap-10 md:grid grid-cols-2"  value={question}>
+            <Accordion
+              orientation="horizontal"
+              key={question}
+              type="single"
+              collapsible
+            >
+              <AccordionItem
+                className="md:gap-10 md:grid grid-cols-2"
+                value={question}
+              >
                 <AccordionTrigger
                   chevProps={{
                     className: "text-ewhite shrink-0 transform -rotate-90 ",
@@ -419,7 +429,9 @@ const Home: NextPage = () => {
                 >
                   {question}
                 </AccordionTrigger>
-                <AccordionContent className="md:text-xl" >{answer}</AccordionContent>
+                <AccordionContent className="md:text-xl">
+                  {answer}
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
           ))}
@@ -438,7 +450,10 @@ const Home: NextPage = () => {
           <Image src={mago} alt="Mago Vox" />
         </section>
       </HomeSection>
-      <HomeSection id="kontakt" className="flex flex-col justify-center items-center gap-20 bg-eblue pt-20 pb-5 text-ewhite">
+      <HomeSection
+        id="kontakt"
+        className="flex flex-col justify-center items-center gap-20 bg-eblue pt-20 pb-5 text-ewhite"
+      >
         <section className="flex flex-col items-center gap-4 w-full">
           <h1 className="font-monarcha text-2xl/tight">
             Dołącz do naszego newslettera:
@@ -669,7 +684,7 @@ function Accordions({ items }: { items: string[][] }) {
             >
               {key}
             </AccordionTrigger>
-                <AccordionContent className="pr-8 font-light text-base md:text-2xl">
+            <AccordionContent className="pr-8 font-light text-base md:text-2xl">
               {val}
             </AccordionContent>
           </AccordionItem>
