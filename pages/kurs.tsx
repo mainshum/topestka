@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const mux = new Mux();
 
-  const playbackId = "Oo7Y5ml1yHEzpS8Y2PV202R201x02JbqSgIaZBQlD91Ou4"; // Enter your signed playback id here
+  const playbackId = "SR34w8OYDqmeJB3S11msDqJCq7tx22H202Rtkd4UpfoY"; // Enter your signed playback id here
 
   let baseOptions = {
     keyId: process.env.MUX_SIGNING_KEY,
@@ -34,21 +34,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       muxToken,
+      playbackId,
     },
   };
 };
 
 export default function KursPage({
   muxToken,
+  playbackId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(muxToken);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-4xl">
-        <Video
-          playbackToken={muxToken}
-          playbackId="Oo7Y5ml1yHEzpS8Y2PV202R201x02JbqSgIaZBQlD91Ou4"
-        />
+        <Video playbackToken={muxToken} playbackId={playbackId} />
       </div>
     </div>
   );
