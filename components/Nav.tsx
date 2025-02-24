@@ -4,11 +4,15 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Justify from "./icons";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
 import { cn } from "@/utils/misc";
 import React from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./Accordion";
-import { AccordionTrigger as RadixTrigger, Content } from "@radix-ui/react-accordion";
+import { Accordion, AccordionItem } from "./Accordion";
+import {
+  AccordionTrigger as RadixTrigger,
+  Content,
+} from "@radix-ui/react-accordion";
+import clsx from "clsx";
 
 const HEADER_H = 500;
 const SCROLL = 1;
@@ -18,7 +22,37 @@ const resetScroll = (pos: number) => ({
   currentScrollDown: pos,
 });
 
-const Nav = React.forwardRef<any, any>(({ className }, ref) => {
+// eslint-disable-next-line react/display-name
+const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ children, className }) => {
+    return (
+      <nav
+        className={clsx(
+          "lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-400 font-medium",
+          className,
+        )}
+      >
+        {children}
+      </nav>
+    );
+  },
+);
+
+const Logo = () => (
+  <Link href="/" className="font-monarcha text-3xl">
+    to pestka
+  </Link>
+);
+
+export const Nav = Object.assign({
+  Root,
+  Logo,
+});
+
+const MainNav = React.forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(({ className }) => {
   const { data: session } = useSession();
 
   const [lastScrollPos, setLastScrollPos] = useState(resetScroll(0));
@@ -51,30 +85,23 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
 
   const accordionRef = React.useRef<HTMLDivElement>(null);
 
-  const pxTransition = accordionRef.current?.getAttribute('data-state') === 'open'
-    ? 'translate-y-[-395px]'
-    : 'translate-y-[-72px]'
+  const pxTransition =
+    accordionRef.current?.getAttribute("data-state") === "open"
+      ? "translate-y-[-395px]"
+      : "translate-y-[-72px]";
 
   const classNames = cn(
     cn(
       "top-0 [&>*]:bg-eblue h-16 z-20  text-electric-500 sticky transition-transform duration-200 translate-y-0 lg:hidden",
       (navHiddenDueToScroll || navHiddenDueToTop) && pxTransition,
-      className
-    )
+      className,
+    ),
   );
 
   return (
     <>
-      <Head>
-        <title>To pestka!</title>
-        <meta name="description" content="Platforma toPestka" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       {navHiddenDueToTop && (
-        <nav
-          className="absolute flex justify-end items-center lg:hidden p-6 w-full h-16 text-electric-500"
-        >
+        <nav className="absolute flex justify-end items-center lg:hidden p-6 w-full h-16 text-electric-500">
           <button aria-expanded="false" aria-label="menu">
             <Justify className="w-5 h-5" />
           </button>
@@ -91,7 +118,7 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
               </button>
             </RadixTrigger>
           </div>
-          <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]" >
+          <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]">
             <div className="pb-0 border-t-[1px] border-t-fake">
               <ul className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg">
                 <li>
@@ -108,10 +135,8 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
         </AccordionItem>
       </Accordion>
 
-      <nav className="lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-400 font-medium">
-        <Link href="/" className="font-outfit text-2xl">
-          to pestka
-        </Link>
+      <Nav.Root>
+        <Nav.Logo />
         <ul className="flex flex-row justify-center items-center space-x-12 text-lg">
           <li>
             <Link href="/" className="">
@@ -135,9 +160,7 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
           </li>
         </ul>
 
-
         <div className="flex gap-4">
-
           {session && (
             <Link
               href="/kurs"
@@ -152,16 +175,12 @@ const Nav = React.forwardRef<any, any>(({ className }, ref) => {
           >
             {session ? "Wyloguj" : "Panel logowania"}
           </Link>
-
         </div>
-
-
-
-      </nav>
+      </Nav.Root>
     </>
   );
 });
 
-Nav.displayName = "Nav";
+MainNav.displayName = "Nav";
 
-export default Nav;
+export default MainNav;

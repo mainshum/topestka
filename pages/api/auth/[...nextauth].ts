@@ -22,6 +22,9 @@ export const authOptions: NextAuthOptions = {
     accountsTable: accounts,
     verificationTokensTable: verificationTokens,
   }) as any,
+  pages: {
+    verifyRequest: "/verify-request",
+  },
   providers: [
     EmailProvider({
       from: "noreply@bezpestkowe.pl",

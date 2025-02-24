@@ -153,21 +153,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Intro />
-      <HomeSection className="flex justify-center items-center pt-0 pb-16 min-h-0">
-        <video
-          className="md:hidden"
-          controls
-          src="/_next/static/media/trailer.mp4"
-          width="300"
-        />
-        <video
-          className="md:block hidden rounded"
-          controls
-          src="/_next/static/media/trailer.mp4"
-          width="960"
-          height="540"
-        />
-      </HomeSection>
+      {/* <HomeSection className="flex justify-center items-center pt-0 pb-16 min-h-0">
+      </HomeSection> */}
       <Pitch />
       <OpisKursu />
       <HomeSection className="flex flex-col justify-center bg-eblue px-10 md:pr-96 text-butter-100">

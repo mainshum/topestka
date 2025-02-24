@@ -1,39 +1,47 @@
 import { Input } from "@/components/Input";
-import { signIn } from "next-auth/react"
-
-const Wrapper = ({ children }: {children: React.ReactNode}) => {
-  return (
-    <div className="flex flex-col justify-center items-center gap-8 w-full min-h-[calc(100svh-82px)]">
-      {children}
-    </div>
-  );
-};
+import MailLayout from "@/components/mail-layout";
+import { ChevronRight } from "lucide-react";
+import { signIn } from "next-auth/react";
+import React from "react";
 
 const Login = () => {
   return (
-    <Wrapper>
-      <form onSubmit={(e) => {
+    <form
+      onSubmit={(e) => {
         e.preventDefault();
-        const input = (e.target as HTMLFormElement).elements.namedItem('email')! as HTMLInputElement;
+        const input = (e.target as HTMLFormElement).elements.namedItem(
+          "email",
+        )! as HTMLInputElement;
         signIn("email", { email: input.value });
-      }} className="flex flex-col justify-center items-center gap-8 w-80">
-        <h1>Login</h1>
+      }}
+      className="flex flex-col justify-center items-center gap-3 w-[470px] pb-20"
+    >
+      <h1 className="font-outfit text-2xl font-extralight">
+        Wpisz swój adres e-mail aby otrzymać jednorazowy link do logowania.
+      </h1>
+      <div className="flex w-full">
         <Input
-          name="email"
-          className="pl-0 border-b-eblue rounded-none"
+          className="border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite py-7 rounded-none text-electric-500 text-xl md:text-xl placeholder:text-electric-500"
           type="email"
+          name="email"
           placeholder="Twój email"
         />
         <button
           type="submit"
-          className="btn btn-primary"
-          aria-label="Zaloguj się"
+          className="px-2 rounded-full focus:ring-2 focus:ring-blue-500 focus-visible:ring-2 focus:outline-none"
+          aria-label="Submit"
         >
-          Zaloguj się
+          <ChevronRight className="w-6 h-6" />
         </button>
-      </form>
-    </Wrapper>
+      </div>
+      <p className="text-eblue-100 font-monarcha text-sm">
+        Kontynuując, zgadzasz się z Warunkami korzystania z usług i
+        potwierdzasz, że przeczytałaś/łeś naszą Politykę prywatności.
+      </p>
+    </form>
   );
 };
+
+Login.getLayout = (page: React.ReactNode) => <MailLayout>{page}</MailLayout>;
 
 export default Login;
