@@ -25,6 +25,8 @@ import { cn } from "@/utils/misc";
 import { Input } from "@/components/Input";
 import Link from "next/link";
 import clsx from "clsx";
+import { Nav } from "@/components/Nav";
+import Button from "@/components/Button";
 
 // eslint-disable-next-line react/display-name
 export const HomeSection = React.forwardRef<
@@ -40,6 +42,53 @@ export const HomeSection = React.forwardRef<
     </section>
   );
 });
+
+const Newsletter = () => (
+  <HomeSection
+    id="kontakt"
+    className="flex h-full flex-wrap bg-eblue gap-16 pt-20 pb-5 text-ewhite md:px-20"
+  >
+    <section className="flex flex-col justify-between flex-grow">
+      <Nav.Logo className="text-6xl" />
+      <div>
+        <p className="pb-4 font-monarcha text-3xl">
+          Bądź na bieżąco z <br /> działaniami naszej fundacji.
+        </p>
+        <a href="https://actionnetwork.org/forms/mrkh-to-pestka">
+          <button className="px-4 py-3 bg-[#F6892A] text-ewhite text-xl font-medium rounded-md font-outfit">
+            Dołącz do newslettera
+          </button>
+        </a>
+      </div>
+      <div className="flex text-sm gap-2">
+        <span>© 2024 Fundacja Bezpestkowe</span>
+        <Link href="/polityka-prywatnosci">Polityka Prywatności</Link>
+        <Link href="/regulamin">Regulamin</Link>
+      </div>
+    </section>
+    <section className="flex flex-col justify-between basis-[432px]">
+      <div className="flex flex-col font-outfit text-3xl gap-4">
+        <Link href="https://www.bezpestkowe.pl">www.bezpestkowe.pl</Link>
+        <Link href="mailto:bezpestkowe@gmail.com">bezpestkowe@gmail.com</Link>
+        <Link href="https://www.instagram.com/bezpestkowe/">Instagram</Link>
+        <Link href="https://www.facebook.com/groups/bezpestkowe/">
+          Facebook
+        </Link>
+      </div>
+      <div className="font-monarcha text-xl">
+        Fundacja Bezpestkowe <br />
+        Niska 1E/61, 81-646 Gdynia <br />
+        KRS - 0000951776 <br />
+        NIP - 5862377596 <br />
+        REGON - 521286817 <br />
+      </div>
+      <div className="text-sm text-electric-500">
+        To pestka, to platforma, która powstała z inicjatywy Fundacji
+        Bezpestkowe i stanowi jej własność.
+      </div>
+    </section>
+  </HomeSection>
+);
 
 export const Intro = () => {
   return (
@@ -364,14 +413,14 @@ const Home: NextPage = () => {
               Kup kurs
             </button>
           </OfferingSection>
-          <section className="flex md:px-10 md:py-16">
+          {/* <section className="flex md:px-10 md:py-16">
             <p className="font-medium text-xl">
               Dołącz do naszego newslettera aby nie przegapić oferty!
             </p>
             <button className="px-10 py-4 text-lg text-nowrap btn btn-primary">
               Zapisz się
             </button>
-          </section>
+          </section> */}
         </section>
         <OfferingSection className="gap-3 md:px-10">
           <h1 className="pb-4 border-b-[1.5px] border-b-ewhite font-outfit text-3xl md:text-5xl">
@@ -437,56 +486,7 @@ const Home: NextPage = () => {
           <Image src={mago} alt="Mago Vox" />
         </section>
       </HomeSection>
-      <HomeSection
-        id="kontakt"
-        className="flex flex-col justify-center items-center gap-20 bg-eblue pt-20 pb-5 text-ewhite"
-      >
-        <section className="flex flex-col items-center gap-4 w-full">
-          <h1 className="font-monarcha text-2xl/tight">
-            Dołącz do naszego newslettera:
-          </h1>
-          <div className="flex w-full">
-            <Input
-              className="border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite rounded-none text-electric-500 text-lg placeholder:text-electric-500"
-              type="email"
-              placeholder="Twój email"
-            />
-            <button
-              type="submit"
-              className="px-2 rounded-full focus:ring-2 focus:ring-blue-500 focus-visible:ring-2 focus:outline-none"
-              aria-label="Submit"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-        </section>
-        <section className="flex flex-col justify-start gap-3 w-full font-semibold text-xl">
-          <Link href="https://www.bestpestkowe.pl">www.bezpestkowe.pl</Link>
-          <Link href="mailto:bezpestkowe@gmail.com">bezpestkowe@gmail.com</Link>
-          <Link href="https://www.instagram.com/bezpestkowe/">Instagram</Link>
-          <Link href="https://www.facebook.com/groups/bezpestkowe/">
-            Facebook
-          </Link>
-        </section>
-        <section className="flex flex-col gap-4 w-full">
-          <p className="opacity-70 pb-2 border-b-[1px] border-b-ewhite text-base text-electric-500">
-            To pestka, to platforma, która powstała z inicjatywy Fundacji
-            Bezpestkowe i stanowi jej własność.
-          </p>
-          <p className="font-monarcha text-lg">
-            Fundacja Bezpestkowe <br />
-            Niska 1E/61, 81-646 Gdynia <br />
-            KRS - 0000951776 <br />
-            NIP - 5862377596 <br />
-            REGON - 521286817 <br />
-          </p>
-        </section>
-        <section className="flex flex-col w-full text-base">
-          <Link href="/regulamin">Regulamin</Link>
-          <Link href="/polityka-prywatnosci">Polityka Prywatności</Link>
-          <Link href="">© 2024 Fundacja Bezpestkowe</Link>
-        </section>
-      </HomeSection>
+      <Newsletter />
     </>
   );
 };

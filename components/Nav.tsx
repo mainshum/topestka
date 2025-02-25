@@ -38,11 +38,15 @@ const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   },
 );
 
-const Logo = () => (
-  <Link href="/" className="font-monarcha text-3xl">
+// eslint-disable-next-line react/display-name
+const Logo = React.forwardRef<
+  HTMLAnchorElement,
+  HTMLAttributes<HTMLAnchorElement>
+>(({ className }) => (
+  <Link href="/" className={clsx("font-monarcha text-3xl", className)}>
     to pestka
   </Link>
-);
+));
 
 export const Nav = Object.assign({
   Root,
