@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import Image from "next/image";
 import bwPestki from "../public/images/bw-pestki.png";
 import bwKapczuk from "../public/images/bw-kapczuk.png";
@@ -22,11 +22,9 @@ import {
 import { AccordionTrigger as RadixTrigger } from "@radix-ui/react-accordion";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/utils/misc";
-import { Input } from "@/components/Input";
 import Link from "next/link";
 import clsx from "clsx";
 import { Nav } from "@/components/Nav";
-import Button from "@/components/Button";
 
 // eslint-disable-next-line react/display-name
 export const HomeSection = React.forwardRef<
@@ -54,7 +52,7 @@ const Newsletter = () => (
         <p className="pb-4 font-monarcha text-3xl">
           Bądź na bieżąco z <br /> działaniami naszej fundacji.
         </p>
-        <a href="https://actionnetwork.org/forms/mrkh-to-pestka">
+        <a href="https://actionnetwork.org/forms/chce-dolaczyc-do-grona-przyjaciol-bezpestkowych/">
           <button className="px-4 py-3 bg-[#F6892A] text-ewhite text-xl font-medium rounded-md font-outfit">
             Dołącz do newslettera
           </button>
@@ -90,6 +88,22 @@ const Newsletter = () => (
   </HomeSection>
 );
 
+const KupKurs = React.forwardRef<
+  HTMLAnchorElement,
+  HTMLAttributes<HTMLAnchorElement>
+>(({ className }) => {
+  return (
+    <Link
+      className={className}
+      href="https://actionnetwork.org/forms/mrkh-to-pestka"
+    >
+      Kup kurs
+    </Link>
+  );
+});
+
+KupKurs.displayName = "KupKurs";
+
 export const Intro = () => {
   return (
     <HomeSection className="flex flex-col justify-center items-center md:gap-5 px-6 pt-0">
@@ -102,7 +116,7 @@ export const Intro = () => {
       </h2>
       <section className="flex md:flex-row flex-col justify-center items-center gap-4">
         {/* todo use a button component */}
-        <button className="text-xl btn btn-primary">Kup kurs</button>
+        <KupKurs className="text-xl btn btn-primary" />
         <a
           href="#program"
           className="border-electric-400 border text-xl btn btn-secondary"
@@ -310,7 +324,10 @@ const Home: NextPage = () => {
           ))}
         </section>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center pt-20 text-eblue">
+      <HomeSection
+        id="o-nas"
+        className="flex flex-col justify-center pt-20 text-eblue"
+      >
         <h1 className="md:hidden pb-16 font-monarcha text-5xl">O nas</h1>
         <h1 className="md:inline hidden pb-24 font-monarcha text-5xl">
           Poznaj nas
@@ -391,7 +408,10 @@ const Home: NextPage = () => {
           </Accordion>
         </AboutUsSection>
       </HomeSection>
-      <HomeSection className="flex flex-col justify-center gap-12 md:grid grid-cols-[45%_55%] px-6 md:px-20">
+      <HomeSection
+        id="kup-kurs"
+        className="flex flex-col justify-center gap-12 md:grid grid-cols-[45%_55%] px-6 md:px-20"
+      >
         <section className="md:grid-rows-subgrid">
           <OfferingSection>
             <h1 className="font-monarcha text-3xl text-center md:text-5xl">
@@ -409,13 +429,12 @@ const Home: NextPage = () => {
               }
               koszt="200"
             />
-            <button className="py-4 text-xl/none btn btn-secondary self-center">
-              Kup kurs
-            </button>
+            <KupKurs className="py-4 text-xl btn btn-secondary self-center" />
           </OfferingSection>
           {/* <section className="flex md:px-10 md:py-16">
             <p className="font-medium text-xl">
-              Dołącz do naszego newslettera aby nie przegapić oferty!
+
+            Dołącz do naszego newslettera aby nie przegapić oferty!
             </p>
             <button className="px-10 py-4 text-lg text-nowrap btn btn-primary">
               Zapisz się
