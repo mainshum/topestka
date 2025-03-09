@@ -19,8 +19,10 @@ type DesktopProps = PropsWithoutRef<HTMLDivElement> & {
 };
 
 import clsx from "clsx";
+import { buttonVariants } from "./Button";
 
-const HEADER_H = 500;
+const HEADER_H = 106;
+const STATIC_WHEN_FROM_TOP = 500;
 const SCROLL = 1;
 
 const resetScroll = (pos: number) => ({
@@ -33,12 +35,17 @@ const TopLinks = React.forwardRef<
   HTMLAttributes<HTMLUListElement>
 >(({ className }) => {
   return (
-    <ul className={clsx(className)}>
+    <ul
+      className={clsx(
+        "text-eblue gap-12 flex justify-center items-center",
+        className,
+      )}
+    >
       <li>
         <Link href="#program"> Program </Link>
       </li>
       <li>
-        <Link href="#o-nas"> Poznaj nas </Link>
+        <Link href="#o-nas">O prowadzących</Link>
       </li>
       <li>
         <Link href="#kup-kurs"> Kup kurs </Link>
@@ -57,7 +64,7 @@ const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     return (
       <nav
         className={clsx(
-          "lg:flex justify-between items-center p-10 pt-6 pb-6 border border-b-electric-400 font-medium",
+          "lg:flex justify-between items-center p-10 py-8 border border-b-eblue-100 font-medium",
           className,
         )}
         {...props}
@@ -74,7 +81,10 @@ const Logo = React.forwardRef<
   HTMLAnchorElement,
   HTMLAttributes<HTMLAnchorElement>
 >(({ className }) => (
-  <Link href="/" className={clsx("font-monarcha text-3xl", className)}>
+  <Link
+    href="/"
+    className={clsx("font-monarcha text-eblue text-2xl", className)}
+  >
     to pestka
   </Link>
 ));
@@ -119,22 +129,22 @@ const MainNav = React.forwardRef<
   const userScrolledDown =
     lastScrollPos.currentScrollDown - lastScrollPos.scrollDownStart > SCROLL;
 
-  const useStaticNav = lastScrollPos.currentScrollDown < HEADER_H;
+  const useStaticNav = lastScrollPos.currentScrollDown < STATIC_WHEN_FROM_TOP;
 
   const accordionRef = React.useRef<HTMLDivElement>(null);
 
   const classNames = cn(
     cn(
-      "top-0 bg-eblue h-16 z-20 sticky transition-transform text-electric-500",
+      "top-0 bg-eblue z-20 sticky transition-transform text-electric-500",
       className,
     ),
   );
 
-  let transY = useStaticNav || userScrolledDown ? -64 : 0;
+  let transY = useStaticNav || userScrolledDown ? -HEADER_H : 0;
   let duration;
 
-  if (lastScrollPos.currentScrollDown <= 64) {
-    transY += Math.abs(lastScrollPos.currentScrollDown - 64);
+  if (lastScrollPos.currentScrollDown <= HEADER_H) {
+    transY += Math.abs(lastScrollPos.currentScrollDown - HEADER_H);
     duration = 0;
   } else {
     duration = 0.3;
@@ -172,7 +182,7 @@ const MainNav = React.forwardRef<
           </div>
           <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]">
             <div className="pb-0 border-t-[1px] border-t-fake">
-              <TopLinks className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg" />
+              <TopLinks className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col border-electric-500 py-12 font-semibold text-lg" />
             </div>
           </Content>
         </AccordionItem>
@@ -181,10 +191,10 @@ const MainNav = React.forwardRef<
       {/* desktop */}
       <Nav.Root
         style={style}
-        className={clsx("border-none bg-ewhite hidden lg:flex", classNames)}
+        className={clsx("bg-ewhite hidden lg:flex", classNames)}
       >
         <Nav.Logo />
-        <TopLinks className="flex flex-row justify-center items-center space-x-12 text-lg" />
+        <TopLinks className="flex-row gap-12 text-lg" />
         <div className="flex gap-4">
           {session && (
             <Link
@@ -196,7 +206,7 @@ const MainNav = React.forwardRef<
           )}
           <Link
             href={session ? "/api/auth/signout" : "/login"}
-            className="bg-eblue py-1 rounded text-ewhite text-lg pe-4 ps ps-4"
+            className={`${buttonVariants({ variant: "panel" })} flex items-center`}
           >
             {session ? "Wyloguj" : "Panel logowania"}
           </Link>

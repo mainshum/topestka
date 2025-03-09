@@ -1,26 +1,51 @@
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-type Props = {
-  children: React.ReactNode;
-  onClick?: () => void;
-  rest?: any;
-  intent?: "primary" | "secondary" | "danger";
-};
+const buttonVariants = cva("rounded-lg font-medium font-outfit", {
+  variants: {
+    variant: {
+      panel: "bg-eblue text-ewhite text-base",
+      destructive:
+        "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+      outline:
+        "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+      ghost: "hover:bg-accent hover:text-accent-foreground",
+      link: "text-primary underline-offset-4 hover:underline",
+    },
+    size: {
+      default: "h-10 px-4 py-2 text-lg",
+      sm: "h-9 rounded-md px-3",
+      lg: "h-11 rounded-md px-8",
+      icon: "h-10 w-10",
+    },
+  },
+  defaultVariants: {
+    variant: "panel",
+    size: "default",
+  },
+});
 
-const Button = ({ children, intent = 'primary', ...rest }: Props) => {
-  return (
-    <button
-      className={clsx(
-        "btn px-4 py-3 rounded my-4 inline-block w-fit",
-        intent === 'primary' && 'bg-slate-700 hover:bg-slate-800 text-white',
-        intent === 'secondary' && 'text-slate-700 border border-slate-700',
-        intent === "danger" && "bg-red-600 hover:bg-red-700 text-white",
-      )}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
-};
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
 
-export default Button;
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={clsx(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  },
+);
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
