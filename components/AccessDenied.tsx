@@ -1,6 +1,6 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Button from './Button';
+import React from "react";
+import { useRouter } from "next/router";
+import { Button } from "./Button";
 
 interface AccessDeniedProps {
   message?: string;
@@ -8,7 +8,7 @@ interface AccessDeniedProps {
 }
 
 const AccessDenied: React.FC<AccessDeniedProps> = ({
-  message = 'Nie masz dostępu do tej strony',
+  message = "Nie masz dostępu do tej strony",
   showHomeButton = true,
 }) => {
   const router = useRouter();
@@ -32,9 +32,7 @@ const AccessDenied: React.FC<AccessDeniedProps> = ({
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Brak dostępu</h2>
       <p className="text-gray-600 mb-6">{message}</p>
       {showHomeButton && (
-        <Button onClick={() => router.push('/')} intent="primary">
-          Wróć do strony głównej
-        </Button>
+        <Button onClick={() => router.push("/")}>Wróć do strony głównej</Button>
       )}
     </div>
   );
