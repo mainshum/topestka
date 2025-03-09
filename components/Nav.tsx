@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Justify from "./icons";
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes, PropsWithoutRef, useEffect, useState } from "react";
 import { cn } from "@/utils/misc";
 import React from "react";
 import { Accordion, AccordionItem } from "./Accordion";
@@ -12,6 +12,12 @@ import {
   AccordionTrigger as RadixTrigger,
   Content,
 } from "@radix-ui/react-accordion";
+
+type DesktopProps = PropsWithoutRef<HTMLDivElement> & {
+  session: any;
+  useStaticNav: boolean;
+};
+
 import clsx from "clsx";
 
 const HEADER_H = 500;
@@ -22,15 +28,39 @@ const resetScroll = (pos: number) => ({
   currentScrollDown: pos,
 });
 
-// eslint-disable-next-line react/display-name
+const TopLinks = React.forwardRef<
+  HTMLUListElement,
+  HTMLAttributes<HTMLUListElement>
+>(({ className }) => {
+  return (
+    <ul className={clsx(className)}>
+      <li>
+        <Link href="#program"> Program </Link>
+      </li>
+      <li>
+        <Link href="#o-nas"> Poznaj nas </Link>
+      </li>
+      <li>
+        <Link href="#kup-kurs"> Kup kurs </Link>
+      </li>
+      <li>
+        <Link href="#kontakt"> Kontakt </Link>
+      </li>
+    </ul>
+  );
+});
+
+TopLinks.displayName = "TopLinks";
+
 const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ children, className }) => {
+  ({ children, className, ...props }) => {
     return (
       <nav
         className={clsx(
-          "lg:flex justify-between items-center hidden p-10 pt-6 pb-6 border border-b-electric-400 font-medium",
+          "lg:flex justify-between items-center p-10 pt-6 pb-6 border border-b-electric-400 font-medium",
           className,
         )}
+        {...props}
       >
         {children}
       </nav>
@@ -38,7 +68,8 @@ const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   },
 );
 
-// eslint-disable-next-line react/display-name
+Root.displayName = "Root";
+
 const Logo = React.forwardRef<
   HTMLAnchorElement,
   HTMLAttributes<HTMLAnchorElement>
@@ -48,8 +79,11 @@ const Logo = React.forwardRef<
   </Link>
 ));
 
+Logo.displayName = "Logo";
+
 export const Nav = Object.assign({
   Root,
+  TopLinks,
   Logo,
 });
 
@@ -82,38 +116,52 @@ const MainNav = React.forwardRef<
     };
   }, []);
 
-  const navHiddenDueToScroll =
+  const userScrolledDown =
     lastScrollPos.currentScrollDown - lastScrollPos.scrollDownStart > SCROLL;
 
-  const navHiddenDueToTop = lastScrollPos.currentScrollDown < HEADER_H;
+  const useStaticNav = lastScrollPos.currentScrollDown < HEADER_H;
 
   const accordionRef = React.useRef<HTMLDivElement>(null);
 
-  const pxTransition =
-    accordionRef.current?.getAttribute("data-state") === "open"
-      ? "translate-y-[-395px]"
-      : "translate-y-[-72px]";
-
   const classNames = cn(
     cn(
-      "top-0 [&>*]:bg-eblue h-16 z-20  text-electric-500 sticky transition-transform duration-200 translate-y-0 lg:hidden",
-      (navHiddenDueToScroll || navHiddenDueToTop) && pxTransition,
+      "top-0 bg-eblue h-16 z-20 sticky transition-transform text-electric-500",
       className,
     ),
   );
 
+  let transY = useStaticNav || userScrolledDown ? -64 : 0;
+  let duration;
+
+  if (lastScrollPos.currentScrollDown <= 64) {
+    transY += Math.abs(lastScrollPos.currentScrollDown - 64);
+    duration = 0;
+  } else {
+    duration = 0.3;
+  }
+
+  if (accordionRef.current?.getAttribute("data-state") === "open") {
+    transY = 0;
+  }
+
+  const style = {
+    transform: `translateY(${transY}px)`,
+    transitionDuration: `${duration}s`,
+  };
+
   return (
     <>
-      {navHiddenDueToTop && (
-        <nav className="absolute flex justify-end items-center lg:hidden p-6 w-full h-16 text-electric-500">
-          <button aria-expanded="false" aria-label="menu">
-            <Justify className="w-5 h-5" />
-          </button>
-        </nav>
-      )}
-
-      <Accordion collapsible className={classNames} type="single">
-        <AccordionItem ref={accordionRef} value="hamburger">
+      <Accordion
+        style={style}
+        collapsible
+        className={clsx("lg:hidden", classNames)}
+        type="single"
+      >
+        <AccordionItem
+          className="bg-eblue"
+          ref={accordionRef}
+          value="hamburger"
+        >
           <div className="flex justify-between px-6 py-4 w-full">
             <span className="text-xl">to pestka</span>
             <RadixTrigger asChild>
@@ -124,46 +172,19 @@ const MainNav = React.forwardRef<
           </div>
           <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]">
             <div className="pb-0 border-t-[1px] border-t-fake">
-              <ul className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg">
-                <li>
-                  <Link href="#program"> Program </Link>
-                </li>
-                <li>O prowadzących</li>
-                <li>Kup kurs</li>
-                <li>
-                  <Link href="#kontakt"> Kontakt </Link>
-                </li>
-              </ul>
+              <TopLinks className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col justify-center items-center gap-12 border-electric-500 py-12 font-semibold text-lg" />
             </div>
           </Content>
         </AccordionItem>
       </Accordion>
 
-      <Nav.Root>
+      {/* desktop */}
+      <Nav.Root
+        style={style}
+        className={clsx("border-none bg-ewhite hidden lg:flex", classNames)}
+      >
         <Nav.Logo />
-        <ul className="flex flex-row justify-center items-center space-x-12 text-lg">
-          <li>
-            <Link href="/" className="">
-              Program
-            </Link>
-          </li>
-          <li>
-            <Link href="/" className="">
-              O prowadzących
-            </Link>
-          </li>
-          <li>
-            <Link href="/" className="">
-              Kup Kurs
-            </Link>
-          </li>
-          <li>
-            <Link href="/" className="">
-              Kontakt
-            </Link>
-          </li>
-        </ul>
-
+        <TopLinks className="flex flex-row justify-center items-center space-x-12 text-lg" />
         <div className="flex gap-4">
           {session && (
             <Link
