@@ -7,8 +7,9 @@ const buttonVariants = cva("rounded-lg font-medium font-outfit", {
   variants: {
     variant: {
       panel: "bg-eblue text-ewhite text-base",
-      destructive:
-        "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+      kupkurs: "bg-eblue text-ewhite text-xl h-14 px-6 py-4",
+      program:
+        "bg-butter-100 text-eblue-600 text-xl h-14 border border-eblue px-6 py-4",
       outline:
         "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
       secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",

@@ -25,6 +25,7 @@ import { cn } from "@/utils/misc";
 import Link from "next/link";
 import clsx from "clsx";
 import { Nav } from "@/components/Nav";
+import { buttonVariants } from "@/components/Button";
 
 // eslint-disable-next-line react/display-name
 export const HomeSection = React.forwardRef<
@@ -34,7 +35,7 @@ export const HomeSection = React.forwardRef<
   return (
     <section
       {...rest}
-      className={cn("px-6 md:px-32 pt-36 pb-20 min-h-svh", className)}
+      className={cn("px-6 md:px-32 pt-40 pb-20 min-h-svh", className)}
     >
       {children}
     </section>
@@ -94,7 +95,7 @@ const KupKurs = React.forwardRef<
 >(({ className }) => {
   return (
     <Link
-      className={className}
+      className={`${buttonVariants({ variant: "kupkurs" })} flex items-center `}
       href="https://actionnetwork.org/forms/mrkh-to-pestka"
     >
       Kup kurs
@@ -110,19 +111,18 @@ export const Intro = () => {
       <h1 className="font-medium font-outfit text-6xl text-nowrap md:text-7xl">
         to pestka!
       </h1>
-      <h2 className="pt-6 pb-14 md:pb-5 font-monarcha text-center text-xl lg:text-4xl">
+      <h2 className="pt-6 pb-14 md:pb-5 font-monarcha text-electric-600 text-center text-xl lg:text-4xl">
         dowiedz się w jaki sposób przekazywać{" "}
         <br className="md:inline hidden"></br> informacje o zespole MRKH
       </h2>
       <section className="flex md:flex-row flex-col justify-center items-center gap-4">
-        {/* todo use a button component */}
         <KupKurs className="text-xl btn btn-primary" />
-        <a
+        <Link
+          className={`${buttonVariants({ variant: "program" })} flex items-center `}
           href="#program"
-          className="border-electric-400 border text-xl btn btn-secondary"
         >
           Poznaj program
-        </a>
+        </Link>
       </section>
     </HomeSection>
   );
@@ -135,13 +135,13 @@ const Pitch = () => {
   return (
     <HomeSection
       id="program"
-      className="flex flex-col justify-center items-start bg-eblue px- md:px-40 font-monarcha text-ewhite"
+      className="flex flex-col items-start bg-eblue gap-12 md:px-40 font-monarcha text-ewhite"
     >
       <h3 className="text-base text-electric-600 md:text-xl">
         Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH,{" "}
         <LgLinebreak /> by zapewniać najwyższy standard opieki.
       </h3>
-      <h2 className="pt-6 pb-11 text-2xl md:text-5xl">
+      <h2 className="text-2xl md:text-5xl">
         Kurs pomoże Ci lepiej przekazywać diagnozę w sposób rzetelny,{" "}
         <SmLinebreak />
         wspierający i budujący poczucie bezpieczeństwa.
