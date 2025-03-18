@@ -50,7 +50,7 @@ const NavMobile = ({
             </button>
           </RadixTrigger>
         </div>
-        <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]">
+        <Content className="text-sm data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]">
           <div className="pb-0 border-b-[1px] border-b-electric-300">
             <TopLinks className="pl-6 flex gap-8 text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 py-10 font-semibold" />
           </div>
@@ -165,10 +165,8 @@ const MainNav = React.forwardRef<
   const accordionRef = React.useRef<HTMLDivElement>(null);
 
   const classNames = cn(
-    cn(
-      "top-0 bg-ewhite z-20 sticky transition-transform text-electric-500",
-      className,
-    ),
+    "top-0 bg-ewhite w-full z-20 fixed transition-transform text-electric-500",
+    className,
   );
 
   let transY = useStaticNav || userScrolledDown ? -HEADER_H : 0;
@@ -199,10 +197,7 @@ const MainNav = React.forwardRef<
         accordionRef={accordionRef}
       />
       {/* desktop */}
-      <Nav.Root
-        style={style}
-        className={clsx("bg-ewhite hidden lg:flex", classNames)}
-      >
+      <Nav.Root style={style} className={clsx("hidden lg:flex", classNames)}>
         <Nav.Logo />
         <TopLinks className="flex-row items-center gap-12 text-lg" />
         <div className="flex gap-4">
