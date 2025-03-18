@@ -13,11 +13,6 @@ import {
   Content,
 } from "@radix-ui/react-accordion";
 
-type DesktopProps = PropsWithoutRef<HTMLDivElement> & {
-  session: any;
-  useStaticNav: boolean;
-};
-
 import clsx from "clsx";
 import { buttonVariants } from "./Button";
 
@@ -30,13 +25,48 @@ const resetScroll = (pos: number) => ({
   currentScrollDown: pos,
 });
 
+const NavMobile = ({
+  style,
+  classNames,
+  accordionRef,
+}: {
+  style: React.CSSProperties;
+  classNames?: string;
+  accordionRef?: React.RefObject<HTMLDivElement>;
+}) => {
+  return (
+    <Accordion
+      style={style}
+      collapsible
+      className={clsx("lg:hidden", classNames)}
+      type="single"
+    >
+      <AccordionItem className="bg-ewhite" ref={accordionRef} value="hamburger">
+        <div className="flex text-electric-600 justify-between px-6 py-3 w-full border-b-electric-300 border-b-[1px]">
+          <span className="text-xl ">to pestka</span>
+          <RadixTrigger asChild>
+            <button aria-label="menu">
+              <Justify className="w-5 h-5" />
+            </button>
+          </RadixTrigger>
+        </div>
+        <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]">
+          <div className="pb-0 border-b-[1px] border-b-electric-300">
+            <TopLinks className="pl-6 flex gap-8 text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 py-10 font-semibold" />
+          </div>
+        </Content>
+      </AccordionItem>
+    </Accordion>
+  );
+};
+
 const TopLinks = React.forwardRef<
   HTMLUListElement,
   HTMLAttributes<HTMLUListElement>
 >(({ className }) => {
   return (
     <ul
-      className={clsx(
+      className={cn(
         "text-eblue gap-12 flex justify-center items-center",
         className,
       )}
@@ -92,6 +122,7 @@ const Logo = React.forwardRef<
 Logo.displayName = "Logo";
 
 export const Nav = Object.assign({
+  NavMobile,
   Root,
   TopLinks,
   Logo,
@@ -135,7 +166,7 @@ const MainNav = React.forwardRef<
 
   const classNames = cn(
     cn(
-      "top-0 bg-eblue z-20 sticky transition-transform text-electric-500",
+      "top-0 bg-ewhite z-20 sticky transition-transform text-electric-500",
       className,
     ),
   );
@@ -154,47 +185,26 @@ const MainNav = React.forwardRef<
     transY = 0;
   }
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: `translateY(${transY}px)`,
     transitionDuration: `${duration}s`,
   };
 
   return (
     <>
-      <Accordion
+      {/* mobile */}
+      <NavMobile
         style={style}
-        collapsible
-        className={clsx("lg:hidden", classNames)}
-        type="single"
-      >
-        <AccordionItem
-          className="bg-eblue"
-          ref={accordionRef}
-          value="hamburger"
-        >
-          <div className="flex justify-between px-6 py-4 w-full">
-            <span className="text-xl">to pestka</span>
-            <RadixTrigger asChild>
-              <button aria-label="menu">
-                <Justify className="w-5 h-5" />
-              </button>
-            </RadixTrigger>
-          </div>
-          <Content className="text-sm data-[state=closed]:animate-[accordion-up_1100ms] data-[state=open]:animate-[accordion-down_1100ms]">
-            <div className="pb-0 border-t-[1px] border-t-fake">
-              <TopLinks className="flex [&>li]:border-b-[0.5px] [&>li]:border-fake [&>li]:w-[130px] text-center flex-col border-electric-500 py-12 font-semibold text-lg" />
-            </div>
-          </Content>
-        </AccordionItem>
-      </Accordion>
-
+        classNames={classNames}
+        accordionRef={accordionRef}
+      />
       {/* desktop */}
       <Nav.Root
         style={style}
         className={clsx("bg-ewhite hidden lg:flex", classNames)}
       >
         <Nav.Logo />
-        <TopLinks className="flex-row gap-12 text-lg" />
+        <TopLinks className="flex-row items-center gap-12 text-lg" />
         <div className="flex gap-4">
           {session && (
             <Link
