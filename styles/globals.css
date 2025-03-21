@@ -5,92 +5,90 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 .accordions:has([data-state="open"]) {
-  * [data-state="closed"] {
-    opacity: 0.5;
-  }
+    * [data-state="closed"] {
+        opacity: 0.5;
+    }
 }
 
 @layer base {
-  body {
-    @apply bg-butter-100 font-outfit text-eblue antialiased;
-  }
+    body {
+        @apply bg-butter-100 font-outfit text-eblue antialiased;
+    }
 }
 
 @layer components {
-  section.regulamin {
-    @apply p-20;
-  }
-  .regulamin h1 {
-    @apply pb-10 font-bold font-outfit text-2xl
-  }
-  .regulamin ul > li {
-      @apply ml-5
-  }
-  .regulamin ul {
-    @apply list-disc;
-
-  }
-  .regulamin > ol > li {
-      @apply pb-4
-  }
-  .dowiedz-sie {
-    
-    @apply pb-8 font-monarcha text-butter-100;
-    & h2 {
-      @apply pb-1 md:pb-4 border-b-2 border-b-electric-600 text-xl md:text-3xl;
+    section.regulamin {
+        @apply p-20;
     }
-    & p {
-      @apply pt-4 font-outfit text-lg md:text-xl;
+    .regulamin h1 {
+        @apply pb-10 font-bold font-outfit text-2xl;
     }
-  }
-  .body-small {
-    @apply font-monarcha text-[14px] leading-[140%];
-  }
-  .heading-03 {
-    @apply font-monarcha text-[29px] leading-[110%];
-  }
-  .monarcha-22 {
-    @apply font-monarcha text-[22px] leading-[120%];
-  }
-  .monarcha-29 {
-    @apply font-monarcha text-[29px] leading-[110%];
-  }
-  .monarcha-42 {
-    @apply font-monarcha text-[42px] leading-[46.2px];
-  }
-  .monarcha-61 {
-    @apply font-monarcha text-[61px] leading-[64px];
-  }
+    .regulamin ul > li {
+        @apply ml-5;
+    }
+    .regulamin ul {
+        @apply list-disc;
+    }
+    .regulamin > ol > li {
+        @apply pb-4;
+    }
+    .dowiedz-sie {
+        @apply pb-8 font-monarcha text-butter-100 pr-10 max-w-[770px];
+        & h2 {
+            @apply pb-1 md:pb-4 border-b-2 border-b-electric-600 text-xl md:text-3xl;
+        }
+        & p {
+            @apply pt-4 font-outfit text-lg md:text-xl;
+        }
+    }
+    .body-small {
+        @apply font-monarcha text-[14px] leading-[140%];
+    }
+    .heading-03 {
+        @apply font-monarcha text-[29px] leading-[110%];
+    }
+    .monarcha-22 {
+        @apply font-monarcha text-[22px] leading-[120%];
+    }
+    .monarcha-29 {
+        @apply font-monarcha text-[29px] leading-[110%];
+    }
+    .monarcha-42 {
+        @apply font-monarcha text-[42px] leading-[46.2px];
+    }
+    .monarcha-61 {
+        @apply font-monarcha text-[61px] leading-[64px];
+    }
 
-  .outfit-22 {
-    @apply font-light font-outfit text-[22px] leading-[28.6px];
-  }
-  .outfit-16 {
-    @apply font-medium font-outfit text-[16px];
-  }
-  .outfit-60 {
-    @apply font-medium font-outfit text-[60px];
-  }
-  .outfit-82 {
-    @apply font-medium font-outfit text-[82px];
-  }
-  .outfit-44 {
-    @apply font-normal font-outfit text-[44px] leading-[44px];
-  }
-  .outfit-128 {
-    @apply font-medium font-outfit text-[128px] leading-[153px];
-  }
-  .btn {
-    @apply px-6 py-4 rounded-lg font-medium font-outfit;
-  }
-  .btn-primary {
-    @apply bg-eblue text-ewhite;
-  }
-  .btn-secondary {
-    @apply bg-ewhite border text-eblue;
-  }
+    .outfit-22 {
+        @apply font-light font-outfit text-[22px] leading-[28.6px];
+    }
+    .outfit-16 {
+        @apply font-medium font-outfit text-[16px];
+    }
+    .outfit-60 {
+        @apply font-medium font-outfit text-[60px];
+    }
+    .outfit-82 {
+        @apply font-medium font-outfit text-[82px];
+    }
+    .outfit-44 {
+        @apply font-normal font-outfit text-[44px] leading-[44px];
+    }
+    .outfit-128 {
+        @apply font-medium font-outfit text-[128px] leading-[153px];
+    }
+    .btn {
+        @apply px-6 py-4 rounded-lg font-medium font-outfit;
+    }
+    .btn-primary {
+        @apply bg-eblue text-ewhite;
+    }
+    .btn-secondary {
+        @apply bg-ewhite border text-eblue;
+    }
 }

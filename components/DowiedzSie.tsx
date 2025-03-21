@@ -5,11 +5,11 @@ import { cn } from "@/utils/misc";
 
 const DowiedzSie = () => {
   return (
-    <HomeSection className="flex flex-col bg-eblue md:pl-40 md:pr-40 text-butter-100">
+    <HomeSection className="flex flex-col justify-start bg-eblue px-8 md:px-40 md:pt-24 pt-20 md:gap-6 text-butter-100">
       <h1 className="font-outfit text-4xl md:text-6xl md:pb-20">
         Dowiedz się jak kluczowe znaczenie ma:
       </h1>
-      <section className={cn("dowiedz-sie", "pb-9")}>
+      <section className={cn("dowiedz-sie", "md:pb-9 pb-6 max-sm:pt-16")}>
         <h2>
           Empatyczne <SmLinebreak />
           przekazywanie diagnozy
@@ -27,7 +27,7 @@ const DowiedzSie = () => {
           Kurs pozwala głębiej zrozumieć psychologiczne wyzwania i potrzeby
           pacjentek z zespołem MRKH. Dzięki wiedzy od osób z własnym
           doświadczeniem, nauczysz się, jak okazać prawdziwe wsparcie, które
-          ułatwia pacjentkom proces akceptacji diagnozy."
+          ułatwia pacjentkom proces akceptacji diagnozy.
         </p>
       </section>
     </HomeSection>
