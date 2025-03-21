@@ -56,6 +56,8 @@ module.exports = {
           DEFAULT: "#2A4BCC",
           100: "#EFF2FC",
           200: "#DBE1F7",
+          300: "#B4C0EE",
+          500: "#516CD6",
           600: "#2A4BCC",
         },
       },

@@ -8,7 +8,7 @@ const HomeSection = React.forwardRef<
   return (
     <section
       {...rest}
-      className={cn("px-6 md:px-32 pt-40 pb-20 min-h-lvh", className)}
+      className={cn("px-6 md:px-32 pt-40 pb-20 min-h-dvh", className)}
     >
       {children}
     </section>

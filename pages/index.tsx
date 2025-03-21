@@ -8,7 +8,9 @@ import Pitch from "@/components/Pitch";
 import OpisKursu from "@/components/OpisKursu";
 import DowiedzSie from "@/components/DowiedzSie";
 import ProgramFull, { AccordionItemData } from "@/components/ProgramFull";
-import DlaKogo, { AccordionItemData as DlaKogoItemData } from "@/components/DlaKogo";
+import DlaKogo, {
+  AccordionItemData as DlaKogoItemData,
+} from "@/components/DlaKogo";
 import KursWLiczbach, { KursWLiczbachItem } from "@/components/KursWLiczbach";
 import AboutUs from "@/components/AboutUs";
 import KupKursSection from "@/components/KupKursSection";
@@ -27,13 +29,19 @@ import kolektyw from "../public/images/kolektyw-chemia.png";
 import mago from "../public/images/mago-vox.png";
 
 // Accordion Components
-import { Accordion, AccordionItem, AccordionContent } from "@/components/Accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionContent,
+} from "@/components/Accordion";
 import { AccordionTrigger as RadixTrigger } from "@radix-ui/react-accordion";
+import { Promo } from "@/components/Promo";
 
 const Home: NextPage = () => {
   return (
     <>
       <Intro />
+      <Promo />
       <Pitch />
       <OpisKursu />
       <DowiedzSie />
@@ -58,18 +66,18 @@ const accordions: AccordionItemData[] = [
     "dzięki któremu poznasz perspektywę pacjencką i ekspercką na temat komunikacji w gabinecie medycznym",
   ],
   [
+    "publikację",
+    "która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami",
+  ],
+  [
     "zestaw fiszek",
     "stworzonych przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH",
   ],
+  ["quiz", "mający na celu sprawdzenie twojej wiedzy z kursu"],
   [
     "dwie broszury",
     "stworzone przez Fundację Bezpestkowe na temat zespołu MRKH oraz towarzyszących mu kwestiach",
   ],
-  [
-    "publikację",
-    "która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami",
-  ],
-  ["quiz", "mający na celu sprawdzenie twojej wiedzy z kursu"],
   ["certyfikat", "potwierdzający, że MRKH to dla ciebie pestka! "],
 ];
 
@@ -124,17 +132,17 @@ const aboutUsSections = [
         collapsible
       >
         <p>
-          Bezpestkowe to projekt założony w 2018 roku, którego celem jest
-          nie tylko aktywne wspieranie osób z zespołem
-          Mayera-Rokitansky&apos;ego-Küstera-Hausera, ale również uświadamianie i
-          edukowanie społeczeństwa.
+          Bezpestkowe to projekt założony w 2018 roku, którego celem jest nie
+          tylko aktywne wspieranie osób z zespołem
+          Mayera-Rokitansky&apos;ego-Küstera-Hausera, ale również uświadamianie
+          i edukowanie społeczeństwa.
         </p>
         <AccordionItem value="kapczuk-akordeon">
           <AccordionContent className="md:text-xl">
-            Nazwa nawiązuje do pestki owocu i przyrównania jej do macicy —
-            owoce pestkowe różnią się od bezpestkowych tylko posiadaniem
-            pestki, która przecież niczego nie definiuje. W 2022 roku
-            Bezpestkowe zostały sformalizowane i stanowią Fundację.
+            Nazwa nawiązuje do pestki owocu i przyrównania jej do macicy — owoce
+            pestkowe różnią się od bezpestkowych tylko posiadaniem pestki, która
+            przecież niczego nie definiuje. W 2022 roku Bezpestkowe zostały
+            sformalizowane i stanowią Fundację.
           </AccordionContent>
           <RadixTrigger asChild>
             <button className="mt-8 py-3 hover:text-electric-600 btn btn-primary">
@@ -156,26 +164,25 @@ const aboutUsSections = [
         collapsible
       >
         <p>
-          Lekarz, specjalista ginekolog-położnik, endokrynolog oraz
-          ginekolog wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice
-          Ginekologii Uniwersytetu Medycznego (UM) im. K. Marcinkowskiego w
-          Poznaniu w Ginekologiczno-Położniczym Szpitalu Klinicznym UM w
-          Poznaniu.
+          Lekarz, specjalista ginekolog-położnik, endokrynolog oraz ginekolog
+          wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice Ginekologii
+          Uniwersytetu Medycznego (UM) im. K. Marcinkowskiego w Poznaniu w
+          Ginekologiczno-Położniczym Szpitalu Klinicznym UM w Poznaniu.
         </p>
         <AccordionItem value="kapczuk-akordeon">
           <AccordionContent className="md:text-xl">
-            Główny obszar aktywności zawodowej, klinicznej i naukowej,
-            stanowią ginekologia dziecięca i dziewczęca oraz złożone wady
-            rozwojowe żeńskich narządów płciowych, w tym zespół MRKH.Lekarz,
-            specjalista ginekolog-położnik, endokrynolog oraz ginekolog
-            wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice Ginekologii
-            Uniwersytetu Medycznego (UM) im. K. Marcinkowskiego w Poznaniu w
-            Ginekologiczno-Położniczym Szpitalu Klinicznym UM w Poznaniu.
-            Oraz w Klinice Endokrynologii i Reumatologii Wieku Rozwojowego w
-            Szpitalu Klinicznym im. K. Jonschera UM w Poznaniu. Główny
-            obszar aktywności zawodowej, klinicznej i naukowej, stanowią
+            Główny obszar aktywności zawodowej, klinicznej i naukowej, stanowią
             ginekologia dziecięca i dziewczęca oraz złożone wady rozwojowe
-            żeńskich narządów płciowych, w tym zespół MRKH.
+            żeńskich narządów płciowych, w tym zespół MRKH.Lekarz, specjalista
+            ginekolog-położnik, endokrynolog oraz ginekolog wieku rozwojowego
+            (IFEPAG I i II). Pracuje w Klinice Ginekologii Uniwersytetu
+            Medycznego (UM) im. K. Marcinkowskiego w Poznaniu w
+            Ginekologiczno-Położniczym Szpitalu Klinicznym UM w Poznaniu. Oraz w
+            Klinice Endokrynologii i Reumatologii Wieku Rozwojowego w Szpitalu
+            Klinicznym im. K. Jonschera UM w Poznaniu. Główny obszar aktywności
+            zawodowej, klinicznej i naukowej, stanowią ginekologia dziecięca i
+            dziewczęca oraz złożone wady rozwojowe żeńskich narządów płciowych,
+            w tym zespół MRKH.
           </AccordionContent>
           <RadixTrigger asChild>
             <button className="mt-8 py-3 hover:text-electric-600 btn btn-primary">
