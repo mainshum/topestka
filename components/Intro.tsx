@@ -21,7 +21,7 @@ KupKurs.displayName = "KupKurs";
 
 const Intro = () => {
   return (
-    <HomeSection className="flex flex-col justify-center items-center gap-8 md:gap-5 px-6 pt-0">
+    <HomeSection className="flex flex-col justify-center md:justify-start items-center gap-8 md:gap-0 px-6 md:pt-72">
       <h1 className="font-medium font-outfit  text-6xl text-nowrap md:text-7xl">
         to pestka!
       </h1>

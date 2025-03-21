@@ -20,7 +20,7 @@ const viewports = {
   mobile: {
     name: "mobile",
     styles: {
-      width: "393px",
+      width: "418px",
       height: "852px",
     },
   },

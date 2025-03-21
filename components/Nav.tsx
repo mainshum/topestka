@@ -29,10 +29,12 @@ const NavMobile = ({
   style,
   classNames,
   accordionRef,
+  useStaticNav,
 }: {
   style: React.CSSProperties;
   classNames?: string;
   accordionRef?: React.RefObject<HTMLDivElement>;
+  useStaticNav: boolean;
 }) => {
   return (
     <Accordion
@@ -42,8 +44,15 @@ const NavMobile = ({
       type="single"
     >
       <AccordionItem className="bg-ewhite" ref={accordionRef} value="hamburger">
-        <div className="flex text-electric-600 justify-between px-6 py-3 w-full border-b-electric-300 border-b-[1px]">
-          <span className="text-xl ">to pestka</span>
+        <div
+          className={cn(
+            "flex text-electric-600 justify-between px-6 py-3 w-full h-[54px] ",
+            !useStaticNav && "border-b-electric-300 border-b-[1px]",
+          )}
+        >
+          <span className={cn("text-xl", useStaticNav && "hidden")}>
+            to pestka
+          </span>
           <RadixTrigger asChild>
             <button aria-label="menu">
               <Justify className="w-5 h-5" />
@@ -51,7 +60,12 @@ const NavMobile = ({
           </RadixTrigger>
         </div>
         <Content className="text-sm data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]">
-          <div className="pb-0 border-b-[1px] border-b-electric-300">
+          <div
+            className={cn(
+              "pb-0 border-b-[1px] ",
+              !useStaticNav && "border-b-electric-300",
+            )}
+          >
             <TopLinks className="pl-6 flex gap-8 text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 py-10 font-semibold" />
           </div>
         </Content>
@@ -192,6 +206,7 @@ const MainNav = React.forwardRef<
     <>
       {/* mobile */}
       <NavMobile
+        useStaticNav={useStaticNav}
         style={style}
         classNames={classNames}
         accordionRef={accordionRef}

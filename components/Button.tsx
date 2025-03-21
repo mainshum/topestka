@@ -3,31 +3,35 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import clsx from "clsx";
 
-const buttonVariants = cva("rounded-lg font-medium font-outfit", {
-  variants: {
-    variant: {
-      panel: "bg-eblue text-ewhite text-base",
-      kupkurs: "bg-eblue text-ewhite text-xl h-14 px-6 py-4",
-      program:
-        "bg-butter-100 text-eblue-600 text-xl h-14 border border-eblue px-6 py-4",
-      outline:
-        "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      link: "text-primary underline-offset-4 hover:underline",
+const buttonVariants = cva(
+  "rounded-lg font-medium font-outfit flex items-center",
+  {
+    variants: {
+      variant: {
+        panel: "bg-eblue text-ewhite text-base",
+        kupkurs: "bg-eblue text-ewhite text-xl h-14 px-6 py-4",
+        program:
+          "bg-butter-100 text-eblue-600 text-xl h-14 border border-eblue px-6 py-4",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2 text-lg",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
     },
-    size: {
-      default: "h-10 px-4 py-2 text-lg",
-      sm: "h-9 rounded-md px-3",
-      lg: "h-11 rounded-md px-8",
-      icon: "h-10 w-10",
+    defaultVariants: {
+      variant: "panel",
+      size: "default",
     },
   },
-  defaultVariants: {
-    variant: "panel",
-    size: "default",
-  },
-});
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,

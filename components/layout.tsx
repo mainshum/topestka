@@ -9,7 +9,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Nav className={outfit.variable} />
-      <main className={cn(outfit.variable, "w-dvw")}>{children}</main>
+      <main className={cn(outfit.variable, "max-sm:w-dvw lg:max-w-full")}>
+        {children}
+      </main>
     </>
   );
 }
