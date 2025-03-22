@@ -2,7 +2,8 @@ import React from "react";
 import HomeSection from "./HomeSection";
 import { OfferingSection, OfferingList } from "./Offering";
 import { KupKurs } from "./Intro";
-import { Button } from "./Button";
+import { Button, buttonVariants } from "./Button";
+import Link from "next/link";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -25,9 +26,9 @@ const KupKursSection = () => {
   return (
     <HomeSection
       id="kup-kurs"
-      className="grid grid-cols-[1fr_1.22fr] py-24 gap-x-10 px-6 md:px-20"
+      className="grid grid-cols-[1fr_1.22fr]  py-24 gap-x-10 px-6 md:px-20"
     >
-      <section>
+      <section className="grid grid-rows-subgrid row-span-2">
         <OfferingSection>
           <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
             MRKH to pestka!
@@ -45,8 +46,16 @@ const KupKursSection = () => {
             Powiadom o sprzedaży
           </Button>
         </OfferingSection>
+        <div className="flex px-10 justify-center items-center row-start-2 space-between">
+          <span className="text-xl">
+            Dołącz do newslettera, aby nie przegapić oferty
+          </span>
+          <Button className="whitespace-nowrap" variant="kupkurs" size="lg">
+            Zapisz się
+          </Button>
+        </div>
       </section>
-      <OfferingSection className="gap-3 md:px-10">
+      <OfferingSection className="gap-3 md:px-10 row-span-2">
         <h1 className="pb-2 border-b-[1.5px] w-full border-b-ewhite font-outfit text-3xl md:text-5xl">
           Kurs zawiera
         </h1>
@@ -59,12 +68,13 @@ const KupKursSection = () => {
             "certyfikat ukończenia kursu od Fundacji Bezpestkowe",
           ]}
         />
-        <a
+        <div className="h-4" />
+        <Link
+          className={buttonVariants({ variant: "program2", size: "xl" })}
           href="#program"
-          className="border-2 border-orange-400 mt-4 py-4 text-xl md:text-4xl btn btn-primary self-center"
         >
           Poznaj program
-        </a>
+        </Link>
       </OfferingSection>
     </HomeSection>
   );

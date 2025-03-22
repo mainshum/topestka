@@ -13,9 +13,9 @@ const buttonVariants = cva(
           "bg-eblue text-ewhite text-xl h-14 px-6 py-4 hover:text-electric-600",
         program:
           "bg-butter-100 text-eblue-600 text-xl border border-eblue transform-discrete hover:text-white hover:bg-electric-600",
-        powiadom: "border border-input bg-butter-100 text-eblue",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        powiadom: "bg-butter-100 text-eblue hover:bg-electric-500",
+        program2:
+          "bg-transparent border border-electric-600 rounded text-ewhite hover:bg-electric-500 hover:text-ewhite",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
