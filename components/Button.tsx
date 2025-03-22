@@ -9,11 +9,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         panel: "bg-eblue text-ewhite text-base",
-        kupkurs: "bg-eblue text-ewhite text-xl h-14 px-6 py-4",
+        kupkurs:
+          "bg-eblue text-ewhite text-xl h-14 px-6 py-4 hover:text-electric-600",
         program:
-          "bg-butter-100 text-eblue-600 text-xl h-14 border border-eblue px-6 py-4",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "bg-butter-100 text-eblue-600 text-xl border border-eblue transform-discrete hover:text-white hover:bg-electric-600",
+        powiadom: "border border-input bg-butter-100 text-eblue",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -22,7 +22,8 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-4 py-2 text-lg",
         sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        lg: "h-14 rounded-md px-8",
+        xl: "h-20 text-4xl px-8 py-4",
         icon: "h-10 w-10",
       },
     },

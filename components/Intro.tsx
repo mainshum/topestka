@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { buttonVariants } from "./Button";
 import HomeSection from "./HomeSection";
+import { cn } from "@/utils/misc";
 
 const KupKurs = React.forwardRef<
   HTMLAnchorElement,
@@ -9,7 +10,10 @@ const KupKurs = React.forwardRef<
 >(({ className }) => {
   return (
     <Link
-      className={`${buttonVariants({ variant: "kupkurs" })} flex items-center`}
+      className={cn(
+        buttonVariants({ variant: "kupkurs", size: "lg" }),
+        className,
+      )}
       href="https://actionnetwork.org/forms/mrkh-to-pestka"
     >
       Kup kurs
@@ -30,9 +34,9 @@ const Intro = () => {
         <br className="md:inline hidden"></br> informacje o zespole MRKH
       </h2>
       <section className="flex md:flex-row flex-col justify-center items-center gap-4">
-        <KupKurs className="text-xl btn btn-primary" />
+        <KupKurs />
         <Link
-          className={`${buttonVariants({ variant: "program" })} flex items-center`}
+          className={cn(buttonVariants({ variant: "program", size: "lg" }))}
           href="#program"
         >
           Poznaj program
