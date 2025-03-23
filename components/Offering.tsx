@@ -27,7 +27,7 @@ export const OfferingSection = ({
 }) => (
   <section
     className={cn(
-      "flex flex-col items-center px-10 gap-8 bg-eblue pt-10 pb-20 rounded-lg text-ewhite",
+      "flex flex-col items-center px-6 xl:px-10 gap-8 bg-eblue pt-10 pb-10 xl:pb-20 rounded-lg text-ewhite",
       className,
     )}
   >

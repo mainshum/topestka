@@ -26,34 +26,44 @@ const KupKursSection = () => {
   return (
     <HomeSection
       id="kup-kurs"
-      className="grid grid-cols-[1fr_1.22fr]  py-24 gap-x-10 px-6 md:px-20"
+      className="grid xl:grid-cols-[1fr_1.22fr] py-16 xl:py-24 gap-10 px-6 md:px-20"
     >
-      <section className="grid grid-rows-subgrid row-span-2">
-        <OfferingSection>
-          <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
-            MRKH to pestka!
-          </h1>
-          <Cena koszt="299">
-            <span className="pl-2 font-monarcha">cena</span>
-          </Cena>
-          <Cena koszt="200">
-            <span className="bg-electric-600 px-2 py-1 rounded-md w-fit font-monarcha">
-              cena do końca kwietnia
-            </span>
-          </Cena>
-          <div className="h-0" />
-          <Button variant="powiadom" size="xl" className="whitespace-nowrap">
-            Powiadom o sprzedaży
-          </Button>
-        </OfferingSection>
-        <div className="flex px-10 justify-center items-center row-start-2 space-between">
-          <span className="text-xl">
-            Dołącz do newslettera, aby nie przegapić oferty
+      <OfferingSection>
+        <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
+          MRKH to pestka!
+        </h1>
+        <Cena koszt="299">
+          <span className="pl-2 font-monarcha">cena</span>
+        </Cena>
+        <Cena koszt="200">
+          <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
+            cena do końca kwietnia
           </span>
-          <Button className="whitespace-nowrap" variant="kupkurs" size="lg">
-            Zapisz się
-          </Button>
-        </div>
+        </Cena>
+        <div className="h-0" />
+        <Button
+          variant="powiadom"
+          size="lg"
+          className="whitespace-nowrap xl:hidden"
+        >
+          Powiadom o sprzedaży
+        </Button>
+        <Button
+          variant="powiadom"
+          size="xl"
+          className="whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0"
+        >
+          Powiadom o sprzedaży
+        </Button>
+      </OfferingSection>
+      <section className="flex flex-col xl:flex-row px-10 justify-center items-center order-3 xl:row-start-2 space-between">
+        <span className="text-xl">
+          Dołącz do newslettera, aby nie przegapić oferty
+        </span>
+        <div className="h-5 xl:h-0" />
+        <Button className="whitespace-nowrap" variant="kupkurs" size="lg">
+          Zapisz się
+        </Button>
       </section>
       <OfferingSection className="gap-3 md:px-10 row-span-2">
         <h1 className="pb-2 border-b-[1.5px] w-full border-b-ewhite font-outfit text-3xl md:text-5xl">
@@ -70,7 +80,13 @@ const KupKursSection = () => {
         />
         <div className="h-4" />
         <Link
-          className={buttonVariants({ variant: "program2", size: "xl" })}
+          className={`${buttonVariants({ variant: "program2", size: "lg" })} xl:hidden`}
+          href="#program"
+        >
+          Poznaj program
+        </Link>
+        <Link
+          className={`${buttonVariants({ variant: "program2", size: "xl" })} hidden xl:inline`}
           href="#program"
         >
           Poznaj program
