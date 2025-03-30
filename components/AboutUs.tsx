@@ -33,7 +33,7 @@ const AboutUs = ({ sections }: { sections: AboutUsSectionProps[] }) => {
       className="flex flex-col justify-center pt-20 text-eblue"
     >
       <h1 className="md:hidden pb-16 font-monarcha text-5xl">O nas</h1>
-      <h1 className="md:inline hidden pb-24 font-monarcha text-5xl">
+      <h1 className="hidden md:inline pb-24 font-monarcha text-5xl">
         Poznaj nas
       </h1>
       {sections.map((section, index) => (

@@ -50,7 +50,7 @@ const Home: NextPage = () => {
       <KursWLiczbach items={kursWLiczbachItems} />
       <AboutUs sections={aboutUsSections} />
       <KupKursSection />
-      <FAQ faqs={faqItems} />
+      <FAQ />
       <Sponsors sponsors={sponsorItems} />
       <Newsletter />
     </>
