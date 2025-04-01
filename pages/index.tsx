@@ -51,7 +51,7 @@ const Home: NextPage = () => {
       <AboutUs sections={aboutUsSections} />
       <KupKursSection />
       <FAQ />
-      <Sponsors sponsors={sponsorItems} />
+      <Sponsors />
       <Newsletter />
     </>
   );
