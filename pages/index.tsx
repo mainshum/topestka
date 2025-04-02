@@ -19,8 +19,6 @@ import Sponsors from "@/components/Sponsors";
 import Newsletter from "@/components/Newsletter";
 
 // Images
-import bwPestki from "../public/images/bw-pestki.png";
-import bwKapczuk from "../public/images/bw-kapczuk.png";
 import ff from "../public/images/ff.png";
 import kulawa from "../public/images/kulawa.png";
 import tranzycja from "../public/images/tranzycja.png";
@@ -48,7 +46,7 @@ const Home: NextPage = () => {
       <ProgramFull accordions={accordions} />
       <DlaKogo items={dlaKogoItems} />
       <KursWLiczbach items={kursWLiczbachItems} />
-      <AboutUs sections={aboutUsSections} />
+      <AboutUs />
       <KupKursSection />
       <FAQ />
       <Sponsors />
@@ -116,84 +114,7 @@ const kursWLiczbachItems: KursWLiczbachItem[] = [
   ],
 ];
 
-const aboutUsSections = [
-  {
-    alt: "Pestki",
-    img: bwPestki,
-    h1: (
-      <span>
-        Fundacja <br /> Bezpestkowe
-      </span>
-    ),
-    children: (
-      <Accordion
-        className="md:order-3 md:font-light text-base md:text-xl"
-        type="single"
-        collapsible
-      >
-        <p>
-          Bezpestkowe to projekt założony w 2018 roku, którego celem jest nie
-          tylko aktywne wspieranie osób z zespołem
-          Mayera-Rokitansky&apos;ego-Küstera-Hausera, ale również uświadamianie
-          i edukowanie społeczeństwa.
-        </p>
-        <AccordionItem value="kapczuk-akordeon">
-          <AccordionContent className="md:text-xl">
-            Nazwa nawiązuje do pestki owocu i przyrównania jej do macicy — owoce
-            pestkowe różnią się od bezpestkowych tylko posiadaniem pestki, która
-            przecież niczego nie definiuje. W 2022 roku Bezpestkowe zostały
-            sformalizowane i stanowią Fundację.
-          </AccordionContent>
-          <RadixTrigger asChild>
-            <button className="mt-8 py-3 hover:text-electric-600 btn btn-primary">
-              Czytaj dalej
-            </button>
-          </RadixTrigger>
-        </AccordionItem>
-      </Accordion>
-    ),
-  },
-  {
-    alt: "Dr Kapczuk",
-    img: bwKapczuk,
-    h1: "dr hab. n. med.  Karina Kapczuk",
-    children: (
-      <Accordion
-        className="md:order-3 md:font-light text-base md:text-xl"
-        type="single"
-        collapsible
-      >
-        <p>
-          Lekarz, specjalista ginekolog-położnik, endokrynolog oraz ginekolog
-          wieku rozwojowego (IFEPAG I i II). Pracuje w Klinice Ginekologii
-          Uniwersytetu Medycznego (UM) im. K. Marcinkowskiego w Poznaniu w
-          Ginekologiczno-Położniczym Szpitalu Klinicznym UM w Poznaniu.
-        </p>
-        <AccordionItem value="kapczuk-akordeon">
-          <AccordionContent className="md:text-xl">
-            Główny obszar aktywności zawodowej, klinicznej i naukowej, stanowią
-            ginekologia dziecięca i dziewczęca oraz złożone wady rozwojowe
-            żeńskich narządów płciowych, w tym zespół MRKH.Lekarz, specjalista
-            ginekolog-położnik, endokrynolog oraz ginekolog wieku rozwojowego
-            (IFEPAG I i II). Pracuje w Klinice Ginekologii Uniwersytetu
-            Medycznego (UM) im. K. Marcinkowskiego w Poznaniu w
-            Ginekologiczno-Położniczym Szpitalu Klinicznym UM w Poznaniu. Oraz w
-            Klinice Endokrynologii i Reumatologii Wieku Rozwojowego w Szpitalu
-            Klinicznym im. K. Jonschera UM w Poznaniu. Główny obszar aktywności
-            zawodowej, klinicznej i naukowej, stanowią ginekologia dziecięca i
-            dziewczęca oraz złożone wady rozwojowe żeńskich narządów płciowych,
-            w tym zespół MRKH.
-          </AccordionContent>
-          <RadixTrigger asChild>
-            <button className="mt-8 py-3 hover:text-electric-600 btn btn-primary">
-              Czytaj dalej
-            </button>
-          </RadixTrigger>
-        </AccordionItem>
-      </Accordion>
-    ),
-  },
-];
+;
 
 const sponsorItems = [
   { src: ff, alt: "Fundacja Feminoteka" },

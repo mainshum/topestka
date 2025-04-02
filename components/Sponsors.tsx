@@ -2,29 +2,35 @@ import React from "react";
 import Image from "next/image";
 import HomeSection from "./HomeSection";
 import MagoVox from "../public/images/mago-big.png";
+import Off from "../public/images/off.png";
+import Kulawa from "../public/images/kulawa.png";
+import Tranzycja from "../public/images/tranzycja.png";
+import Rozowa from "../public/images/rozowa.png";
+import Chemia from "../public/images/chemia.png";
+
 
 const sponsorsData = [
   {
-    src: "/images/off.png",
+    src: Off,
     alt: "Fundacja Off",
   },
   {
-    src:  "/images/kulawa.png",
+    src: Kulawa,
     alt: "Fundacja kulawa Warszawa",
   },
   {
-    src:  "/images/tranzycja.png",
+    src: Tranzycja,
     alt: "logo Tranzycja.pl",
   },
   {
-    src:  "/images/rozowa.png",
+    src: Rozowa,
     alt: "Logo Róźowa Skrzyneczka",
   },
   {
-    src:  "/images/chemia.png",
+    src: Chemia,
     alt: "Logo Kolektyw Chemia",
   }
-]
+];
 
 const Sponsors = () => {
   return (

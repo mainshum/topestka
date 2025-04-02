@@ -7,11 +7,11 @@ import { buttonVariants } from "./Button";
 const Newsletter = () => (
   <HomeSection
     id="kontakt"
-    className="grid grid-cols-1 grid-rows-[auto] bg-eblue px-10 pt-24 pb-8 h-full text-ewhite"
+    className="grid grid-cols-1 md:grid-cols-[auto,410px] grid-rows-[auto] bg-eblue px-10 md:px-20 pt-24 pb-8 h-full text-ewhite"
   >
-      <Nav.Logo className="hidden md:block order-1 text-6xl" />
-      <div className="flex flex-col items-start order-2 pb-20">
-        <p className="pb-6 font-monarcha text-2xl">
+      <Nav.Logo className="hidden md:block order-0 text-ewhite text-6xl" />
+      <div className="flex flex-col items-start order-2 md:order-3 pb-20">
+        <p className="md:pt-8 pb-6 font-monarcha text-2xl md:text-3xl">
           Bądź na bieżąco z <br /> działaniami naszej fundacji.
         </p>
         <Link
@@ -21,12 +21,12 @@ const Newsletter = () => (
           Dołącz do newslettera
         </Link>
       </div>
-      <footer className="flex flex-col gap-1 order-6 pt-24 text-butter-100 text-base">
-        <Link href="/regulamin">Regulamin</Link>
-        <Link href="/polityka-prywatnosci">Polityka Prywatności</Link>
-        <span>© 2024 Fundacja Bezpestkowe</span>
+      <footer className="flex md:flex-row flex-col gap-1 md:gap-4 order-6 md:order-4 pt-24 md:font-light text-butter-100 text-base">
+        <Link className="md:order-2" href="/regulamin">Regulamin</Link>
+        <Link className="md:order-1" href="/polityka-prywatnosci">Polityka Prywatności</Link>
+        <span className="md:order-0">© 2024 Fundacja Bezpestkowe</span>
       </footer>
-      <div className="flex flex-col gap-3 order-3 pb-16 font-outfit text-xl">
+      <div className="flex flex-col gap-3 order-3 md:order-2 pb-16 font-outfit text-xl md:text-3xl">
         <Link href="https://www.bezpestkowe.pl">www.bezpestkowe.pl</Link>
         <Link href="mailto:bezpestkowe@gmail.com">bezpestkowe@gmail.com</Link>
         <Link href="https://www.instagram.com/bezpestkowe/">Instagram</Link>
@@ -34,14 +34,14 @@ const Newsletter = () => (
           Facebook
         </Link>
       </div>
-      <div className="order-5 pt-5 font-monarcha text-lg">
+      <div className="order-5 md:order-3 pt-5 font-monarcha text-lg md:text-xl">
         Fundacja Bezpestkowe <br />
         Niska 1E/61, 81-646 Gdynia <br />
         KRS - 0000951776 <br />
         NIP - 5862377596 <br />
         REGON - 521286817 <br />
       </div>
-      <div className="order-4 pb-4 border-b-2 border-b-orange-white text-electric-500 text-base">
+      <div className="order-4 pb-4 border-b-2 border-b-orange-white md:border-none text-electric-500 text-base">
         To pestka, to platforma, która powstała z inicjatywy Fundacji
         Bezpestkowe i stanowi jej własność.
       </div>

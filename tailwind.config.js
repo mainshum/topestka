@@ -23,6 +23,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        greyish: '#040815',
         fake: "#f8a05440",
         current: "currentColor",
         butter: {
