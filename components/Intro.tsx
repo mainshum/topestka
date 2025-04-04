@@ -3,6 +3,8 @@ import Link from "next/link";
 import { buttonVariants } from "./Button";
 import HomeSection from "./HomeSection";
 import { cn } from "@/utils/misc";
+import { ACTION_NETWORK_URL } from "@/utils/const";
+
 
 const KupKurs = React.forwardRef<
   HTMLAnchorElement,
@@ -14,7 +16,7 @@ const KupKurs = React.forwardRef<
         buttonVariants({ variant: "kupkurs", size: "lg" }),
         className,
       )}
-      href="https://actionnetwork.org/forms/mrkh-to-pestka"
+      href={ACTION_NETWORK_URL}
     >
       Kup kurs
     </Link>

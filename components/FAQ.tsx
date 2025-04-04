@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import HomeSection from "./HomeSection";
 import {
   Accordion,
@@ -8,13 +7,8 @@ import {
   AccordionContent,
 } from "./Accordion";
 
-export type FAQItem = [string, React.ReactNode];
 
-type FAQProps = {
-  faqs: FAQItem[];
-};
-
-const faqItems: FAQItem[] = [
+const faqItems = [
   [
     "Jak mogę zapłacić za kurs?",
     <>
@@ -111,7 +105,7 @@ const faqItems: FAQItem[] = [
       platformę Buy Coffee.
     </>,
   ],
-];
+] as const;
 
 const FAQ = () => {
   return (

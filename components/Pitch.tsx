@@ -23,7 +23,7 @@ const Pitch = () => {
         href="#program-full"
         className={buttonVariants({
           variant: "program",
-          className: "text-[16px]",
+          size: "lg",
         })}
       >
         Poznaj pełen program

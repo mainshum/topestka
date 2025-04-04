@@ -4,6 +4,7 @@ import { OfferingSection, OfferingList } from "./Offering";
 import { KupKurs } from "./Intro";
 import { Button, buttonVariants } from "./Button";
 import Link from "next/link";
+import { ACTION_NETWORK_URL, NEWSLETTER_URL } from "@/utils/const";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -41,29 +42,27 @@ const KupKursSection = () => {
           </span>
         </Cena>
         <div className="h-0" />
-        <Button
-          variant="powiadom"
-          size="lg"
-          className="whitespace-nowrap xl:hidden"
+        <Link
+          href={ACTION_NETWORK_URL}
+          className={`${buttonVariants({variant: 'powiadom', size: 'lg'})} whitespace-nowrap xl:hidden`}
         >
           Powiadom o sprzedaży
-        </Button>
-        <Button
-          variant="powiadom"
-          size="xl"
-          className="whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0"
+        </Link>
+        <Link
+          href={ACTION_NETWORK_URL}
+          className={`${buttonVariants({variant: 'powiadom', size: 'xl'})} whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0`}
         >
           Powiadom o sprzedaży
-        </Button>
+        </Link>
       </OfferingSection>
-      <section className="flex flex-col xl:flex-row px-10 justify-center items-center order-3 xl:row-start-2 space-between">
+      <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">
         <span className="text-xl">
           Dołącz do newslettera, aby nie przegapić oferty
         </span>
         <div className="h-5 xl:h-0" />
-        <Button className="whitespace-nowrap" variant="kupkurs" size="lg">
+        <Link href={NEWSLETTER_URL} className={`${buttonVariants({variant: 'kupkurs', size: 'lg'})}whitespace-nowrap ` }  >
           Zapisz się
-        </Button>
+        </Link>
       </section>
       <OfferingSection className="gap-3 md:px-10 row-span-2">
         <h1 className="pb-2 border-b-[1.5px] w-full border-b-ewhite font-outfit text-3xl md:text-5xl">

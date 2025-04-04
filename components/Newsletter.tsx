@@ -3,6 +3,7 @@ import Link from "next/link";
 import HomeSection from "./HomeSection";
 import { Nav } from "./Nav";
 import { buttonVariants } from "./Button";
+import { NEWSLETTER_URL } from "@/utils/const";
 
 const Newsletter = () => (
   <HomeSection
@@ -15,7 +16,7 @@ const Newsletter = () => (
           Bądź na bieżąco z <br /> działaniami naszej fundacji.
         </p>
         <Link
-          href="https://actionnetwork.org/forms/chce-dolaczyc-do-grona-przyjaciol-bezpestkowych/"
+          href={NEWSLETTER_URL}
           className={buttonVariants({ variant: "program2" })}
         >
           Dołącz do newslettera

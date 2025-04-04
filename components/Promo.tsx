@@ -6,6 +6,7 @@ import Instaplay from "player.style/instaplay/react";
 import HomeSection from "./HomeSection";
 import insta from "/videos/zwiastun-insta.mp4.json";
 import zwiastun from "/videos/zwiastun.mp4.json";
+import zuzaPoster from "@/public/images/zuza-poster.png";
 
 const Promo = () => {
   const [useDevice, setUseDevice] = React.useState<null | "desktop" | "mobile">(
@@ -29,7 +30,7 @@ const Promo = () => {
         <Video theme={Instaplay} autoPlay height={700} src={insta} />
       )}
       {useDevice === "desktop" && (
-        <Video theme={Instaplay} autoPlay height={700} src={zwiastun} />
+        <Video poster={zuzaPoster} theme={Instaplay} autoPlay height={700} src={zwiastun} />
       )}
     </HomeSection>
   );

@@ -14,7 +14,7 @@ import DlaKogo, {
 import KursWLiczbach, { KursWLiczbachItem } from "@/components/KursWLiczbach";
 import AboutUs from "@/components/AboutUs";
 import KupKursSection from "@/components/KupKursSection";
-import FAQ, { FAQItem } from "@/components/FAQ";
+import FAQ from "@/components/FAQ";
 import Sponsors from "@/components/Sponsors";
 import Newsletter from "@/components/Newsletter";
 
