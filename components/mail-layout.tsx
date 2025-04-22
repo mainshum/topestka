@@ -1,23 +1,27 @@
 import Link from "next/link";
 import { Nav } from "./Nav";
+import React, { HTMLAttributes } from "react";
+import clsx from "clsx";
 
-const MailLayout = ({ children }: { children: React.ReactNode }) => {
+const MailLayout = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ children, ...rest }) => {
   return (
-    <main className="h-svh">
-      <Nav.Root className="bg-eblue border-none text-ewhite">
+    <main className="flex flex-col h-svh" {...rest}>
+      <Nav.Root className={clsx("bg-eblue border-none text-ewhite")}>
         <Nav.Logo />
         <Link
-          className="border border-electric-500 rounded-md py-2 px-4"
+          className="px-4 py-2 border border-electric-500 rounded-md"
           href="/"
         >
           Powrót
         </Link>
       </Nav.Root>
-      <div className="flex text-ewhite bg-eblue flex-col justify-center items-center gap-8 w-full h-[calc(100%-90px)]">
+      <div className="flex flex-col justify-center items-center gap-8 bg-eblue w-full text-ewhite grow-[1]">
         {children}
       </div>
     </main>
   );
-};
+});
+
+MailLayout.displayName = "MailLayout";
 
 export default MailLayout;

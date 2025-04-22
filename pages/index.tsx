@@ -27,12 +27,6 @@ import kolektyw from "../public/images/kolektyw-chemia.png";
 import mago from "../public/images/mago-vox.png";
 
 // Accordion Components
-import {
-  Accordion,
-  AccordionItem,
-  AccordionContent,
-} from "@/components/Accordion";
-import { AccordionTrigger as RadixTrigger } from "@radix-ui/react-accordion";
 import { Promo } from "@/components/Promo";
 
 const Home: NextPage = () => {
