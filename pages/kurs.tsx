@@ -13,6 +13,30 @@ import {
 import React, { HTMLAttributes } from "react";
 import { cn } from "@/utils/misc";
 
+const perspetkywaPacjenta = [
+  ['00:05' , 'Kim jesteśmy?'],
+  ['00:52' , 'Czym jest zespół MRKH i z czym się wiąże?'],
+  ['04:37' , 'Siedem rad dla Bezpestkowych'],
+  ['07:51' , 'Kluczowe punkty w życiu osób z zespołem MRKH'],
+  ['15:03' , 'Wnioski'],
+  ['16:11' , 'Raport dotyczący komunikacji lekarzy z pacjentami '],
+  ['18:19' , 'Dwie historie pacjentek z zespołem MRKH'],
+  ['21:46' , 'Wnioski'],
+  ['24:15' , 'Dlaczego istotnie jest słuchanie organizacji pacjenckich'],
+] as const;
+
+const perspektywaLekarska = [
+  ['24:57' , 'Czym jest zespół MRKH?'],
+  ['35:19' , 'Jak rozpoznać MRKH?'],
+  ['48:51' , 'W jaki sposób przekazywać diagnoze o zespole MRKH'],
+  ['52:31' , 'Z czym się wiąże MRKH?']
+] as const;
+
+const timestampToSeconds = (timestamp: string) => {
+  const [minutes, seconds] = timestamp.split(":").map(Number);
+  return minutes * 60 + seconds;
+};
+  
 type SubchapterProps = HTMLAttributes<HTMLLIElement> & {
   done: boolean;
 }
@@ -28,11 +52,11 @@ const Item = ({chapterNo, title, children}: {chapterNo: number, title: string, c
     <li>
       <AccordionItem value={`chapter-${chapterNo}`}>
         <AccordionTrigger className="flex justify-center items-center gap-4 text-nowrap">
-            <div className="bg-red-500 w-4 h-4"></div>
-          <p className="flex flex-col">
+          <div className="bg-red-500 w-4 h-4"></div>
+          <div className="flex flex-col">
             <h1 className="font-outfit">Część {chapterNo}</h1>
             <h2 className="font-monarcha text-lg">{title}</h2>
-          </p>
+          </div>
         </AccordionTrigger>
         <AccordionContent>
           {children}
@@ -101,13 +125,31 @@ export default function KursPage({
         <ol>
           <Chapter.Item chapterNo={1} title="MRKH: perspektywa pacjencka">
             <ol>
-              <Chapter.Subchapter done={false} onClick={() => onTimeSelect(1000)}>Kim jesteśmy?</Chapter.Subchapter>
-              <Chapter.Subchapter done={true} onClick={() => onTimeSelect(2000)}>Kim jesteśmy22?</Chapter.Subchapter>
+              {perspetkywaPacjenta.map(([timestamp, title]) => (
+                <Chapter.Subchapter
+                  key={timestamp}
+                  done={timestampToSeconds(timestamp) < 1000}
+                  onClick={() => onTimeSelect(timestampToSeconds(timestamp))}
+                >
+                  {title}
+                </Chapter.Subchapter>
+              ))}
             </ol>
           </Chapter.Item>
-          {/* <Chapter.Item chapterNo={2} title="MRKH: perspektywa lekarska">
-            {null}
-          </Chapter.Item> */}
+         <Chapter.Item chapterNo={2} title="MRKH: perspektywa lekarska">
+          <ol>
+            {perspektywaLekarska.map(([timestamp, title]) => (
+              <Chapter.Subchapter
+                key={timestamp}
+                done={timestampToSeconds(timestamp) < 1000}
+                onClick={() => onTimeSelect(timestampToSeconds(timestamp))}
+              >
+                {title}
+              </Chapter.Subchapter>
+            ))}
+          </ol>
+
+          </Chapter.Item>
         </ol>
       </Accordion>
     </div>
