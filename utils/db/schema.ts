@@ -5,6 +5,7 @@ import {
   mysqlTable,
   primaryKey,
   varchar,
+  unique,
 } from "drizzle-orm/mysql-core";
 
 
@@ -92,3 +93,17 @@ export const authenticators = mysqlTable(
     }),
   })
 );
+
+export const completedItems = mysqlTable("completedItems", {
+  id: varchar("id", { length: 255 })
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: varchar("userId", { length: 255 })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  completedSubchapters: varchar("completedSubchapters", { length: 1000 }),
+  completedQuizzes: varchar("completedQuizzes", { length: 1000 }),
+  completedFlashcards: varchar("completedFlashcards", { length: 1000 }),
+  createdAt: timestamp("createdAt").notNull().$defaultFn(() => new Date()),
+  updatedAt: timestamp("updatedAt").notNull().$defaultFn(() => new Date()),
+});

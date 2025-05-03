@@ -10,6 +10,25 @@ const nextConfig = withNextVideo({
         filename: 'static/media/[name][ext]' // This preserves original filename
       }
     });
+    
+    // Fix for nodemailer and other Node.js modules
+    if (!config.resolve.fallback) {
+      config.resolve.fallback = {};
+    }
+    
+    // Add fallbacks for Node.js modules that shouldn't be bundled client-side
+    Object.assign(config.resolve.fallback, {
+      fs: false,
+      net: false,
+      tls: false,
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      path: require.resolve('path-browserify'),
+      util: require.resolve('util/'),
+      buffer: require.resolve('buffer/'),
+      process: require.resolve('process/browser'),
+    });
+    
     return config;
   },
   reactStrictMode: true,
