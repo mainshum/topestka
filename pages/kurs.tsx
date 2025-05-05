@@ -16,47 +16,65 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { useCompletedItems } from "@/utils/completedItems";
 import { getCompletedItems } from "@/utils/completedItems/server";
+import { fromTheme } from "tailwind-merge";
 
 // Constants
 const COMPLETED_SUBCHAPTERS_KEY = "topestka_completed_subchapters";
 
-const perspetkywaPacjenta = [
-  ["00:05", "1. Kim jesteśmy?"],
-  ["00:52", "2. Czym jest zespół MRKH i z czym się wiąże?"],
-  ["04:37", "3. Siedem rad dla Bezpestkowych"],
-  ["07:51", "4. Kluczowe punkty w życiu osób z zespołem MRKH"],
-  ["15:03", "5. Wnioski"],
-  ["16:11", "6. Raport dotyczący komunikacji lekarzy z pacjentami "],
-  ["18:19", "7. Dwie historie pacjentek z zespołem MRKH"],
-  ["21:46", "8. Wnioski"],
-  ["24:15", "9. Dlaczego istotnie jest słuchanie organizacji pacjenckich"],
-] as const;
-
-const perspektywaLekarska = [
-  ["24:57", "Czym jest zespół MRKH?"],
-  ["35:19", "Jak rozpoznać MRKH?"],
-  ["48:51", "W jaki sposób przekazywać diagnoze o zespole MRKH"],
-  ["52:31", "Z czym się wiąże MRKH?"],
-] as const;
-
-// Get total count of subchapters for each chapter
-const chapterSubchapterCounts = {
-  1: perspetkywaPacjenta.length,
-  2: perspektywaLekarska.length,
+const timestampToMilliseconds = (timestamp: string) => {
+  const [minutes, seconds] = timestamp.split(":").map(Number);
+  return (minutes * 60 + seconds) * 1000;
 };
 
-const timestampTo = (multiplier: number) => (timestamp: string) => {
-  const [minutes, seconds] = timestamp.split(":").map(Number);
-  return minutes * multiplier + seconds;
+type Subchapter = {
+  from: number;
+  to: number;
+  chapter: number;
+  subchapter: number;
+  subchapterTitle: string;
+  getNext: () => Subchapter | null;
 }
 
+const allSubchapters: Subchapter[] = (() => {
+  const allChapters = [
+    [1, 1, "00:05", "Kim jesteśmy?"],
+    [1, 2, "00:52", "Czym jest zespół MRKH i z czym się wiąże?"],
+    [1, 3, "04:37", "Siedem rad dla Bezpestkowych"],
+    [1, 4, "07:51", "Kluczowe punkty w życiu osób z zespołem MRKH"],
+    [1, 5, "15:03", "Wnioski"],
+    [1, 6, "16:11", "Raport dotyczący komunikacji lekarzy z pacjentami "],
+    [1, 7, "18:19", "Dwie historie pacjentek z zespołem MRKH"],
+    [1, 8, "21:46", "Wnioski"],
+    [1, 9, "24:15", "Dlaczego istotnie jest słuchanie organizacji pacjenckich"],
+    [2, 1, "24:57", "Czym jest zespół MRKH?"],
+    [2, 2, "35:19", "Jak rozpoznać MRKH?"],
+    [2, 3, "48:51", "W jaki sposób przekazywać diagnoze o zespole MRKH"],
+    [2, 4, "52:31", "Z czym się wiąże MRKH?"],
+  ] as const;
 
-const timestampToSeconds = timestampTo(1);
-const timestampToMilliseconds = timestampTo(1000);
+  // First create base objects
+  const subchapters = allChapters.map(([chapter, subchapter, timestamp, subchapterTitle]) => {
+    return {
+      chapter,
+      subchapter,
+      subchapterTitle,
+      from: timestampToMilliseconds(timestamp),
+      to: 0,
+      getNext: () => null // Placeholder, will be updated
+    } as Subchapter;
+  });
+
+  // Then update getNext functions with references to actual objects
+  return subchapters.map((sc, i) => ({
+    ...sc,
+    getNext: () => subchapters[i + 1] || null,
+    to: subchapters[i + 1]?.from || Infinity,
+  }));
+})();
 
 // Generate chapter.subchapter IDs for completed items
-const getSubchapterId = (chapterNo: number, subchapterIndex: number) =>
-  `${chapterNo}.${subchapterIndex}`;
+const getSubchapterId = (sc: Subchapter) =>
+  `${sc.chapter}.${sc.subchapter}`;
 
 // Subchapter component
 type SubchapterProps = HTMLAttributes<HTMLLIElement> & {
@@ -66,12 +84,14 @@ type SubchapterProps = HTMLAttributes<HTMLLIElement> & {
 
 const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
   ({ className, done, isCurrent, ...rest }) => {
-
-    const style = cn(done ? "opacity-50" : "opacity-100", isCurrent ? "text-orange-500" : "text-eblue-500");
+    const style = cn(
+      done ? "opacity-50" : "opacity-100",
+      isCurrent ? "text-orange-500" : "text-eblue-500"
+    );
     return (
       <li
         className={cn(
-          "cursor-pointer w-[220px] flex gap-1 justify-between items-center text-sm",
+          "cursor-pointer w-[220px] flex gap-1 justify-between items-center text-sm text-eblue-600 font-medium",
           style,
           className
         )}
@@ -86,12 +106,11 @@ Subchapter.displayName = "Subchapter";
 // Enhanced LoadCircle component
 const LoadCircle = ({ completionPercent }: { completionPercent: number }) => (
   <div className="relative rounded-full w-10 h-10">
-    <svg viewBox="0 0 100 100" className="w-full h-full">
+    <svg viewBox="0 0 100 100" className="overflow-visible">
       <text
         textAnchor="middle"
-        x="50%"
-        y="50%"
-        dy=".3em"
+        x="52%"
+        y="60%"
         className="font-monarcha text-eblue-800 text-2xl"
       >
         {completionPercent}%
@@ -100,7 +119,7 @@ const LoadCircle = ({ completionPercent }: { completionPercent: number }) => (
         cx="50"
         cy="50"
         r="45"
-        strokeWidth="15"
+        strokeWidth="20"
         fill="none"
         stroke="#B4C0EE"
         strokeDasharray={`${completionPercent * 2.83} ${283}`}
@@ -114,13 +133,13 @@ const LoadCircle = ({ completionPercent }: { completionPercent: number }) => (
 // Enhanced Chapter Item component
 const Item = ({
   chapterNo,
-  title,
+  subchapterTitle,
   children,
   completedItems,
   totalSubchapters,
 }: {
   chapterNo: number;
-  title: string;
+  subchapterTitle: string;
   children: React.ReactNode;
   completedItems: string[];
   totalSubchapters: number;
@@ -139,17 +158,17 @@ const Item = ({
   return (
     <li>
       <AccordionItem value={`chapter-${chapterNo}`}>
-        <AccordionTrigger className="flex items-center gap-4 px-0 pt-3 pb-1 border-eblue-400 border-b-[1px] text-nowrap">
+        <AccordionTrigger className="flex items-center gap-4 px-0 pt-3 pb-2 border-eblue-400 border-b-[1px] text-nowrap">
           <div className="flex gap-2">
             <LoadCircle completionPercent={completionPercent} />
             <div className="flex flex-col">
               <h1 className="font-outfit text-sm">Część {chapterNo}</h1>
-              <h2 className="font-monarcha text-base">{title}</h2>
+              <h2 className="font-monarcha text-base">{subchapterTitle}</h2>
             </div>
           </div>
         </AccordionTrigger>
         <AccordionContent asChild className="pb-0">
-          {children}
+          <ol className="flex flex-col items-center pt-2">{children}</ol>
         </AccordionContent>
       </AccordionItem>
     </li>
@@ -162,17 +181,24 @@ const Chapter = {
 };
 
 // Server-side props
-export const getServerSideProps: GetServerSideProps = async (context) => {
+
+type GetServerSidePropsParams = {
+  muxToken: string;
+  playbackId: string;
+  initialCompletedSubchapters: string[];
+};
+
+export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // if (!session?.user?.hasAccess) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!session?.user?.hasAccess) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   const mux = new Mux();
 
@@ -212,8 +238,8 @@ export default function KursPage({
   initialCompletedSubchapters = [],
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
-  const [currentChapter, setCurrentChapter] = useState<number>(1);
-  const [currentSubchapter, setCurrentSubchapter] = useState<number>(0);
+
+  const [currentSubchapter, setCurrentSubchapter] = useState<Subchapter>(allSubchapters[0]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Use our custom hook for managing completed items
@@ -227,29 +253,17 @@ export default function KursPage({
     initialCompletedSubchapters
   );
 
-
-  // Handler for marking current lesson as completed
-  const handleMarkAsCompleted = async () => {
-    const subchapterId = getSubchapterId(currentChapter, currentSubchapter);
-    await markAsCompleted(subchapterId);
-  };
-
   // Handler for time selection and loading indicator
-  const onTimeSelect = (
-    time: number,
-    chapterNo: number,
-    subchapterIndex: number
-  ) => {
+  const onTimeSelect = (sc: Subchapter) => {
     if (!videoRef.current) return;
     // Set loading state
     setIsLoading(true);
 
     // Set current chapter and subchapter
-    setCurrentChapter(chapterNo);
-    setCurrentSubchapter(subchapterIndex);
+    // setCurrentSubchapter(sc);
 
     // Update video time
-    videoRef.current.currentTime = time;
+    videoRef.current.currentTime = sc.from / 1000;
 
     // Clear loading state when video starts playing
     const handlePlaying = () => {
@@ -271,20 +285,38 @@ export default function KursPage({
     });
   };
 
+  // Handler for marking current lesson as completed
+  const handleMarkAsCompleted = () => {
+    markAsCompleted(getSubchapterId(currentSubchapter!));
+    const nextSubchapter = currentSubchapter!.getNext();
+    console.log(nextSubchapter);
+    if (!nextSubchapter) return;
+    onTimeSelect(nextSubchapter);
+  };
+
+
   const onVideoReady = React.useCallback((el: HTMLVideoElement) => {
     if (!el) return;
 
     videoRef.current = el;
 
-    const timestampToChapterSubchapter = (timestamp: string) => {
-
-    }
-
-    const trackTime = (ms: number) => {
-    }
-
-    el.addEventListener('timeupdate', e => trackTime(e.timeStamp));
+    el.addEventListener("timeupdate", () => {
+      const ms = el.currentTime * 1000; // currentTime is in seconds, convert to ms
+      const match = allSubchapters.find(({ from, to }) => ms >= from && ms <= to);
+      const matchWithFallback = match ?? allSubchapters[0];
+      setCurrentSubchapter(matchWithFallback);
+    });
   }, []);
+
+  const perspektywaPacjencka = allSubchapters.slice(0, 9);
+  const perspektywaLekarza = allSubchapters.slice(9);
+
+  const isPerspektywaPacjencka = perspektywaPacjencka.includes(currentSubchapter!);
+
+  const makeSubchapterTitle = (sc: Subchapter) => `${sc.subchapter}: ${sc.subchapterTitle}`;
+
+  const chapterTitle = `Część ${currentSubchapter!.chapter}: ${isPerspektywaPacjencka ? "Perspektywa pacjencka" : "Perspektywa lekarza"}`;
+  const subchapterTitle = `${currentSubchapter.chapter}.${makeSubchapterTitle(currentSubchapter!)}`;
 
   return (
     <div className="flex flex-col w-full">
@@ -293,9 +325,9 @@ export default function KursPage({
           MRKH to pestka!
         </Link>
         <h1 className="pt-5 font-monarcha text-orange-500 text-lg">
-          Czesc 1: Perspektywa pacjencka
+          {chapterTitle}
         </h1>
-        <h2 className="font-monarcha text-2xl">1.6 Raport dotyczacy</h2>
+        <h2 className="font-monarcha text-2xl">{subchapterTitle}</h2>
       </section>
       <section className="flex xl:flex-row flex-col justify-between gap-x-6 xl:h-[calc(100%-160px)]">
         <div className="relative flex flex-col justify-between items-start gap-6">
@@ -321,49 +353,52 @@ export default function KursPage({
           </Button>
         </div>
         <Accordion asChild type="single" collapsible>
-          <ol className="grow-[1]">
+          <ol className="grow-[1] basis-[300px]">
             <Chapter.Item
               chapterNo={1}
-              title="MRKH: perspektywa pacjencka"
+              subchapterTitle="MRKH: perspektywa pacjencka"
               completedItems={completedSubchapters}
-              totalSubchapters={chapterSubchapterCounts[1]}
+              totalSubchapters={perspektywaPacjencka.length}
             >
-              <ol className="flex flex-col items-center pt-2">
-                {perspetkywaPacjenta.map(([timestamp, title], index) => (
-                  <Chapter.Subchapter
-                    key={timestamp}
-                    isCurrent={getSubchapterId(1, index) === `${currentChapter}.${currentSubchapter}`}
-                    done={isCompleted(getSubchapterId(1, index))}
-                    onClick={() =>
-                      onTimeSelect(timestampToSeconds(timestamp), 1, index)
-                    }
-                  >
-                    <span>{title}</span>
-                    <Check className="w-4 h-4 text-white" />
-                  </Chapter.Subchapter>
-                ))}
-              </ol>
+              {perspektywaPacjencka.map((sc) => {
+                const title = makeSubchapterTitle(sc);
+                return (
+                  (
+                    <Chapter.Subchapter
+                      key={`${sc.chapter}.${title}`}
+                      isCurrent={sc === currentSubchapter}
+                      done={isCompleted(getSubchapterId(sc))}
+                      onClick={() => onTimeSelect(sc)}
+                    >
+                      <span>{title}</span>
+                      <Check className="w-4 h-4 text-white" />
+                    </Chapter.Subchapter>
+                  )
+                )
+              })}
             </Chapter.Item>
             <Chapter.Item
               chapterNo={2}
-              title="MRKH: perspektywa lekarska"
+              subchapterTitle="MRKH: perspektywa lekarza"
               completedItems={completedSubchapters}
-              totalSubchapters={chapterSubchapterCounts[2]}
+              totalSubchapters={perspektywaLekarza.length}
             >
-              <ol>
-                {perspektywaLekarska.map(([timestamp, title], index) => (
-                  <Chapter.Subchapter
-                    key={timestamp}
-                    isCurrent={getSubchapterId(1, index) === `${currentChapter}.${currentSubchapter}`}
-                    done={isCompleted(getSubchapterId(2, index))}
-                    onClick={() =>
-                      onTimeSelect(timestampToSeconds(timestamp), 2, index)
-                    }
-                  >
-                    {title}
-                  </Chapter.Subchapter>
-                ))}
-              </ol>
+              {perspektywaLekarza.map((sc) => {
+                const title = makeSubchapterTitle(sc);
+                return (
+                  (
+                    <Chapter.Subchapter
+                      key={`${sc.chapter}.${title}`}
+                      isCurrent={sc === currentSubchapter}
+                      done={isCompleted(getSubchapterId(sc))}
+                      onClick={() => onTimeSelect(sc)}
+                    >
+                      <span>{title}</span>
+                      <Check className="w-4 h-4 text-white" />
+                    </Chapter.Subchapter>
+                  )
+                )
+              })}
             </Chapter.Item>
           </ol>
         </Accordion>
