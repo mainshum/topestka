@@ -216,7 +216,7 @@ const MainNav = React.forwardRef<
         <Nav.Logo />
         <TopLinks className="flex-row items-center gap-12 text-lg" />
         <Nav.Logo className="invisible" />
-        <div className="flex gap-4">
+        {/* <div className="flex gap-4">
           {session && (
             <Link
               href="/kurs"
@@ -231,7 +231,7 @@ const MainNav = React.forwardRef<
           >
             {session ? "Wyloguj" : "Panel logowania"}
           </Link>
-        </div>
+        </div> */}
       </Nav.Root>
     </>
   );
