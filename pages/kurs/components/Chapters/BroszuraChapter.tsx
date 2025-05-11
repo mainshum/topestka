@@ -2,10 +2,10 @@ import React from 'react';
 import { useKurs } from '../../context';
 import { Chapter } from './Chapter';
 import { useRouter } from 'next/router';
+import { Subchapter } from './Subchapter';
 
 export const BroszuraChapter: React.FC = () => {
-  const { currentSubchapter, isCompleted } = useKurs();
-  const router = useRouter();
+  const { currentSubchapter, isCompleted, setCurrentSubchapter } = useKurs();
 
   return (
     <Chapter
@@ -13,15 +13,24 @@ export const BroszuraChapter: React.FC = () => {
       subchapterTitle="Broszury"
       totalSubchapters={1}
     >
-      <Chapter.Subchapter
-        isCurrent={currentSubchapter === 'broszura'}
+      <Subchapter
+        isCurrent={currentSubchapter.type === 'broszura'}
         done={isCompleted('3.1')}
         onClick={() => {
-          router.push('/kurs?view=broszura', undefined, { shallow: true });
+          setCurrentSubchapter({ type: 'broszura', title: 'Zespół MRKH - o osobach, które nie mają pestki' });
         }}
       >
-        <span>Broszura</span>
-      </Chapter.Subchapter>
+        <span>Zespół MRKH - o osobach, które nie mają pestki</span>
+      </Subchapter>
+      <Subchapter
+        isCurrent={currentSubchapter.title === 'O zespole MRKH, jego objawach i kwestiach z nim związanych'}
+        done={isCompleted('3.1')}
+        onClick={() => {
+          setCurrentSubchapter({ type: 'broszura', title: 'O zespole MRKH, jego objawach i kwestiach z nim związanych' });
+        }}
+      >
+        <span>O zespole MRKH, jego objawach i kwestiach z nim związanych </span>
+      </Subchapter>
     </Chapter>
   );
 };

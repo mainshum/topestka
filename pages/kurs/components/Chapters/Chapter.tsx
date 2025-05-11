@@ -6,7 +6,6 @@ import {
 } from '@/components/Accordion';
 import { LoadCircle } from './LoadCircle';
 import { useKurs } from '../../context';
-import { Subchapter } from './Subchapter';
 
 interface ChapterProps {
   chapterNo: number;
@@ -15,9 +14,7 @@ interface ChapterProps {
   totalSubchapters: number;
 }
 
-export const Chapter: React.FC<ChapterProps> & {
-  Subchapter: typeof Subchapter;
-} = ({
+export const Chapter: React.FC<ChapterProps> = ({
   chapterNo,
   subchapterTitle,
   children,
@@ -34,6 +31,7 @@ export const Chapter: React.FC<ChapterProps> & {
       ? Math.round((completedCount / totalSubchapters) * 100)
       : 0;
   }, [completedSubchapters, chapterNo, totalSubchapters]);
+
 
   return (
     <li>
@@ -55,5 +53,4 @@ export const Chapter: React.FC<ChapterProps> & {
   );
 };
 
-Chapter.Subchapter = Subchapter;
 Chapter.displayName = 'Kurs.Chapter'; 

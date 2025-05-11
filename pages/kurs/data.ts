@@ -1,44 +1,35 @@
-import { Subchapter } from './context';
+type VideoSubchapter = {
+  type: 'video'
+  subtype: 'pp' | 'pl';
+  title: string;
+  from: number;
+  to: number;
+}
 
-const timestampToMilliseconds = (timestamp: string) => {
-  const [minutes, seconds] = timestamp.split(":").map(Number);
-  return (minutes * 60 + seconds) * 1000;
-};
+type BroszuraSubchapter = {
+  type: 'broszura';
+  title: string;
+}
 
-export const allSubchapters: Subchapter[] = (() => {
-  const allChapters = [
-    [1, 1, "00:05", "Kim jesteśmy?", "video"],
-    [1, 2, "00:52", "Czym jest zespół MRKH i z czym się wiąże?", "video"],
-    [1, 3, "04:37", "Siedem rad dla Bezpestkowych", "video"],
-    [1, 4, "07:51", "Kluczowe punkty w życiu osób z zespołem MRKH", "video"],
-    [1, 5, "15:03", "Wnioski", "video"],
-    [1, 6, "16:11", "Raport dotyczący komunikacji lekarzy z pacjentami", "video"],
-    [1, 7, "18:19", "Dwie historie pacjentek z zespołem MRKH", "video"],
-    [1, 8, "21:46", "Wnioski", "video"],
-    [1, 9, "24:15", "Dlaczego istotnie jest słuchanie organizacji pacjenckich", "video"],
-    [2, 1, "24:57", "Czym jest zespół MRKH?", "video"],
-    [2, 2, "35:19", "Jak rozpoznać MRKH?", "video"],
-    [2, 3, "48:51", "W jaki sposób przekazywać diagnoze o zespole MRKH", "video"],
-    [2, 4, "52:31", "Z czym się wiąże MRKH?", "video"],
-  ] as const;
+export type Subchapter = VideoSubchapter | BroszuraSubchapter;
 
-  // First create base objects
-  const subchapters = allChapters.map(([chapter, subchapter, timestamp, subchapterTitle, type]) => {
-    return {
-      chapter,
-      subchapter,
-      subchapterTitle,
-      from: timestamp ? timestampToMilliseconds(timestamp) : 0,
-      to: 0,
-      type,
-      getNext: () => null // Placeholder, will be updated
-    } as Subchapter;
-  });
+export const videoSubchapters = new Map<number, VideoSubchapter>([
+  [1, { type: 'video', subtype: 'pp', title: "Kim jesteśmy?", from: 5, to: 52 }],
+  [2, { type: 'video', subtype: 'pp', title: "Czym jest zespół MRKH i z czym się wiąże?", from: 52, to: 4 * 60 + 37 }],
+  [3, { type: 'video', subtype: 'pp', title: "Siedem rad dla Bezpestkowych", from: 4 * 60 + 37, to: 7 * 60 + 51 }],
+  [4, { type: 'video', subtype: 'pp', title: "Kluczowe punkty w życiu osób z zespołem MRKH", from: 7 * 60 + 51, to: 15 * 60 + 3 }],
+  [5, { type: 'video', subtype: 'pp', title: "Wnioski", from: 15 * 60 + 3, to: 16 * 60 + 11 }],
+  [6, { type: 'video', subtype: 'pp', title: "Raport dotyczący komunikacji lekarzy z pacjentami", from: 16 * 60 + 11, to: 18 * 60 + 19 }],
+  [7, { type: 'video', subtype: 'pp', title: "Dwie historie pacjentek z zespołem MRKH", from: 18 * 60 + 19, to: 21 * 60 + 46 }],
+  [8, { type: 'video', subtype: 'pp', title: "Wnioski", from: 21 * 60 + 46, to: 24 * 60 + 15 }],
+  [9, { type: 'video', subtype: 'pp', title: "Dlaczego istotnie jest słuchanie organizacji pacjenckich", from: 24 * 60 + 15, to: 24 * 60 + 57 }],
+  [10, { type: 'video', subtype: 'pl', title: "Czym jest zespół MRKH?", from: 24 * 60 + 57, to: 25 * 60 + 19 }],
+  [11, { type: 'video', subtype: 'pl', title: "Jak rozpoznać MRKH?", from: 25 * 60 + 19, to: 35 * 60 + 19 }],
+  [12, { type: 'video', subtype: 'pl', title: "W jaki sposób przekazywać diagnoze o zespole MRKH", from: 35 * 60 + 19, to: 48 * 60 + 51 }],
+  [13, { type: 'video', subtype: 'pl', title: "Z czym się wiąże MRKH?", from: 48 * 60 + 51, to: Infinity }],
+]);
 
-  // Then update getNext functions with references to actual objects
-  return subchapters.map((sc, i) => ({
-    ...sc,
-    getNext: () => subchapters[i + 1] || null,
-    to: subchapters[i + 1]?.from || Infinity,
-  }));
-})(); 
+
+export const videoEntries = Array.from(videoSubchapters.entries());
+export const perspektywaPacjencka = videoEntries.filter(([sub, value]) => sub < 9);
+export const perspektywaLekarza = videoEntries.filter(([sub, value]) => sub > 9);
