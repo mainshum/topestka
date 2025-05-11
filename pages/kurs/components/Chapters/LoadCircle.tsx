@@ -11,7 +11,7 @@ export const LoadCircle: React.FC<LoadCircleProps> = ({ completionPercent }) => 
         textAnchor="middle"
         x="52%"
         y="60%"
-        className="font-monarcha text-eblue-800 text-2xl"
+        className="font-outfit text-eblue-800 text-2xl"
       >
         {completionPercent}%
       </text>
@@ -22,8 +22,18 @@ export const LoadCircle: React.FC<LoadCircleProps> = ({ completionPercent }) => 
         strokeWidth="20"
         fill="none"
         stroke="#B4C0EE"
+        strokeDasharray={`${100 * 2.83} ${283}`}
+        transform="rotate(-90 50 50)"
+      />
+      <circle
+        cx="50"
+        cy="50"
+        r="45"
+        strokeWidth="20"
+        fill="none"
+        stroke="#2A4BCC"
         strokeDasharray={`${completionPercent * 2.83} ${283}`}
-        className="opacity-80"
+        strokeLinecap="round"
         transform="rotate(-90 50 50)"
       />
     </svg>

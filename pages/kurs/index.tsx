@@ -1,14 +1,8 @@
-import * as v from 'valibot';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/Accordion";
-import React, { HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { HTMLAttributes, useCallback, useRef } from "react";
 import { cn } from "@/utils/misc";
 import { getCompletedItems } from "@/utils/completedItems/server";
 import { Title } from './components/Title';
@@ -19,7 +13,6 @@ import Video from './video';
 import { Chapter } from './components/Chapters/Chapter';
 import { perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter } from './data';
 import { KursProvider, useKurs } from './context';
-import { useRouter } from 'next/router';
 import { flushSync } from 'react-dom';
 
 const BroszuraContent = dynamic(() => import('./broszura'), {
@@ -45,6 +38,9 @@ const ActiveSubchapter = React.forwardRef<HTMLLIElement, HTMLAttributes<HTMLLIEl
     );
   }
 );
+
+ActiveSubchapter.displayName = "ActiveSubchapter";
+
 const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
   ({ className, done, isCurrent, ...rest }) => {
     const style = cn(
@@ -58,81 +54,6 @@ const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
 );
 
 Subchapter.displayName = "Subchapter";
-
-// Enhanced LoadCircle component
-const LoadCircle = ({ completionPercent }: { completionPercent: number }) => (
-  <div className="relative rounded-full w-10 h-10">
-    <svg viewBox="0 0 100 100" className="overflow-visible">
-      <text
-        textAnchor="middle"
-        x="52%"
-        y="60%"
-        className="font-monarcha text-eblue-800 text-2xl"
-      >
-        {completionPercent}%
-      </text>
-      <circle
-        cx="50"
-        cy="50"
-        r="45"
-        strokeWidth="20"
-        fill="none"
-        stroke="#B4C0EE"
-        strokeDasharray={`${completionPercent * 2.83} ${283}`}
-        className="opacity-80"
-        transform="rotate(-90 50 50)"
-      />
-    </svg>
-  </div>
-);
-
-// Enhanced Chapter Item component
-const Item = ({
-  chapterNo,
-  subchapterTitle,
-  children,
-  completedItems,
-  totalSubchapters,
-}: {
-  chapterNo: number;
-  subchapterTitle: string;
-  children: React.ReactNode;
-  completedItems: string[];
-  totalSubchapters: number;
-}) => {
-  // Calculate completion percentage for this chapter
-  const completionPercent = useMemo(() => {
-    const completedCount = completedItems.filter((item) =>
-      item.startsWith(`${chapterNo}.`)
-    ).length;
-
-    return totalSubchapters > 0
-      ? Math.round((completedCount / totalSubchapters) * 100)
-      : 0;
-  }, [completedItems, chapterNo, totalSubchapters]);
-
-  return (
-    <li>
-      <AccordionItem value={`chapter-${chapterNo}`}>
-        <AccordionTrigger className="flex items-center gap-4 px-0 pt-3 pb-2 border-eblue-400 border-b-[1px] text-nowrap">
-          <div className="flex gap-2">
-            <LoadCircle completionPercent={completionPercent} />
-            <div className="flex flex-col">
-              <h1 className="font-outfit text-sm">Część {chapterNo}</h1>
-              <h2 className="font-monarcha text-base">{subchapterTitle}</h2>
-            </div>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent asChild className="pb-0">
-          <ol className="flex flex-col items-center pt-2">{children}</ol>
-        </AccordionContent>
-      </AccordionItem>
-    </li>
-  );
-};
-
-
-// Server-side props
 
 type GetServerSidePropsParams = {
   muxToken: string;
@@ -193,7 +114,7 @@ export default function Page(props: InferGetServerSidePropsType<typeof getServer
 }
 
   const subchapterFromTime = (time: number) => {
-    const match = videoEntries.find(([sub, current]) => {
+    const match = videoEntries.find(([_sub, current]) => {
       if (time >= current.from && time < current.to) {
         return true;
       }
@@ -206,10 +127,7 @@ export default function Page(props: InferGetServerSidePropsType<typeof getServer
 function KursPage({
   muxToken,
   playbackId,
-  initialCompletedSubchapters = [],
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-
-  // typ video musi obsclugiwac router
 
   const {currentSubchapter, setCurrentSubchapter} = useKurs();
 
@@ -271,7 +189,7 @@ function KursPage({
                   done={false}
                   onClick={() => setVideoTime(sc.from)}
                 >
-                  <span>{sc.title}</span>
+                  {`${sc.partNo}. ${sc.title}`}
                 </Subchapter>
               );
             })}
@@ -289,7 +207,7 @@ function KursPage({
                   done={false}
                   onClick={() => setVideoTime(sc.from)}
                 >
-                  <span>{sc.title}</span>
+                  {`${sc.partNo}. ${sc.title}`}
                 </Subchapter>
               );
             })}

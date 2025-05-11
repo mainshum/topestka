@@ -11,6 +11,7 @@ export const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
     const style = cn(
       "cursor-pointer w-[220px] flex gap-1 justify-between items-center text-sm font-medium",
       done ? "opacity-50" : "opacity-100",
+      done && "after:content-['✓']",
       isCurrent ? "text-orange-500" : "text-eblue-500",
       className
     );

@@ -17,7 +17,7 @@ export const BroszuraChapter: React.FC = () => {
         isCurrent={currentSubchapter.type === 'broszura'}
         done={isCompleted('3.1')}
         onClick={() => {
-          setCurrentSubchapter({ type: 'broszura', title: 'Zespół MRKH - o osobach, które nie mają pestki' });
+          setCurrentSubchapter({ type: 'broszura', partNo: 1, title: 'Zespół MRKH - o osobach, które nie mają pestki' });
         }}
       >
         <span>Zespół MRKH - o osobach, które nie mają pestki</span>
@@ -26,7 +26,7 @@ export const BroszuraChapter: React.FC = () => {
         isCurrent={currentSubchapter.title === 'O zespole MRKH, jego objawach i kwestiach z nim związanych'}
         done={isCompleted('3.1')}
         onClick={() => {
-          setCurrentSubchapter({ type: 'broszura', title: 'O zespole MRKH, jego objawach i kwestiach z nim związanych' });
+          setCurrentSubchapter({ type: 'broszura', partNo: 2, title: 'O zespole MRKH, jego objawach i kwestiach z nim związanych' });
         }}
       >
         <span>O zespole MRKH, jego objawach i kwestiach z nim związanych </span>
