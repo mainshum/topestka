@@ -1,7 +1,6 @@
 import React from 'react';
-import { useKurs } from '../../context';
+import { useKurs } from './context';
 import { Chapter } from './Chapter';
-import { useRouter } from 'next/router';
 import { Subchapter } from './Subchapter';
 
 export const BroszuraChapter: React.FC = () => {
@@ -20,7 +19,7 @@ export const BroszuraChapter: React.FC = () => {
           setCurrentSubchapter({ type: 'broszura', partNo: 1, title: 'Zespół MRKH - o osobach, które nie mają pestki' });
         }}
       >
-        <span>Zespół MRKH - o osobach, które nie mają pestki</span>
+        1. Zespół MRKH - o osobach, które nie mają pestki
       </Subchapter>
       <Subchapter
         isCurrent={currentSubchapter.title === 'O zespole MRKH, jego objawach i kwestiach z nim związanych'}
@@ -29,7 +28,7 @@ export const BroszuraChapter: React.FC = () => {
           setCurrentSubchapter({ type: 'broszura', partNo: 2, title: 'O zespole MRKH, jego objawach i kwestiach z nim związanych' });
         }}
       >
-        <span>O zespole MRKH, jego objawach i kwestiach z nim związanych </span>
+        2. O zespole MRKH, jego objawach i kwestiach z nim związanych
       </Subchapter>
     </Chapter>
   );

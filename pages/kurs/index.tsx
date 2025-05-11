@@ -5,17 +5,17 @@ import Mux from "@mux/mux-node";
 import React, { HTMLAttributes, useCallback, useRef } from "react";
 import { cn } from "@/utils/misc";
 import { getCompletedItems } from "@/utils/completedItems/server";
-import { Title } from './components/Title';
-import { Chapters } from './components/Chapters';
-import { BroszuraChapter } from './components/Chapters/BroszuraChapter';
+import { Title } from '../../components/kurs/Title';
+import { Chapters } from '../../components/kurs/Chapters';
+import { BroszuraChapter } from '../../components/kurs/BroszuraChapter';
 import dynamic from 'next/dynamic';
-import Video from './video';
-import { Chapter } from './components/Chapters/Chapter';
-import { perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter } from './data';
-import { KursProvider, useKurs } from './context';
+import Video from '../../components/kurs/Video';
+import { Chapter } from '../../components/kurs/Chapter';
+import { perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter } from '../../components/kurs/data';
+import { KursProvider, useKurs } from '../../components/kurs/context';
 import { flushSync } from 'react-dom';
 
-const BroszuraContent = dynamic(() => import('./broszura'), {
+const BroszuraContent = dynamic(() => import('../../components/kurs/Broszura'), {
   ssr: false,
 });
 

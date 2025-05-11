@@ -2,8 +2,8 @@ import React, { useCallback, useRef } from 'react';
 import Video from 'next-video';
 import { Button } from '@/components/Button';
 import { Loader2 } from 'lucide-react';
-import { useKurs } from '../context';
-import { videoEntries } from '../data';
+import { useKurs } from './context';
+import { videoEntries } from './data';
 
 const VideoPage = React.forwardRef<HTMLVideoElement, { muxToken: string; playbackId: string }>(
   ({ muxToken, playbackId }, ref) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useKurs } from '../context';
+import { useKurs } from './context';
 import { Button } from '@/components/Button';
 
 export default function BroszuraPage({iframeSrc}: {iframeSrc: string}) {

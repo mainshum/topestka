@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { useKurs } from '../context';
-import { getChapterNo, VideoSubchapter, BroszuraSubchapter, Subchapter } from '../data';
+import { useKurs } from './context';
+import { getChapterNo, VideoSubchapter, BroszuraSubchapter, Subchapter } from './data';
 
 const getTitle = (subchapter: Subchapter) => {
   if (subchapter.type === 'video') {

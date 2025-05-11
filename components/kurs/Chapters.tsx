@@ -1,6 +1,7 @@
 import React, { HTMLAttributes } from 'react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/Accordion';
 import { cn } from '@/utils/misc';
+
 export const Chapters = React.forwardRef<HTMLOListElement, HTMLAttributes<HTMLElement>>(
   ({ children, className, ...rest }, ref) => {
     return (

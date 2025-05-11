@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Chapter } from "@/pages/kurs/components/Chapters/Chapter";
-import { Subchapter } from "@/pages/kurs/components/Chapters/Subchapter";
-import { KursProvider } from "@/pages/kurs/context";
+import { Chapter } from "@/components/kurs/Chapter";
+import { Subchapter } from "@/components/kurs/Subchapter";
+import { KursProvider } from "@/components/kurs/context";
 import { SessionProvider } from "next-auth/react";
 import { Accordion } from "@/components/Accordion";
-import { Chapters } from "@/pages/kurs/components/Chapters";
+import { Chapters } from "@/components/kurs/Chapters";
 const meta = {
   title: "Kurs/Chapter",
   component: Chapter,

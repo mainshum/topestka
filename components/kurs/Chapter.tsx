@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from '@/components/Accordion';
 import { LoadCircle } from './LoadCircle';
-import { useKurs } from '../../context';
+import { useKurs } from './context';
 
 interface ChapterProps {
   chapterNo: number;
