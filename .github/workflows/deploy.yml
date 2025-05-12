@@ -3,11 +3,13 @@ name: Deploy to VPS
 on:
   push:
     branches:
+      - main
       - dev
 
 env:
   NODE_VERSION: 18.20.4
-  DEPLOY_PATH: /root/repo/topestka
+  PROD_DEPLOY_PATH: /root/repo/topestka
+  DEV_DEPLOY_PATH: /root/repo/dev-topestka
 
 jobs:
   deploy:
@@ -42,6 +44,17 @@ jobs:
           # Add host to known hosts
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
+          # Determine deployment path and PM2 process name based on branch
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            DEPLOY_PATH=$PROD_DEPLOY_PATH
+            PM2_NAME="topestka-prod"
+            PORT="3000"
+          else
+            DEPLOY_PATH=$DEV_DEPLOY_PATH
+            PM2_NAME="topestka-dev"
+            PORT="3001"
+          fi
+
           # Create a temporary directory for the build
           ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "mkdir -p $DEPLOY_PATH.tmp"
 
@@ -70,9 +83,9 @@ jobs:
 
             cp ~/.env .env
 
-            if pm2 list | grep -q next; then
-              pm2 restart next --update-env
+            if pm2 list | grep -q $PM2_NAME; then
+              pm2 restart $PM2_NAME --update-env
             else
-              pm2 start npm --name next -- start
+              PORT=$PORT pm2 start npm --name $PM2_NAME -- start
             fi
           "
