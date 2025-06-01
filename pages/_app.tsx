@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Head from "next/head";
+import Script from "next/script";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ function MyApp({
         <meta name="description" content="Platforma toPestka" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Script onReady={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id="784099f7-86bd-437d-a8dc-dc8250b1b496" strategy="afterInteractive" />
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           {getLayout(<Component {...pageProps} />)}
