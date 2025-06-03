@@ -34,7 +34,7 @@ function MyApp({
         <meta name="description" content="Platforma toPestka" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script onReady={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id="784099f7-86bd-437d-a8dc-dc8250b1b496" strategy="afterInteractive" />
+      <Script onLoad={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id="148e155c-49f6-4c96-a523-aba8a97f9491" strategy="afterInteractive" />
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           {getLayout(<Component {...pageProps} />)}
