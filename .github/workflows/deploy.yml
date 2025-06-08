@@ -48,13 +48,9 @@ jobs:
           if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
             DEPLOY_PATH=$PROD_DEPLOY_PATH
             PM2_NAME="topestka-prod"
-            PORT="3000"
-            NODE_ENV="production"
           else
             DEPLOY_PATH=$DEV_DEPLOY_PATH
             PM2_NAME="topestka-dev"
-            PORT="3001"
-            NODE_ENV="dev"
           fi
 
           # Create a temporary directory for the build
@@ -83,13 +79,8 @@ jobs:
             # Set environment variables
 
             # Restart or start PM2
-            cd $DEPLOY_PATH
+            cd /root/repo
 
-            cp ~/.env .env
+            pm2 start ecosystem.config.js --only $PM2_NAME
 
-            if pm2 list | grep -q $PM2_NAME; then
-              pm2 restart $PM2_NAME --update-env
-            else
-              PORT=$PORT NODE_ENV=$NODE_ENV pm2 start npm --name $PM2_NAME -- start
-            fi
           "
