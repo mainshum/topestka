@@ -14,6 +14,7 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",
     "@dotenvx/dotenvx": "^1.35.0",
+    "@ingameltd/node-przelewy24": "^2.1.0",
     "@mux/blurhash": "^0.1.2",
     "@mux/mux-node": "^8.8.0",
     "@mux/mux-uploader-react": "^1.0.0-beta.15",
@@ -30,6 +31,7 @@
     "lodash.get": "^4.4.2",
     "lucide-react": "^0.469.0",
     "mysql2": "^3.12.0",
+    "neverthrow": "^8.2.0",
     "next": "14.1.0",
     "next-auth": "^4.24.5",
     "next-video": "^2.1.0",

@@ -1,8 +1,7 @@
 import React from "react";
 import HomeSection from "./HomeSection";
 import { OfferingSection, OfferingList } from "./Offering";
-import { KupKurs } from "./Intro";
-import { Button, buttonVariants } from "./Button";
+import { buttonVariants } from "./Button";
 import Link from "next/link";
 import { ACTION_NETWORK_URL, NEWSLETTER_URL } from "@/utils/const";
 
@@ -43,13 +42,13 @@ const KupKursSection = () => {
         </Cena>
         <div className="h-0" />
         <Link
-          href={ACTION_NETWORK_URL}
+          href="/checkout"
           className={`${buttonVariants({variant: 'powiadom', size: 'lg'})} whitespace-nowrap xl:hidden`}
         >
           Powiadom o sprzedaży
         </Link>
         <Link
-          href={ACTION_NETWORK_URL}
+          href="/checkout"
           className={`${buttonVariants({variant: 'powiadom', size: 'xl'})} whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0`}
         >
           Powiadom o sprzedaży

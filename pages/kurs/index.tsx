@@ -113,15 +113,15 @@ export default function Page(props: InferGetServerSidePropsType<typeof getServer
   );
 }
 
-  const subchapterFromTime = (time: number) => {
-    const match = videoEntries.find(([_sub, current]) => {
-      if (time >= current.from && time < current.to) {
-        return true;
-      }
-    })
+const subchapterFromTime = (time: number) => {
+  const match = videoEntries.find(([_sub, current]) => {
+    if (time >= current.from && time < current.to) {
+      return true;
+    }
+  })
 
-    return match?.[1];
-  }
+  return match?.[1];
+}
 
 // Main component
 function KursPage({
@@ -129,7 +129,7 @@ function KursPage({
   playbackId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  const {currentSubchapter, setCurrentSubchapter} = useKurs();
+  const { currentSubchapter, setCurrentSubchapter } = useKurs();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
