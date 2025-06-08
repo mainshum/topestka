@@ -20,6 +20,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const websiteId = process.env.NODE_ENV === "production" 
+  ? "80a8892f-7153-4522-bffe-4eab271fecf0" 
+  : "148e155c-49f6-4c96-a523-aba8a97f9491";
+
 function MyApp({
   Component,
   pageProps: { session, ...pageProps },
@@ -34,7 +38,7 @@ function MyApp({
         <meta name="description" content="Platforma toPestka" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script onLoad={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id="148e155c-49f6-4c96-a523-aba8a97f9491" strategy="afterInteractive" />
+      <Script onLoad={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           {getLayout(<Component {...pageProps} />)}
