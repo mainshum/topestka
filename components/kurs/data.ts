@@ -9,6 +9,7 @@ export type VideoSubchapter = {
 
 export type BroszuraSubchapter = {
   type: 'broszura';
+  subtype: 'broszura',
   partNo: number;
   title: string;
 }
@@ -35,6 +36,10 @@ export const videoSubchapters = new Map<number, VideoSubchapter>([
 export const videoEntries = Array.from(videoSubchapters.entries());
 export const perspektywaPacjencka = videoEntries.filter(([sub, value]) => sub < 9);
 export const perspektywaLekarza = videoEntries.filter(([sub, value]) => sub > 9);
+
+export const getId = (subchapter: Subchapter) => {
+  return `${subchapter.type}#${subchapter.subtype}#${subchapter.partNo}`;
+}
 
 export const getChapterNo = (subchapter: Subchapter) => {
   if (subchapter.type === 'video') {

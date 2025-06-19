@@ -11,49 +11,18 @@ import { BroszuraChapter } from '../../components/kurs/BroszuraChapter';
 import dynamic from 'next/dynamic';
 import Video from '../../components/kurs/Video';
 import { Chapter } from '../../components/kurs/Chapter';
-import { perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter } from '../../components/kurs/data';
+import { getId, perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter } from '../../components/kurs/data';
 import { KursProvider, useKurs } from '../../components/kurs/context';
 import { flushSync } from 'react-dom';
+import { Subchapter as SubchapterComponent } from '../../components/kurs/Subchapter';
+
+const getCompletedPercentage = (total: number, completed: number) => {
+  return Math.round((completed / total) * 100);
+}
 
 const BroszuraContent = dynamic(() => import('../../components/kurs/Broszura'), {
   ssr: false,
 });
-
-// Subchapter component
-type SubchapterProps = HTMLAttributes<HTMLLIElement> & {
-  isCurrent: boolean;
-  done: boolean;
-};
-
-const ActiveSubchapter = React.forwardRef<HTMLLIElement, HTMLAttributes<HTMLLIElement>>(
-  ({ className, ...rest }) => {
-    return (
-      <li
-        className={cn(
-          "cursor-pointer w-[220px] text-orange-500 flex gap-1 justify-between items-center text-sm font-medium",
-          className
-        )}
-        {...rest}
-      />
-    );
-  }
-);
-
-ActiveSubchapter.displayName = "ActiveSubchapter";
-
-const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
-  ({ className, done, isCurrent, ...rest }) => {
-    const style = cn(
-      done ? "opacity-50" : "opacity-100",
-      isCurrent ? "text-orange-500" : "text-eblue-500"
-    );
-    return (
-      <ActiveSubchapter className={cn(style, className)} {...rest} />
-    );
-  }
-);
-
-Subchapter.displayName = "Subchapter";
 
 type GetServerSidePropsParams = {
   muxToken: string;
@@ -129,7 +98,7 @@ function KursPage({
   playbackId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  const { currentSubchapter, setCurrentSubchapter } = useKurs();
+  const { currentSubchapter, setCurrentSubchapter, isCompleted, completedSubchapters } = useKurs();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -161,18 +130,35 @@ function KursPage({
       if (!subchapter) return;
       setCurrentSubchapter(subchapter);
     })
-  }, []);
+  }, [setCurrentSubchapter, currentSubchapter]);
+
+
+  const { partNo, type, subtype } = currentSubchapter;
+
+  console.log(type, subtype)
+
+
+  const completedVideoPP = completedSubchapters.filter((item) => item.startsWith(`video#pp`)).length;
+  const completedVideoPL = completedSubchapters.filter((item) => item.startsWith(`video#pl`)).length;
+  const completedBroszura = completedSubchapters.filter((item) => item.startsWith(`broszura`)).length;
+
+  // video1 
+  // is complete = ok 
+  // current highlight = ok
+
+  // video2
+  // brosuszra
 
   return (
     <>
       <Title />
       <section className="flex xl:flex-row flex-col justify-between gap-x-6">
         <div className="relative flex flex-col justify-between items-start gap-6 grow-[1]">
-          {currentSubchapter.type === 'video' && (
+          {type === 'video' && (
             <Video ref={onVideoMount} muxToken={muxToken} playbackId={playbackId} />
           )}
-          {currentSubchapter.type === 'broszura' && (
-            <BroszuraContent iframeSrc={'/bezpestkowe_broszura.pdf'} />
+          {type === 'broszura' && (
+            <BroszuraContent iframeSrc={`/bezpestkowe_broszura_${partNo}.pdf`} />
           )}
         </div>
         <Chapters>
@@ -180,17 +166,18 @@ function KursPage({
             chapterNo={1}
             subchapterTitle="MRKH: perspektywa pacjencka"
             totalSubchapters={perspektywaPacjencka.length}
+            completed={getCompletedPercentage(perspektywaPacjencka.length, completedVideoPP)}
           >
             {perspektywaPacjencka.map(([sub, sc]) => {
               return (
-                <Subchapter
+                <SubchapterComponent
                   key={`${sub}-${sc.title}`}
-                  isCurrent={sc.title === currentSubchapter.title}
-                  done={false}
+                  isCurrent={sc === currentSubchapter}
+                  done={isCompleted(getId(sc))}
                   onClick={() => setVideoTime(sc.from)}
                 >
                   {`${sc.partNo}. ${sc.title}`}
-                </Subchapter>
+                </SubchapterComponent>
               );
             })}
           </Chapter>
@@ -198,21 +185,22 @@ function KursPage({
             chapterNo={2}
             subchapterTitle="MRKH: perspektywa lekarza"
             totalSubchapters={perspektywaLekarza.length}
+            completed={getCompletedPercentage(perspektywaLekarza.length, completedVideoPL)}
           >
             {perspektywaLekarza.map(([sub, sc]) => {
               return (
-                <Subchapter
+                <SubchapterComponent
                   key={`${sub}-${sc.title}`}
-                  isCurrent={sc.title === currentSubchapter.title}
-                  done={false}
+                  isCurrent={sc === currentSubchapter}
+                  done={isCompleted(getId(sc))}
                   onClick={() => setVideoTime(sc.from)}
                 >
                   {`${sc.partNo}. ${sc.title}`}
-                </Subchapter>
+                </SubchapterComponent>
               );
             })}
           </Chapter>
-          <BroszuraChapter />
+          <BroszuraChapter completed={getCompletedPercentage(2, completedBroszura)} />
         </Chapters>
       </section>
     </>

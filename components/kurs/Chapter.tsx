@@ -5,13 +5,13 @@ import {
   AccordionTrigger,
 } from '@/components/Accordion';
 import { LoadCircle } from './LoadCircle';
-import { useKurs } from './context';
 
 interface ChapterProps {
   chapterNo: number;
   subchapterTitle: string;
   children: React.ReactNode;
   totalSubchapters: number;
+  completed: number;
 }
 
 export const Chapter: React.FC<ChapterProps> = ({
@@ -19,26 +19,15 @@ export const Chapter: React.FC<ChapterProps> = ({
   subchapterTitle,
   children,
   totalSubchapters,
+  completed,
 }) => {
-  const { completedSubchapters } = useKurs();
-
-  const completionPercent = React.useMemo(() => {
-    const completedCount = completedSubchapters.filter((item) =>
-      item.startsWith(`${chapterNo}.`)
-    ).length;
-
-    return totalSubchapters > 0
-      ? Math.round((completedCount / totalSubchapters) * 100)
-      : 0;
-  }, [completedSubchapters, chapterNo, totalSubchapters]);
-
 
   return (
     <li>
       <AccordionItem value={`chapter-${chapterNo}`}>
         <AccordionTrigger chevProps={{className: "text-eblue-600"}} className="gap-4 px-0 pt-3 pb-2 border-eblue-400 border-b-[1px] text-nowrap [&>svg]:data-[state=open]:text-eblue-600">
           <div className="flex gap-3">
-            <LoadCircle completionPercent={completionPercent} />
+            <LoadCircle completionPercent={completed} />
             <div className="flex font-outfit flex-col">
               <h1 className="text-sm">Część {chapterNo}</h1>
               <h2 className="text-base">{subchapterTitle}</h2>

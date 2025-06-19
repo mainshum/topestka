@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useCompletedItems } from '@/utils/completedItems';
-import {Subchapter, videoSubchapters} from './data'
+import {getId, Subchapter, videoSubchapters} from './data'
 
 type ContentType = 'video' | 'pdf';
 
@@ -12,6 +12,7 @@ type KursContextType = {
   markAsCompleted: (id: string) => void;
   currentSubchapter: Subchapter 
   setCurrentSubchapter: (subchapter: Subchapter) => void;
+  currentSubchapterId: string;
 };
 
 const KursContext = createContext<KursContextType | null>(null);
@@ -33,6 +34,8 @@ export const KursProvider: React.FC<{ children: React.ReactNode; initialComplete
   const [currentSubchapter, setCurrentSubchapter] = useState<Subchapter>(defaultSubchapter);
   const [isLoading, setIsLoading] = useState(false);
 
+  const currentSubchapterId = getId(currentSubchapter);
+
   const {
     items: completedSubchapters,
     isCompleted,
@@ -53,6 +56,7 @@ export const KursProvider: React.FC<{ children: React.ReactNode; initialComplete
         completedSubchapters,
         isCompleted,
         markAsCompleted,
+        currentSubchapterId,
       }}
     >
       {children}

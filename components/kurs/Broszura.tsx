@@ -3,11 +3,7 @@ import { useKurs } from './context';
 import { Button } from '@/components/Button';
 
 export default function BroszuraPage({iframeSrc}: {iframeSrc: string}) {
-  const { markAsCompleted } = useKurs();
-
-  const handleMarkAsCompleted = () => {
-    markAsCompleted('3.1');
-  };
+  const { markAsCompleted, currentSubchapterId } = useKurs();
 
   return (
     <div className="relative flex flex-col justify-between items-start gap-6 w-full">
@@ -20,7 +16,7 @@ export default function BroszuraPage({iframeSrc}: {iframeSrc: string}) {
         className="px-6 border border-eblue-600 rounded-md"
         variant="ghost"
         size="sm"
-        onClick={handleMarkAsCompleted}
+        onClick={() => markAsCompleted(currentSubchapterId)}
       >
         Oznacz jako lekcję zakończoną
       </Button>
