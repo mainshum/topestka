@@ -27,10 +27,10 @@ export const Title: React.FC = () => {
       <Link href="/kurs" className="top-4 left-4 font-monarcha text-xl">
         MRKH to pestka!
       </Link>
-      <h1 className="pt-5 font-monarcha text-orange-500 text-lg">
+      <h1 className="pt-6 pb-1 font-outfit text-orange-500 text-lg">
         {getTitle(currentSubchapter)}
       </h1>
-      <h2 className="font-monarcha text-2xl">{getSubchapterTitle(currentSubchapter)}</h2>
+      <h2 className="font-monarcha text-2xl text-eblue-600">{getSubchapterTitle(currentSubchapter)}</h2>
     </section>
   );
 };

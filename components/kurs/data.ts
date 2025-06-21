@@ -14,7 +14,14 @@ export type BroszuraSubchapter = {
   title: string;
 }
 
-export type Subchapter = VideoSubchapter | BroszuraSubchapter;
+export type FlashcardSubchapter = {
+  type: 'flashcard';
+  subtype: 'flashcard';
+  partNo: number;
+  title: string;
+}
+
+export type Subchapter = VideoSubchapter | BroszuraSubchapter | FlashcardSubchapter;
 
 export const videoSubchapters = new Map<number, VideoSubchapter>([
   [1, { partNo: 1, type: 'video', subtype: 'pp', title: "Kim jesteśmy?", from: 5, to: 52 }],
@@ -32,6 +39,35 @@ export const videoSubchapters = new Map<number, VideoSubchapter>([
   [13, { partNo: 13, type: 'video', subtype: 'pl', title: "Z czym się wiąże MRKH?", from: 48 * 60 + 51, to: Infinity }],
 ]);
 
+export const flashcardData = [
+  {
+    flashcardNo: 1,
+    textContent: "Zespół MRKH nie zagraża życiu Twojego dziecka."
+  },
+  {
+    flashcardNo: 2,
+    textContent: "Nie obwiniaj się o to, że córka ma zespół MRKH."
+  },
+  {
+    flashcardNo: 3,
+    textContent: "Uzgodnij z córką, z kim podzielić się informacją czyli komu możecie zaufać i na czyje wsparcie możecie liczyć. "
+  },
+  {
+    flashcardNo: 4,
+    textContent: "Nie wywieraj presji w kwestii podjęcia leczenia wady pochwy. "
+  },
+  {
+    flashcardNo: 5,
+    textContent: "Pamiętaj, że choć 4999 na 5000 kobiet mam macicę, to niepłodność jest problemem, który dotyczy co piątej pary. "
+  },
+];
+
+export const flashcardSubchapter: FlashcardSubchapter = {
+  type: 'flashcard',
+  subtype: 'flashcard',
+  partNo: 1,
+  title: "Kilka porad dla mam osób z MRKH"
+};
 
 export const videoEntries = Array.from(videoSubchapters.entries());
 export const perspektywaPacjencka = videoEntries.filter(([sub, value]) => sub < 9);

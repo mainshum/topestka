@@ -8,13 +8,16 @@ import { getCompletedItems } from "@/utils/completedItems/server";
 import { Title } from '../../components/kurs/Title';
 import { Chapters } from '../../components/kurs/Chapters';
 import { BroszuraChapter } from '../../components/kurs/BroszuraChapter';
+import { FlashcardChapter } from '../../components/kurs/FlashcardChapter';
 import dynamic from 'next/dynamic';
 import Video from '../../components/kurs/Video';
 import { Chapter } from '../../components/kurs/Chapter';
-import { getId, perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter } from '../../components/kurs/data';
+import { getId, perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter, flashcardData } from '../../components/kurs/data';
 import { KursProvider, useKurs } from '../../components/kurs/context';
 import { flushSync } from 'react-dom';
 import { Subchapter as SubchapterComponent } from '../../components/kurs/Subchapter';
+import { Flashcard } from '../../components/kurs/Flashcard';
+import { Button } from '../../components/Button';
 
 const getCompletedPercentage = (total: number, completed: number) => {
   return Math.round((completed / total) * 100);
@@ -98,7 +101,7 @@ function KursPage({
   playbackId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  const { currentSubchapter, setCurrentSubchapter, isCompleted, completedSubchapters } = useKurs();
+  const { currentSubchapter, setCurrentSubchapter, isCompleted, completedSubchapters, markAsCompleted, currentSubchapterId } = useKurs();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -141,24 +144,38 @@ function KursPage({
   const completedVideoPP = completedSubchapters.filter((item) => item.startsWith(`video#pp`)).length;
   const completedVideoPL = completedSubchapters.filter((item) => item.startsWith(`video#pl`)).length;
   const completedBroszura = completedSubchapters.filter((item) => item.startsWith(`broszura`)).length;
+  const completedFlashcard = completedSubchapters.filter((item) => item.startsWith(`flashcard`)).length;
 
-  // video1 
-  // is complete = ok 
-  // current highlight = ok
-
-  // video2
-  // brosuszra
+  // Determine if we should show the flashcard background
+  const showFlashcardBackground = type === 'flashcard';
 
   return (
     <>
       <Title />
-      <section className="flex xl:flex-row flex-col justify-between gap-x-6">
-        <div className="relative flex flex-col justify-between items-start gap-6 grow-[1]">
+      <section className="flex xl:flex-row flex-col justify-between gap-x-6 pt-2">
+        <div 
+          className={cn(
+            "relative flex flex-col justify-between items-start gap-6 grow-[1]",
+          )}
+        >
           {type === 'video' && (
             <Video ref={onVideoMount} muxToken={muxToken} playbackId={playbackId} />
           )}
           {type === 'broszura' && (
             <BroszuraContent iframeSrc={`/bezpestkowe_broszura_${partNo}.pdf`} />
+          )}
+          {type === 'flashcard' && (
+            <div className="flex flex-col justify-between items-start gap-6 w-full ">
+              <Flashcard data={flashcardData} />
+              <Button
+                className="px-6 border border-eblue-600 rounded-md"
+                variant="ghost"
+                size="sm"
+                onClick={() => markAsCompleted(currentSubchapterId)}
+              >
+                Oznacz jako lekcję zakończoną
+              </Button>
+            </div>
           )}
         </div>
         <Chapters>
@@ -201,6 +218,7 @@ function KursPage({
             })}
           </Chapter>
           <BroszuraChapter completed={getCompletedPercentage(2, completedBroszura)} />
+          <FlashcardChapter completed={getCompletedPercentage(1, completedFlashcard)} />
         </Chapters>
       </section>
     </>
