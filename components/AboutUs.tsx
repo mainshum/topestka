@@ -114,7 +114,7 @@ const AboutUs = () => {
   return (
     <HomeSection
       id="o-nas"
-      className="flex flex-col justify-center pt-20 text-eblue"
+      className="flex flex-col justify-center pt-20 pb-0 text-eblue"
     >
       <h1 className="md:hidden pb-16 font-monarcha text-5xl">O nas</h1>
       <h1 className="hidden md:inline pb-24 font-monarcha text-5xl">

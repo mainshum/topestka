@@ -37,7 +37,7 @@ const KupKursSection = () => {
         </Cena>
         <Cena koszt="200">
           <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
-            cena do końca kwietnia
+            cena do końca września
           </span>
         </Cena>
         <div className="h-0" />
