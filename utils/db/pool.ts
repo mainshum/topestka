@@ -15,8 +15,4 @@ pool.on('connection', (connection) => {
     console.log(`Connection ${connection.threadId} connected`);
 });
 
-pool.on('release', (con) => {
-    console.log(`Connection ${con.threadId} released`);
-});
-
 export const db = await drizzle(pool);

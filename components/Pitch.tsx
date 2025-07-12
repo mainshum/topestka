@@ -10,7 +10,7 @@ const Pitch = () => {
       id="program"
       className="flex flex-col items-start bg-eblue pt-32 md:pt-40 gap-12 md:px-40 font-monarcha text-ewhite"
     >
-      <h3 className="text-base text-electric-600 md:text-xl">
+      <h3 className="text-base text-electric-500 md:text-xl">
         Zdobywaj kompleksową wiedzę od pacjentek i ekspertek o zespole MRKH,{" "}
         <LgLinebreak /> by zapewniać najwyższy standard opieki.
       </h3>

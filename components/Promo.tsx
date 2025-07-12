@@ -25,7 +25,7 @@ const Promo = () => {
   }, []);
 
   return (
-    <HomeSection ref={onSection}>
+    <HomeSection className="max-sm:p-0" ref={onSection}>
       {useDevice === "mobile" && (
         <Video theme={Instaplay} autoPlay height={700} src={insta} />
       )}

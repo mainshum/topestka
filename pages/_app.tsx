@@ -36,6 +36,7 @@ function MyApp({
       <Head>
         <title>To pestka!</title>
         <meta name="description" content="Platforma toPestka" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Script onLoad={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />

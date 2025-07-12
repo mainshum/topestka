@@ -19,7 +19,7 @@ const OpisKursu = () => {
     <HomeSection className="flex flex-col items-center pl-10 md:pl-40 pt-20 md:pt-36 md:pr-24 md:gap-24 gap-20">
       <h1 className="font-monarcha text-4xl md:text-6xl">
         Nasz kurs dostarczy Ci kompleksowej wiedzy o <SmLinebreak /> zespole
-        MRKH w pracy lekarza
+        MRKH w pracy lekarza.
       </h1>
       <section className="flex flex-col items-start gap-9 md:pr-40">
         <KursParagraph>

@@ -97,7 +97,7 @@ const aboutUsSections = [
 
 const AboutUsSection = ({ img, children, h1, alt, caption }: AboutUsSectionProps) => (
   <section className="relative flex flex-col gap-8 md:grid md:grid-cols-2 pb-20 md:pb-28 font-outfit">
-    <h1 className="md:order-2 pb-3 border-b-[1.5px] border-b-electric-400 text-3xl md:text-4xl">
+    <h1 className="md:order-2 pb-3 border-b-[1px] border-b-electric-400 text-3xl md:text-4xl">
       {h1}
     </h1>
     <figure className="md:order-1 row-span-2">

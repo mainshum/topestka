@@ -14,14 +14,14 @@ const Login = () => {
         )! as HTMLInputElement;
         signIn("email", { email: input.value });
       }}
-      className="flex flex-col justify-center items-center gap-3 w-[470px] pb-20"
+      className="flex flex-col justify-center items-center gap-3 md:w-[470px] md:px-0 px-8 pb-20"
     >
-      <h1 className="font-outfit text-2xl font-extralight">
+      <h1 className="font-outfit text-xl sm:text-2xl font-extralight">
         Wpisz swój adres e-mail aby otrzymać jednorazowy link do logowania.
       </h1>
       <div className="flex w-full">
         <Input
-          className="border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite py-7 rounded-none text-electric-500 text-xl md:text-xl placeholder:text-electric-500"
+          className="border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite py-7 rounded-none text-electric-500 md:text-xl placeholder:text-electric-500"
           type="email"
           name="email"
           placeholder="Twój email"

@@ -58,18 +58,18 @@ const accordions: AccordionItemData[] = [
     "dzięki któremu poznasz perspektywę pacjencką i ekspercką na temat komunikacji w gabinecie medycznym",
   ],
   [
-    "publikację",
-    "która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami",
-  ],
-  [
     "zestaw fiszek",
     "stworzonych przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH",
   ],
-  ["quiz", "mający na celu sprawdzenie twojej wiedzy z kursu"],
   [
     "dwie broszury",
     "stworzone przez Fundację Bezpestkowe na temat zespołu MRKH oraz towarzyszących mu kwestiach",
   ],
+  [
+    "publikację",
+    "która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami",
+  ],
+  ["quiz", "mający na celu sprawdzenie twojej wiedzy z kursu"],
   ["certyfikat", "potwierdzający, że MRKH to dla ciebie pestka! "],
 ];
 
@@ -93,6 +93,8 @@ const dlaKogoItems: DlaKogoItemData[] = [
 ];
 
 const kursWLiczbachItems: KursWLiczbachItem[] = [
+  ["13", "tyle rodziałów ma nasz kurs "],
+  ["8", "tyle wykładów przeprowadziłyśmy na uczelniach medycznych w Polsce"],
   [
     "70",
     <span key="70">
@@ -100,8 +102,6 @@ const kursWLiczbachItems: KursWLiczbachItem[] = [
       <br /> zawarte w naszym kursie
     </span>,
   ],
-  ["13", "tyle rodziałów ma nasz kurs "],
-  ["8", "tyle wykładów przeprowadziłyśmy na uczelniach medycznych w Polsce"],
   [
     "10K",
     "to liczba wydrukowanych przez nas broszur, które dystrybuujemy w całej Polsce",
