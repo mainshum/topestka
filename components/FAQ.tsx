@@ -127,9 +127,9 @@ const FAQ = () => {
             >
               <AccordionTrigger
                 chevProps={{
-                  className: "text-ewhite shrink-0 transform -rotate-90 ",
+                  className: "text-ewhite shrink-0 transform md:-rotate-90 ",
                 }}
-                className="h-fit border-ewhite pb-3 pt-0 border-b-[1px] border-solid [&[data-state=open]>svg]:rotate-90 font-outfit text-base md:text-xl"
+                className="h-fit border-ewhite pb-3 pt-0 border-b-[1px] border-solid md:[&[data-state=open]>svg]:rotate-90 font-outfit text-base md:text-xl"
               >
                 {question}
               </AccordionTrigger>
