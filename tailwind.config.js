@@ -93,7 +93,7 @@ module.exports = {
       animation: {
         wiggle: "wiggle 0.8s both",
         "accordion-down": "accordion-down 0.6s ease-in-out",
-        "accordion-up": "accordion-up 0.6s ease-out",
+        "accordion-up": "accordion-up 0.6s ease-in-out",
       },
     },
   },

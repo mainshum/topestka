@@ -35,7 +35,16 @@ const NavMobile = ({
   classNames?: string;
   accordionRef?: React.RefObject<HTMLDivElement>;
   useStaticNav: boolean;
+
 }) => {
+
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+  // hack to close the accordion when the top links are clicked
+  const simulateButtonClick = () => {
+    buttonRef.current?.click();
+  };
+
   return (
     <Accordion
       style={style}
@@ -50,24 +59,17 @@ const NavMobile = ({
             !useStaticNav && "border-b-electric-300 border-b-[1px]",
           )}
         >
-          <span className={cn("text-xl", useStaticNav && "hidden")}>
+          <span className={cn("text-xl font-outfit", useStaticNav && "hidden")}>
             to pestka
           </span>
           <RadixTrigger asChild>
-            <button aria-label="menu">
+            <button ref={buttonRef} aria-label="menu">
               <Justify className="w-5 h-5" />
             </button>
           </RadixTrigger>
         </div>
-        <Content className="text-sm data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]">
-          <div
-            className={cn(
-              "pb-0 border-b-[1px] ",
-              !useStaticNav && "border-b-electric-300",
-            )}
-          >
-            <TopLinks className="pl-6 flex gap-8 text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 py-10 font-semibold" />
-          </div>
+        <Content className={cn("text-sm  pb-0 border-b-[1px] data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]", !useStaticNav && "border-b-electric-300")}>
+            <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [&>li:first-child]:pt-10 [&>li:last-child]:pb-10" />
         </Content>
       </AccordionItem>
     </Accordion>
@@ -77,13 +79,14 @@ const NavMobile = ({
 const TopLinks = React.forwardRef<
   HTMLUListElement,
   HTMLAttributes<HTMLUListElement>
->(({ className }) => {
+>(({ className, ...props }) => {
   return (
     <ul
       className={cn(
         "text-eblue gap-12 flex justify-center items-center",
         className,
       )}
+      {...props}
     >
       <li>
         <Link href="#program"> Program </Link>
@@ -214,7 +217,7 @@ const MainNav = React.forwardRef<
       {/* desktop */}
       <Nav.Root style={style} className={clsx("hidden lg:flex", classNames)}>
         <Nav.Logo />
-        <TopLinks className="flex-row items-center gap-12 text-lg" />
+        <TopLinks className="flex-row items-center text-lg" />
         <Nav.Logo className="invisible" />
         {/* <div className="flex gap-4">
           {session && (

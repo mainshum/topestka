@@ -3,7 +3,7 @@ import HomeSection from "./HomeSection";
 import { OfferingSection, OfferingList } from "./Offering";
 import { buttonVariants } from "./Button";
 import Link from "next/link";
-import { ACTION_NETWORK_URL, NEWSLETTER_URL } from "@/utils/const";
+import { NEWSLETTER_URL } from "@/utils/const";
 
 type CenaProps = {
   children: React.ReactNode;
