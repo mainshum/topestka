@@ -1,32 +1,47 @@
 import MailLayout from "@/components/mail-layout";
-import React from "react";
-import { GetServerSideProps } from "next";
-import { P24 } from "@ingameltd/node-przelewy24";
-import { ResultAsync } from 'neverthrow';
+import React, { useEffect } from "react";
+import { nanoid } from "nanoid";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const merchantId = 325227;
-  const posId = 325227;
-  const apiKey = "203d245602fa094a45e97e0e5bd7cc10";
-  const crcKey = "cc0ec2bb9c8431ec";
+const Checkout = () => {
 
-  const p24 = new P24(merchantId, posId, apiKey, crcKey, { sandbox: true });
+  const router = useRouter();
 
-  return ResultAsync.fromPromise(p24.testAccess(), (error) => error)
-    .mapErr(res => {
-      console.error(res);
-      return false;
-    })
-    .match(b => ({props: {result: b}}), e => ({props: {result: false}}))
+  const {data, isLoading, error} = useQuery<{link: string, status: number}>({
+    queryKey: ["transaction-link"],
+    queryFn: async () => {
+      const res =  await fetch(`/api/transaction`);
+      const json = await res.json();
+      return {link: json.link, status: res.status};
+    }
+  });
 
-};
 
-const Checkout = ({ result }: { result: boolean }) => {
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (data?.status === 401) {
+      router.push("/login");
+      return;
+    }
+
+    if (data) {
+      const {link} = data;
+      window.location.href = link;
+    }
+  }, [data, isLoading, error, router]);
+
   return (
-    <div className="flex flex-col justify-center items-center gap-3 w-[470px] pb-20">
-      <h1 className="font-outfit text-2xl font-extralight">
-        {JSON.stringify(result)}
-      </h1>
+    <div className="flex flex-col justify-center items-center gap-10 w-[470px] pb-20">
+      <p className="font-outfit text-lg md:text-xl font-extralight">
+        Przekierowujemy Cię na stronę płatności...
+      </p>
+      <div className="flex justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ewhite"></div>
+      </div>
     </div>
   );
 };
