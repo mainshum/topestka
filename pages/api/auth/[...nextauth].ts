@@ -16,7 +16,6 @@ const transportObj = {
 };
 
 export const authOptions: NextAuthOptions = {
-  // TODO fix: https://github.com/nextauthjs/next-auth/issues/8280#issuecomment-2094369316
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,

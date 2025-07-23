@@ -12,7 +12,7 @@ const Login = () => {
         const input = (e.target as HTMLFormElement).elements.namedItem(
           "email",
         )! as HTMLInputElement;
-        signIn("email", { email: input.value });
+        signIn("email", { email: input.value, callbackUrl: "/kurs" });
       }}
       className="flex flex-col justify-center items-center gap-3 md:w-[470px] md:px-0 px-8 pb-20"
     >
