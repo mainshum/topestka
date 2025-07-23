@@ -28,7 +28,7 @@ const VideoPage = React.forwardRef<HTMLVideoElement, { muxToken: string; playbac
           size="sm"
           onClick={handleMarkAsCompleted}
         >
-          Oznacz jako lekcję zakończoną
+          Oznacz jako lekcję ukończoną
         </Button>
       </div>
     );

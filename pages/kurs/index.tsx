@@ -173,7 +173,7 @@ function KursPage({
                 size="sm"
                 onClick={() => markAsCompleted(currentSubchapterId)}
               >
-                Oznacz jako lekcję zakończoną
+                Oznacz jako lekcję ukończoną
               </Button>
             </div>
           )}
