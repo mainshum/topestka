@@ -5,7 +5,7 @@ import {
   mysqlTable,
   primaryKey,
   varchar,
-  unique,
+  mysqlEnum
 } from "drizzle-orm/mysql-core";
 
 
@@ -105,5 +105,16 @@ export const completedItems = mysqlTable("completedItems", {
   completedQuizzes: varchar("completedQuizzes", { length: 1000 }),
   completedFlashcards: varchar("completedFlashcards", { length: 1000 }),
   createdAt: timestamp("createdAt").notNull().$defaultFn(() => new Date()),
+  updatedAt: timestamp("updatedAt").notNull().$defaultFn(() => new Date()),
+});
+
+const transactionStatus = mysqlEnum("status", ["pending", "success", "failed"]);
+
+export const transactions = mysqlTable("transaction", {
+  sessionId: varchar("sessionId", { length: 255 }).primaryKey(),
+  email: varchar("email", { length: 255 }).notNull(),
+  token: varchar("token", { length: 255 }).notNull(),
+  amount: int("amount").notNull(),
+  status: transactionStatus.notNull().default("pending"),
   updatedAt: timestamp("updatedAt").notNull().$defaultFn(() => new Date()),
 });

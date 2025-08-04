@@ -14,7 +14,7 @@ const MailLayout = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElemen
           Powrót
         </Link>
       </Nav.Root>
-      <div className="flex flex-col justify-center items-center gap-8 bg-eblue w-full  text-ewhite grow-[1]">
+      <div className="flex flex-col justify-center items-center gap-8 bg-eblue w-full  text-ewhite grow-[1] pb-20">
         {children}
       </div>
     </main>

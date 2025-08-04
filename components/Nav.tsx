@@ -220,7 +220,7 @@ const MainNav = React.forwardRef<
         <TopLinks className="flex-row items-center text-lg" />
         <Nav.Logo className="invisible" />
         <div className="flex gap-4">
-          {session && (
+          {session && session.user.hasAccess && (
             <Link
               href="/kurs"
               className={`${buttonVariants({ variant: "panel" })} flex items-center`}
