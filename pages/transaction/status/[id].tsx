@@ -1,13 +1,32 @@
 import MailLayout from "@/components/mail-layout";
 import Spinner from "@/components/Spinner";
+import { P24TransactionById } from "@/pages/api/transaction/status/[id]";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
-type Status = {
-  0: 'no-payment',
-  1: 'advance payment',
-  2: 'payment made',
-  3: 'payment returned',
+// Error code to user-friendly message mapping
+const ERROR_MESSAGES: Record<number, string> = {
+  400: "Nieprawidłowe żądanie. Sprawdź poprawność danych.",
+  401: "Brak autoryzacji. Zaloguj się ponownie.",
+  404: "Transakcja nie została znaleziona.",
+  405: "Nieprawidłowa metoda żądania.",
+  500: "Błąd serwera. Spróbuj ponownie później.",
+  502: "Błąd komunikacji z systemem płatności. Spróbuj ponownie za chwilę.",
+  503: "Serwis tymczasowo niedostępny. Spróbuj ponownie później.",
+  504: "Przekroczono limit czasu odpowiedzi. Spróbuj ponownie.",
+};
+
+// Default error message for unknown status codes
+const getErrorMessage = (statusCode: number): string => {
+  return ERROR_MESSAGES[statusCode] || "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.";
+};
+
+const TransactionSuccess = () => {
+  return <div>Transakcja została dokonana</div>
+}
+
+const TransactionFailed = () => {
+  return <div>Transakcja nie została dokonana</div>
 }
 
 export default function Transaction() {
@@ -16,41 +35,49 @@ export default function Transaction() {
 
   const {id} = router.query;
 
-  const {data, isLoading, error} = useQuery<{status: keyof Status}>({
+  const {data, isLoading, error} = useQuery<P24TransactionById>({
     queryKey: ['transaction', id],
     queryFn: async () => {
-      if (!id) throw new Error('No transaction ID provided');
       const res = await fetch(`/api/transaction/status/${id}`);
-      const data = await res.json();
-      if (data.status === 'pending') throw new Error('Transaction not verified');
+      
+      // If status code is not 200, throw error without retrying
+      if (!res.ok) {
+        const errorMessage = getErrorMessage(res.status);
+        throw new Error(errorMessage);
+      }
+      
+      const data = await res.json() as P24TransactionById;
+      
+      // If status is not 0 (meaning it's still pending), throw error to trigger retry
+      if (data.status !== 0) {
+        throw new Error('Transaction still pending');
+      }
+      
       return data;
     },
-    retry: true,
+    retry: (failureCount, error) => {
+      // Only retry if the error is "Transaction still pending"
+      return error.message === 'Transaction still pending';
+    },
     retryDelay: 2000,
     enabled: !!id, // Only run the query when id is available
   })
 
+  if (error) {
+    return <div className="text-center p-8">
+      <h1 className="text-2xl font-bold text-red-600 mb-4">Wystąpił błąd</h1>
+      <p className="text-ewhite">{error.message}</p>
+    </div>
+  }
+
   // Show loading spinner while router is hydrating or query is loading
-  if (!id || isLoading) {
+  if (!id || isLoading || !data) {
     return <Spinner text="Trwa weryfikacja transakcji..." />
   }
 
-  // Show error state
-  if (error) {
-    return <div>Błąd: {error.message}</div>
-  }
-
-  // Ensure data is available
-  if (!data) {
-    return <Spinner text="Ładowanie danych transakcji..." />
-  }
-
-  return <div>
-    {data.status === 0 && <div>Transakcja nie została dokonana</div>}
-    {data.status === 1 && <div>Transakcja została dokonana</div>}
-    {data.status === 2 && <div>Transakcja została dokonana</div>}
-    {data.status === 3 && <div>Transakcja została dokonana</div>}
-  </div>
+  return <>
+    {data.status === 0 ? <TransactionSuccess /> : <TransactionFailed />}
+  </>
 }
 
 Transaction.getLayout = (page: React.ReactNode) => <MailLayout>{page}</MailLayout>;

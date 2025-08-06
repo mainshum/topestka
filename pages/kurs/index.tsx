@@ -136,9 +136,7 @@ function KursPage({
   }, [setCurrentSubchapter, currentSubchapter]);
 
 
-  const { partNo, type, subtype } = currentSubchapter;
-
-  console.log(type, subtype)
+  const { partNo, type } = currentSubchapter;
 
 
   const completedVideoPP = completedSubchapters.filter((item) => item.startsWith(`video#pp`)).length;
