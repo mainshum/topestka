@@ -4,7 +4,7 @@ import {
 } from './utils/api-test-helpers';
 
 test.describe('Transaction Status API', () => {
-  const { baseURL, apiEndpoint } = TEST_CONFIG;
+  const { baseURL, apiEndpoint } = TEST_CONFIG('/api/transaction/status');
 
   test.describe('Authentication scenarios', () => {
     test('should return 401 when user is not authenticated', async ({ request }) => {

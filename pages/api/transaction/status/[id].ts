@@ -6,14 +6,7 @@ import { eq } from "drizzle-orm";
 import { getServerSession, Session } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]";
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
-
-// Custom error types for better error handling
-class AuthenticationError extends Error {
-  constructor(message: string = "Unauthorized") {
-    super(message);
-    this.name = "AuthenticationError";
-  }
-}
+import { AuthenticationError, DatabaseError, withAuth } from "@/utils/api";
 
 class TransactionNotFoundError extends Error {
   constructor(message: string = "Transaction not found") {
@@ -26,13 +19,6 @@ class P24ApiError extends Error {
   constructor(message: string = "P24 API error") {
     super(message);
     this.name = "P24ApiError";
-  }
-}
-
-class DatabaseError extends Error {
-  constructor(message: string = "Database error") {
-    super(message);
-    this.name = "DatabaseError";
   }
 }
 
@@ -100,19 +86,6 @@ const getP24Transaction = (sessionId: string): ResultAsync<P24TransactionById, E
   );
 };
 
-const parseSession = (session: Session | null) => {
-  if (!session || !session.user?.email) {
-    return errAsync(new AuthenticationError());
-  }
-  return okAsync({ email: session.user.email });
-};
-
-const withAuth = (req: NextApiRequest, res: NextApiResponse) => {
-  return ResultAsync.fromPromise(
-    getServerSession(req, res, authOptions),
-    (error) => new DatabaseError("Failed to get server session")
-  ).andThen(parseSession);
-};
 
 const findTransaction = (email: string, id: string) => {
   return ResultAsync.fromPromise(

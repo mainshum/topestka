@@ -52,7 +52,7 @@ const NavMobile = ({
       className={clsx("lg:hidden", classNames)}
       type="single"
     >
-      <AccordionItem className="bg-ewhite" ref={accordionRef} value="hamburger">
+      <AccordionItem ref={accordionRef} value="hamburger">
         <div
           className={cn(
             "flex text-electric-600 justify-between px-6 py-3 w-full h-[54px] ",
@@ -83,22 +83,22 @@ const TopLinks = React.forwardRef<
   return (
     <ul
       className={cn(
-        "text-eblue gap-12 flex justify-center items-center",
+        "text-eblue gap-8 flex justify-center items-center font-outfit",
         className,
       )}
       {...props}
     >
       <li>
-        <Link href="#program"> Program </Link>
+        <Link href="#program" className={buttonVariants({variant: "navlink"})}> Program </Link>
       </li>
       <li>
-        <Link href="#o-nas">O prowadzących</Link>
+        <Link href="#o-nas" className={buttonVariants({variant: "navlink"})}>O prowadzących</Link>
       </li>
       <li>
-        <Link href="#kup-kurs"> Kup kurs </Link>
+        <Link href="#kup-kurs" className={buttonVariants({variant: "navlink"})}> Kup kurs </Link>
       </li>
       <li>
-        <Link href="#kontakt"> Kontakt </Link>
+        <Link href="#kontakt" className={buttonVariants({variant: "navlink"})}> Kontakt </Link>
       </li>
     </ul>
   );
@@ -111,7 +111,7 @@ const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     return (
       <nav
         className={clsx(
-          "lg:flex justify-between items-center p-10 py-8 border border-b-eblue-100 font-medium",
+          "lg:flex bg-butter-100 justify-between items-center p-10 py-8 border border-b-eblue-100 font-medium",
           className,
         )}
         {...props}
@@ -182,7 +182,7 @@ const MainNav = React.forwardRef<
   const accordionRef = React.useRef<HTMLDivElement>(null);
 
   const classNames = cn(
-    "top-0 bg-ewhite w-full z-20 fixed transition-transform text-electric-500",
+    "top-0 bg-butter-100 w-full z-20 fixed transition-transform text-electric-500",
     className,
   );
 
@@ -218,7 +218,6 @@ const MainNav = React.forwardRef<
       <Nav.Root style={style} className={clsx("hidden lg:flex", classNames)}>
         <Nav.Logo />
         <TopLinks className="flex-row items-center text-lg" />
-        <Nav.Logo className="invisible" />
         <div className="flex gap-4">
           {session && session.user.hasAccess && (
             <Link

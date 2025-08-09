@@ -1,12 +1,5 @@
 import { Page, Route, expect } from '@playwright/test';
 
-// Test configuration
-export const TRANSACTION_TEST_CONFIG = {
-  baseURL: 'http://localhost:3000',
-  retryDelay: 2000,
-  timeout: 10000
-};
-
 // Mock response helpers
 export async function mockApiResponse(
   page: Page,

@@ -37,9 +37,9 @@ html {
         @apply pb-4;
     }
     .dowiedz-sie {
-        @apply pb-8 font-monarcha text-butter-100 pr-10 max-w-[770px];
+        @apply pb-8 font-monarcha text-butter-100 max-w-[770px];
         & h2 {
-            @apply pb-4 md:pb-4 border-b-[1px] border-b-electric-600 text-xl md:text-3xl;
+            @apply pb-4 md:pb-4 border-b-[1px] border-b-electric-500 text-xl md:text-3xl;
         }
         & p {
             @apply pt-4 font-outfit text-lg md:text-xl;

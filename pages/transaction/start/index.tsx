@@ -1,6 +1,5 @@
 import MailLayout from "@/components/mail-layout";
 import React, { useEffect } from "react";
-import { nanoid } from "nanoid";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Spinner from "@/components/Spinner";

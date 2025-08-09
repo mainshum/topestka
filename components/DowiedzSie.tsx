@@ -1,6 +1,6 @@
 import React from "react";
 import HomeSection from "./HomeSection";
-import { SmLinebreak } from "./LineBreaks";
+import { LgLinebreak, SmLinebreak } from "./LineBreaks";
 import { cn } from "@/utils/misc";
 
 const DowiedzSie = () => {
@@ -25,7 +25,7 @@ const DowiedzSie = () => {
         <h2>Wsparcie psychiczne i zrozumienie pacjentek</h2>
         <p>
           Kurs pozwala głębiej zrozumieć psychologiczne wyzwania i potrzeby
-          pacjentek z zespołem MRKH. Dzięki wiedzy od osób z własnym
+          pacjentek z zespołem MRKH. <LgLinebreak /> Dzięki wiedzy od osób z własnym
           doświadczeniem, nauczysz się, jak okazać prawdziwe wsparcie, które
           ułatwia pacjentkom proces akceptacji diagnozy.
         </p>

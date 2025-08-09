@@ -42,16 +42,16 @@ const KupKursSection = () => {
         </Cena>
         <div className="h-0" />
         <Link
-          href="/checkout"
+          href="/transaction/start"
           className={`${buttonVariants({variant: 'powiadom', size: 'lg'})} whitespace-nowrap xl:hidden`}
         >
-          Powiadom o sprzedaży
+          Kup kurs
         </Link>
         <Link
-          href="/checkout"
+          href="/transaction/start"
           className={`${buttonVariants({variant: 'powiadom', size: 'xl'})} whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0`}
         >
-          Powiadom o sprzedaży
+          Kup kurs
         </Link>
       </OfferingSection>
       <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">

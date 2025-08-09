@@ -1,14 +1,14 @@
 import { APIRequestContext } from '@playwright/test';
 
 // Test configuration
-export const TEST_CONFIG = {
+export const TEST_CONFIG = (apiEndpoint: string) => ({
   baseURL: 'http://localhost:3000',
-  apiEndpoint: '/api/transaction/status',
+  apiEndpoint,
   testUser: {
     email: 'test@example.com',
     id: 'test-user-id'
   }
-};
+});
 
 // Mock data
 export const MOCK_DATA = {

@@ -26,12 +26,14 @@ const Promo = () => {
 
   return (
     <HomeSection className="max-sm:p-0" ref={onSection}>
-      {useDevice === "mobile" && (
-        <Video theme={Instaplay} autoPlay height={700} src={insta} />
-      )}
-      {useDevice === "desktop" && (
-        <Video poster={zuzaPoster} theme={Instaplay} autoPlay height={700} src={zwiastun} />
-      )}
+      <div className="rounded-lg overflow-hidden">
+        {useDevice === "mobile" && (
+          <Video theme={Instaplay} autoPlay height={700} src={insta} />
+        )}
+        {useDevice === "desktop" && (
+          <Video poster={zuzaPoster} theme={Instaplay} autoPlay height={700} src={zwiastun} />
+        )}
+      </div>
     </HomeSection>
   );
 };

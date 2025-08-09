@@ -1,57 +1,74 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]";
-import { Country, Currency, Encoding, Language, Order, P24 } from "@ingameltd/node-przelewy24";
+import { Country, Currency, Encoding, Language, Order, P24Error } from "@ingameltd/node-przelewy24";
 import { nanoid } from "nanoid";
 import { db } from "@/utils/db/pool";
 import { transactions } from "@/utils/db/schema";
 import { client } from "@/utils/p24";
+import { AuthenticationError, DatabaseError, withAuth } from "@/utils/api";
+import { ResultAsync } from "neverthrow";
+import { MySqlRawQueryResult } from "drizzle-orm/mysql2";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const coursePrice = 5000;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+function saveTransactionInDb(sessionId: string, email: string, token: string): ResultAsync<MySqlRawQueryResult, DatabaseError> {
+  return ResultAsync.fromPromise(
+    db.insert(transactions).values({
+    amount: coursePrice,
+    sessionId,
+    email,
+    token,
+  }).execute(),
+  (error) => new DatabaseError("Failed to save transaction in database")
+  )
+}
 
-  // todo: move to env
-  // todo: pass session from client
-  const session = await getServerSession(req, res, authOptions);
-
-  // TODO: if no session, redirect to login
-  if (!session?.user?.email) {
-    return res.status(401).json({message: "Unauthorized"});
+function handleError(error: DatabaseError | AuthenticationError | P24Error, res: NextApiResponse) {
+  if (error instanceof AuthenticationError) {
+    return res.status(401).json({message: error.message});
   }
+  if (error instanceof DatabaseError) {
+    return res.status(500).json({message: error.message});
+  }
+  if (error instanceof P24Error) {
+    return res.status(502).json({message: error.message });
+  }
+  return res.status(500).json({message: "Internal Server Error"});
+}
 
-  const email = session.user.email;
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const p24 = client;
 
   // unikalny token transakcji
   const sessionId = nanoid();
 
-  const order: Order = {
+  const order = (email: string): Order => ({
     sessionId,
     amount: coursePrice, 
     currency: Currency.PLN,
-    description: Math.random().toString(36).substring(2, 15),
+    description: `Zakup kursu toPestka`,
     email,
     country: Country.Poland,
     language: Language.PL,
     urlReturn: `${baseUrl}/transaction/status/${sessionId}`,
     timeLimit: 15, // 15min
     encoding: Encoding.UTF8,
-  }
-
-  const {link, token} = await p24.createTransaction(order)
-
-  await db.insert(transactions).values({
-    amount: coursePrice,
-    sessionId,
-    email,
-    token,
-  }).execute();
-
-  return res.status(200).json({
-    link,
   });
 
-}   
+
+  return withAuth(req, res)
+    .andThen(({email}) => {
+      return ResultAsync.fromPromise(
+        p24.createTransaction(order(email)),
+        (error) => new P24Error("Failed to create transaction", 502)
+      )
+      .andThrough(({token}) => saveTransactionInDb(sessionId, email, token))
+    })
+    .match(
+      ({link}) => {res.status(200).json({link})},
+      (error) => handleError(error, res)
+    )
+  }
+

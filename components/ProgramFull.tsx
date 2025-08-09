@@ -4,12 +4,34 @@ import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent,
 } from "./Accordion";
+import {
+  Content,
+} from "@radix-ui/react-accordion";
 
 export type AccordionItemData = [string, React.ReactNode];
 
-const ProgramFull = ({ accordions }: { accordions: AccordionItemData[] }) => {
+const Acc = ({ title, content }: { title: string, content: string }) => {
+  return (
+    <AccordionItem className="overflow-hidden" value={title}>
+      <AccordionTrigger
+        chevProps={{
+          className: "w-6 h-6 text-eblue-600 ",
+        }}
+        className="px-4 border-b border-b-eblue-300  text-eblue-600 font-outfit  text-xl lg:text-4xl transition max-md:duration-500 data-[state=open]:rounded-md transition-discrete data-[state=open]:bg-[rgb(42,75,204)]/85  data-[state=open]:text-butter-100 [&>svg]:data-[state=open]:text-butter-100 "
+      >
+        {title}
+      </AccordionTrigger>
+      <Content className="px-2 pb-0 border-b border-b-eblue-300 lg:px-4 font-light font-outfit text-xl/[1.1] lg:text-[32px]/[1.1] data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]">
+        <div className="h-3" />
+        {content}
+        <div className="h-4" />
+      </Content>
+    </AccordionItem>
+  )
+}
+
+const ProgramFull = () => {
   return (
     <HomeSection
       id="program-full"
@@ -22,25 +44,18 @@ const ProgramFull = ({ accordions }: { accordions: AccordionItemData[] }) => {
         Kurs zawiera elementy przeznaczone do oglądania, czytania oraz część
         interaktywną.
       </p>
-      <section className="lg:gap-x-6 lg:gap-y-4 grid grid-cols-1 min-[1320px]:grid-cols-2 lg:pt-24 w-full">
-        {accordions.map(([title, content]) => (
-          <Accordion key={title} type="single" collapsible>
-            <AccordionItem value={title}>
-              <AccordionTrigger
-                chevProps={{
-                  className: "w-6 h-6 text-eblue-600 ",
-                }}
-                className="px-4 border-b border-b-eblue-300 pt-4 pb-3  text-eblue-600 font-outfit  text-xl lg:text-4xl transition max-md:duration-500 data-[state=open]:rounded-md transition-discrete data-[state=open]:bg-[rgb(42,75,204)]/85  data-[state=open]:text-butter-100 [&>svg]:data-[state=open]:text-butter-100"
-              >
-                {title}
-              </AccordionTrigger>
-              <AccordionContent className="px-2 pb-0 border-b border-b-eblue-300 lg:px-4 py-2 lg:pt-4 font-extralight font-outfit text-xl/[1.1] lg:text-3xl ">
-                {content}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        ))}
-      </section>
+      <Accordion type="single" collapsible className="lg:gap-x-6 grid grid-cols-1 min-[1320px]:grid-cols-2 lg:pt-24 w-full">
+        <section className="flex flex-col gap-y-4">
+          <Acc title="dwuczęściowe wideo" content="dzięki któremu poznasz perspektywę pacjencką i ekspercką na temat komunikacji w gabinecie medycznym" />
+          <Acc title="zestaw fiszek" content="stworzonych przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH" />
+          <Acc title="dwie broszury" content="stworzone przez Fundację Bezpestkowe na temat zespołu MRKH oraz towarzyszących mu kwestiach" />
+        </section>
+        <section className="flex flex-col gap-y-4">
+          <Acc title="publikację" content="która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami" />
+          <Acc title="quiz" content="mający na celu sprawdzenie twojej wiedzy z kursu" />
+          <Acc title="certyfikat" content="potwierdzający, że MRKH to dla ciebie pestka! " />
+        </section>
+      </Accordion>
     </HomeSection>
   );
 };
