@@ -1,8 +1,8 @@
 import MailLayout from "@/components/mail-layout";
 import Spinner from "@/components/Spinner";
-import { P24TransactionById } from "@/pages/api/transaction/status/[id]";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { TransactionStatus } from "@/utils/types";
 
 // Error code to user-friendly message mapping
 const ERROR_MESSAGES: Record<number, string> = {
@@ -35,7 +35,7 @@ export default function Transaction() {
 
   const {id} = router.query;
 
-  const {data, isLoading, error} = useQuery<P24TransactionById>({
+  const {data, isLoading, error} = useQuery<{status: TransactionStatus}>({
     queryKey: ['transaction', id],
     queryFn: async () => {
       const res = await fetch(`/api/transaction/status/${id}`);
@@ -46,18 +46,16 @@ export default function Transaction() {
         throw new Error(errorMessage);
       }
       
-      const data = await res.json() as P24TransactionById;
+      const data = await res.json() as {status: TransactionStatus};
       
-      // If status is not 0 (meaning it's still pending), throw error to trigger retry
-      if (data.status !== 0) {
-        throw new Error('Transaction still pending');
+      if (data.status === 'no-payment') {
+        throw new Error('Przekroczono limit czasu weryfikacji transakcji');
       }
       
       return data;
     },
     retry: (failureCount, error) => {
-      // Only retry if the error is "Transaction still pending"
-      return error.message === 'Transaction still pending';
+      return error.message === 'Transaction still pending' && failureCount < 3;
     },
     retryDelay: 2000,
     enabled: !!id, // Only run the query when id is available
@@ -76,7 +74,7 @@ export default function Transaction() {
   }
 
   return <>
-    {data.status === 0 ? <TransactionSuccess /> : <TransactionFailed />}
+    {data.status ? <TransactionSuccess /> : <TransactionFailed />}
   </>
 }
 

@@ -3,31 +3,45 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/utils/db/pool";
 import { transactions } from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
-import { getServerSession, Session } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]";
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { AuthenticationError, DatabaseError, withAuth } from "@/utils/api";
+import { client } from "@/utils/p24";
+import { TransactionStatus } from "@/utils/types";
 
 class TransactionNotFoundError extends Error {
-  constructor(message: string = "Transaction not found") {
-    super(message);
+  constructor(originalError: Error) {
+    super(originalError.message);
     this.name = "TransactionNotFoundError";
   }
 }
 
 class P24ApiError extends Error {
-  constructor(message: string = "P24 API error") {
-    super(message);
+  constructor(originalError: Error) {
+    super(originalError);
     this.name = "P24ApiError";
   }
 }
 
-export type P24TransactionStatus = {
+type P24TransactionStatus = {
   0: 'no-payment',
   1: 'advance payment',
   2: 'payment made',
   3: 'payment returned',
 }
+
+function verifyTransaction(sessionId: string, amount: number, currency: string, orderId: number): ResultAsync<'success' | 'failed' | 'already-verified', Error> {
+  return ResultAsync.fromPromise(
+    client.verifyTransaction({
+      sessionId,
+      amount,
+      currency,
+      orderId,
+    }),
+    (error) => new P24ApiError(error as Error)
+  )
+  .map((isVerified) => isVerified ? 'success' : 'failed');
+}
+  
 
 export type P24TransactionById = {
   statement: string,
@@ -36,19 +50,8 @@ export type P24TransactionById = {
   status: keyof P24TransactionStatus,
   amount: number,
   currency: string,
-  date: string,
-  dateOfTransaction: string,
-  clientEmail: string,
-  accountMD5: string,
-  paymentMethod: number,
-  description: string,
-  clientName: string,
-  clientAddress: string,
-  clientCity: string,
-  clientPostcode: string,
-  batchId: number,
-  fee: string
 }
+
 
 const getP24Transaction = (sessionId: string): ResultAsync<P24TransactionById, Error> => {
   const responsePromise = fetch(
@@ -66,20 +69,20 @@ const getP24Transaction = (sessionId: string): ResultAsync<P24TransactionById, E
   return (
     ResultAsync.fromPromise(
       responsePromise,
-      (error) => new P24ApiError("Failed to connect to P24 API")
+      (error) => new P24ApiError(error as Error)
     )
       .andThen((response) => {
         if (!response.ok) {
-          return errAsync(new P24ApiError(`P24 API returned ${response.status}`));
+          return errAsync(new P24ApiError(new Error(response.statusText)));
         }
         return ResultAsync.fromPromise(
           response.json(),
-          (error) => new P24ApiError("Failed to parse P24 API response")
+          (error) => new P24ApiError(error as Error)
         );
       })
       .andThen((data) => {
         if (!data.data) {
-          return errAsync(new P24ApiError("Invalid P24 API response format"));
+          return errAsync(new P24ApiError(new Error("Invalid P24 API response format")));
         }
         return okAsync(data.data);
       })
@@ -94,10 +97,10 @@ const findTransaction = (email: string, id: string) => {
       .from(transactions)
       .where(eq(transactions.email, email))
       .then((transactions) => transactions.find((t) => t.sessionId === id)),
-    (error) => new DatabaseError("Failed to query database")
+    (error) => new DatabaseError(error as Error)
   ).andThen((transDB) => {
     if (!transDB) {
-      return errAsync(new TransactionNotFoundError());
+      return errAsync(new TransactionNotFoundError(new Error("Transaction not found")));
     }
     return okAsync(transDB);
   });
@@ -135,9 +138,24 @@ export default async function handler(
     return res.status(400).json({ message: "Bad Request" });
   }
 
+
   return withAuth(req, res)
-    .andThen(({ email }) => findTransaction(email, id as string))
-    .andThen((transDB) => getP24Transaction(transDB.sessionId))
+    .andThen(({email}) => ResultAsync.combine([
+      findTransaction(email, id as string),
+      getP24Transaction(id as string)
+    ]))
+    .andThen(([transDB, transP24]): ResultAsync<TransactionStatus, Error> => {
+      switch (transP24.status) {
+        case 0:
+          return okAsync('no-payment');
+        case 1:
+          return verifyTransaction(transDB.sessionId, transP24.amount, transP24.currency, transP24.orderId);
+        case 2:
+          return okAsync('already-verified');
+        default:
+          return errAsync(new Error("Invalid transaction status"));
+      }
+    })
     .match(
       (status) => res.status(200).json({ status }),
       (error) => handleError(error, res)

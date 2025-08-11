@@ -12,8 +12,8 @@ export class AuthenticationError extends Error {
 }
 
 export class DatabaseError extends Error {
-  constructor(message: string = "Database error") {
-    super(message);
+  constructor(originalError: Error) {
+    super(originalError.message);
     this.name = "DatabaseError";
   }
 }
@@ -26,11 +26,11 @@ const parseSession = (session: Session | null) => {
 };
 
 export const withAuth = (req: NextApiRequest, res: NextApiResponse) => {
-  if (process.env.NODE_ENV === "development") {
-    return okAsync({ email: "test@test.com" });
-  }
+  // if (process.env.NODE_ENV === "development") {
+  //   return okAsync({ email: "test@test.com" });
+  // }
   return ResultAsync.fromPromise(
     getServerSession(req, res, authOptions),
-    (error) => new DatabaseError("Failed to get server session")
+    (error) => new DatabaseError(error as Error)
   ).andThen(parseSession);
 };

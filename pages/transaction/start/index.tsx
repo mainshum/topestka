@@ -3,10 +3,13 @@ import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Spinner from "@/components/Spinner";
+import { useSession } from "next-auth/react";
 
 const Start = () => {
 
   const router = useRouter();
+  const session = useSession();
+  console.log(session);
 
   const {data, isLoading, error} = useQuery<{link: string, status: number}>({
     queryKey: ["transaction-link"],

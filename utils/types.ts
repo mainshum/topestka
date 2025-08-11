@@ -1,0 +1,1 @@
+export type TransactionStatus = 'success' | 'failed' | 'already-verified' | 'no-payment';

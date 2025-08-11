@@ -19,7 +19,7 @@ function saveTransactionInDb(sessionId: string, email: string, token: string): R
     email,
     token,
   }).execute(),
-  (error) => new DatabaseError("Failed to save transaction in database")
+  (error) => new DatabaseError(error as Error)
   )
 }
 
