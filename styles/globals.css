@@ -1,4 +1,11 @@
-@import url("/fonts/stylesheet.css");
+@font-face {
+  font-family: "Monarcha";
+  src: url("/fonts/Monarcha.woff2") format("woff2"),
+    url("/fonts/Monarcha.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;

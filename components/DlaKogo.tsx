@@ -39,10 +39,7 @@ const DlaKogo = ({ items }: { items: AccordionItemData[] }) => {
     <HomeSection className="justify-between items-center grid gap-x-12 grid-cols-1 xl:grid-cols-[40%_60%] px-8 md:px-40 py-24 md:py-40 font-outfit text-eblue">
       <div className="flex flex-col xl:gap-20 h-full">
         <h1 className="font-medium text-6xl md:text-7xl">Dla kogo?</h1>
-        <p className="md:order-3 max-xl:py-12 md:font-light text-electric-600 text-xl md:text-2xl">
-          Dla wszystkich osób chcących usprawnić komunikację w gabinetach
-          lekarskich oraz chcących zgłębić swoją wiedzę na temat zespołu MRKH.
-        </p>
+        <p className="md:order-3 max-xl:py-12 md:font-light text-electric-600 text-xl md:text-2xl">Dla osób chcących poznać perspektywę pacjencką oraz zglębić swoją wiedzę na temat zespołu MRKH.</p>
       </div>
       <Accordions items={items} />
     </HomeSection>
