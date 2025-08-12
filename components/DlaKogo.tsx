@@ -6,31 +6,35 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "./Accordion";
+import { Content } from "@radix-ui/react-accordion";
+import { LgLinebreak } from "./LineBreaks";
+import { AccContent } from "./AccContent";
 
 export type AccordionItemData = [string, React.ReactNode];
 
 const Accordions = ({ items }: { items: AccordionItemData[] }) => {
   return (
-    <section className="flex flex-col justify-between h-full row-span-2 w-full accordions">
-      {items.map(([key, val]) => (
-        <Accordion key={key} type="single" collapsible>
+        <Accordion className="flex flex-col gap-y-10 h-full row-span-2 w-full accordions" type="single" collapsible>
+      {items.map(([key, val], index) => (
           <AccordionItem
+            key={index}
             className="border-eblue border-b"
             value={key}
           >
             <AccordionTrigger
               chevProps={{ className: "w-6 h-6 text-eblue" }}
-              className="font-monarcha font-normal text-xl md:text-4xl pt-4"
+              className="font-monarcha font-normal text-xl md:text-4xl pb-8"
             >
               {key}
             </AccordionTrigger>
-            <AccordionContent className="pr-8 font-light pt-2 xl:pt-8 text-lg md:text-3xl">
-              {val}
-            </AccordionContent>
+            <AccContent className="pr-8 font-extralight text-lg md:text-3xl">
+              <span>{val}</span>
+              <LgLinebreak />
+              <LgLinebreak />
+            </AccContent>
           </AccordionItem>
-        </Accordion>
       ))}
-    </section>
+        </Accordion>
   );
 };
 

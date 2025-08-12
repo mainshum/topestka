@@ -5,9 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./Accordion";
-import {
-  Content,
-} from "@radix-ui/react-accordion";
+import { AccContent } from "./AccContent";
 
 export type AccordionItemData = [string, React.ReactNode];
 
@@ -22,11 +20,11 @@ const Acc = ({ title, content }: { title: string, content: string }) => {
       >
         {title}
       </AccordionTrigger>
-      <Content className="px-2 pb-0 border-b border-b-eblue-300 lg:px-4 font-light font-outfit text-xl/[1.1] lg:text-[32px]/[1.1] data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]">
+      <AccContent className="px-2 pb-0 border-b border-b-eblue-300 lg:px-4 font-light font-outfit text-xl/[1.1] lg:text-[32px]/[1.1]">
         <div className="h-3" />
         {content}
         <div className="h-4" />
-      </Content>
+      </AccContent>
     </AccordionItem>
   )
 }
