@@ -26,9 +26,9 @@ const parseSession = (session: Session | null) => {
 };
 
 export const withAuth = (req: NextApiRequest, res: NextApiResponse) => {
-  // if (process.env.NODE_ENV === "development") {
-  //   return okAsync({ email: "test@test.com" });
-  // }
+  if (process.env.NODE_ENV === "development") {
+    return okAsync({ email: "test@test.com" });
+  }
   return ResultAsync.fromPromise(
     getServerSession(req, res, authOptions),
     (error) => new DatabaseError(error as Error)
