@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "./Accordion";
+import { cn } from "@/utils/misc";
 
 
 const faqItems = [
@@ -19,6 +20,7 @@ const faqItems = [
         <li>Rozłożenie płatności na raty za pomocą usługi PayPo.</li>
       </ul>
     </>,
+    null
   ],
   [
     "Czy oferujecie faktury VAT?",
@@ -27,6 +29,7 @@ const faqItems = [
       odpowiednią opcję i wypełnij wymagane dane. Faktura/rachunek zostanie
       wysłana do Ciebie w ciągu 2-3 dni roboczych od zakupu.
     </>,
+    null
   ],
   [
     "Studiuję, czy mogę liczyć na zniżkę?",
@@ -35,6 +38,7 @@ const faqItems = [
       najlepsze rozwiązanie. Napisz na adres bezpestkowe@gmail.com, aby
       dowiedzieć się więcej.
     </>,
+    null
   ],
   [
     "Nie jestem lekarzem, czy ten kurs jest dla mnie?",
@@ -46,6 +50,7 @@ const faqItems = [
       będzie dla Ciebie odpowiedni. Porusza on także zagadnienia społeczne
       związane z MRKH.
     </>,
+    null
   ],
   [
     "Jak mogę wspierać osoby z zespołem MRKH?",
@@ -57,6 +62,7 @@ const faqItems = [
       we własnym własnym tempie, wracając do poszczególnych materiałów w
       dowolnym czasie.
     </>,
+    null
   ],
   [
     "Co zawiera kurs i ile trwa?",
@@ -68,6 +74,7 @@ const faqItems = [
       we własnym własnym tempie, wracając do poszczególnych materiałów w
       dowolnym czasie.
     </>,
+    null
   ],
   [
     "Kurs dotyczy zespołu MRKH. Czy znajdę w nim uniwersalne treści?",
@@ -80,6 +87,7 @@ const faqItems = [
       także innych osób m. in. brak menstruacji, ulokowanie poczucia kobiecości,
       alternatywne metody macierzyństwa.
     </>,
+    'bottom-20'
   ],
   [
     "Dlaczego to wy współprowadzicie kurs?",
@@ -88,6 +96,7 @@ const faqItems = [
       warsztatów oraz badań, a od ponad sześciu lat tworzymy największą w Polsce
       społeczność oraz bazę wiedzy na temat zespołu MRKH.
     </>,
+    null
   ],
   [
     "Czy po ukończeniu kursu otrzymam certyfikat?",
@@ -95,6 +104,7 @@ const faqItems = [
       Tak, po ukończeniu kursu otrzymasz certyfikat ukończenia, który będzie
       stanowił potwierdzenie Twojej wiedzy, że zespół MRKH to dla Ciebie pestka!
     </>,
+    null
   ],
   [
     "Czy mogę w jakiś sposób wesprzeć działania fundacji?",
@@ -104,6 +114,7 @@ const faqItems = [
       Dokonując darowizny na konto fundacji. Stawiając kawę fundacji poprzez
       platformę Buy Coffee.
     </>,
+    'bottom-40'
   ],
 ] as const;
 
@@ -119,7 +130,7 @@ const FAQ = () => {
           collapsible
           className="accordions"
         >
-          {faqItems.map(([question, answer]) => (
+          {faqItems.map(([question, answer, bottom]) => (
             <AccordionItem
               className="md:grid grid-cols-2 gap-x-10 pt-3 grid-rows-[min-content]"
               key={question}
@@ -133,7 +144,7 @@ const FAQ = () => {
               >
                 {question}
               </AccordionTrigger>
-              <AccordionContent className="pt-4 md:pt-0 md:text-xl">
+              <AccordionContent className={cn("pt-4 md:pt-0 md:text-xl md:h-0 relative", bottom)}>
                 {answer}
               </AccordionContent>
             </AccordionItem>

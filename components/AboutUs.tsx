@@ -118,7 +118,7 @@ const AboutUs = () => {
     >
       <h1 className="md:hidden pb-16 font-monarcha text-5xl">O nas</h1>
       <h1 className="hidden md:inline pb-24 font-monarcha text-5xl">
-        Poznaj nas
+        Poznaj nas!
       </h1>
       {aboutUsSections.map((section, index) => (
         <AboutUsSection key={index} {...section} />

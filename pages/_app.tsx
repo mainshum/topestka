@@ -20,8 +20,8 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const websiteId = process.env.NODE_ENV === "production" 
-  ? "80a8892f-7153-4522-bffe-4eab271fecf0" 
+const websiteId = process.env.NODE_ENV === "production"
+  ? "80a8892f-7153-4522-bffe-4eab271fecf0"
   : "148e155c-49f6-4c96-a523-aba8a97f9491";
 
 function MyApp({
