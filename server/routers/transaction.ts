@@ -173,11 +173,6 @@ export const transactionRouter = router({
             await db.update(transactions).set({
               status: status,
             }).where(eq(transactions.sessionId, transDB.sessionId));
-            if (isVerified) {
-              await db.update(users).set({
-                hasAccess: true,
-              }).where(eq(users.email, transDB.email));
-            }
             break;
           case 2:
             status = 'already-verified';
