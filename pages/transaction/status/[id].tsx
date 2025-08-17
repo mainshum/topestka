@@ -11,11 +11,11 @@ const TransactionSuccess = () => {
   return <div className="flex flex-col items-center justify-center h-screen">
     <h1 className="text-2xl font-bold text-green-600 mb-4">Transakcja zweryfikowana pomyślnie</h1>
     <p className="text-white">
-      Dziękujemy za zakup kursu. Możesz teraz korzystać z zasobów.
+      W wersji sandbox dostęp do kursu jest włączany manualnie.
     </p>
-    <Link href="/kurs" className={buttonVariants({ variant: "kupkurs", size: "lg" })}>
+    {/* <Link href="/kurs" className={buttonVariants({ variant: "kupkurs", size: "lg" })}>
       Przejdź do kursu
-    </Link>
+    </Link> */}
   </div>
 }
 
