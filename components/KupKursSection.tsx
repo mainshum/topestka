@@ -4,6 +4,7 @@ import { OfferingSection, OfferingList } from "./Offering";
 import { buttonVariants } from "./Button";
 import Link from "next/link";
 import { NEWSLETTER_URL } from "@/utils/const";
+import { KupKurs } from "./KupKurs";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -41,18 +42,8 @@ const KupKursSection = () => {
           </span>
         </Cena>
         <div className="h-0" />
-        <Link
-          href="/transaction/start"
-          className={`${buttonVariants({variant: 'powiadom', size: 'lg'})} whitespace-nowrap xl:hidden`}
-        >
-          Kup kurs
-        </Link>
-        <Link
-          href="/transaction/start"
-          className={`${buttonVariants({variant: 'powiadom', size: 'xl'})} whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0`}
-        >
-          Kup kurs
-        </Link>
+        <KupKurs className={`${buttonVariants({variant: 'powiadom', size: 'lg'})} whitespace-nowrap xl:hidden`} />
+        <KupKurs className={`${buttonVariants({variant: 'powiadom', size: 'xl'})} whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0`} />
       </OfferingSection>
       <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">
         <span className="text-xl">

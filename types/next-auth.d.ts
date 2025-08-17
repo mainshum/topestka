@@ -9,6 +9,7 @@ declare module "next-auth" {
       /** Add the user's id */
       id: string;
       hasAccess: boolean;
-    } & DefaultSession["user"];
+      email: string;
+    };
   }
 }

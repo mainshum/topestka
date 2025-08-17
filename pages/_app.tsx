@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Head from "next/head";
 import Script from "next/script";
+import { trpc } from "@/utils/trpc";
+import type { AppType } from 'next/app';
 
 const queryClient = new QueryClient();
 
@@ -24,10 +26,10 @@ const websiteId = process.env.NODE_ENV === "production"
   ? "80a8892f-7153-4522-bffe-4eab271fecf0"
   : "148e155c-49f6-4c96-a523-aba8a97f9491";
 
-function MyApp({
+const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
-}: AppPropsWithLayout) {
+}: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
@@ -52,4 +54,4 @@ function MyApp({
   );
 }
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);

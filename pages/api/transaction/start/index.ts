@@ -7,6 +7,7 @@ import { client } from "@/utils/p24";
 import { AuthenticationError, DatabaseError, withAuth } from "@/utils/api";
 import { ResultAsync } from "neverthrow";
 import { MySqlRawQueryResult } from "drizzle-orm/mysql2";
+import { authOptions } from "../../auth/[...nextauth]";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const coursePrice = 5000;
@@ -57,8 +58,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     encoding: Encoding.UTF8,
   });
 
+  const a = res.json({message: "test"})
 
-  return withAuth(req, res)
+
+  return withAuth(req, res, authOptions)
     .andThen(({email}) => {
       return ResultAsync.fromPromise(
         p24.createTransaction(order(email)),

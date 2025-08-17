@@ -3,27 +3,7 @@ import Link from "next/link";
 import { buttonVariants } from "./Button";
 import HomeSection from "./HomeSection";
 import { cn } from "@/utils/misc";
-import { ACTION_NETWORK_URL } from "@/utils/const";
-
-
-const KupKurs = React.forwardRef<
-  HTMLAnchorElement,
-  React.HTMLAttributes<HTMLAnchorElement>
->(({ className }) => {
-  return (
-    <Link
-      className={cn(
-        buttonVariants({ variant: "kupkurs", size: "lg" }),
-        className,
-      )}
-      href={ACTION_NETWORK_URL}
-    >
-      Kup kurs
-    </Link>
-  );
-});
-
-KupKurs.displayName = "KupKurs";
+import { KupKurs } from "./KupKurs";
 
 const Intro = () => {
   return (
