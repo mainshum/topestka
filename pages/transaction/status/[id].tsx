@@ -1,11 +1,7 @@
 import MailLayout from "@/components/mail-layout";
 import Spinner from "@/components/Spinner";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { TransactionStatus } from "@/utils/types";
 import { trpc } from "@/utils/trpc";
-import { Button, buttonVariants } from "@/components/Button";
-import Link from "next/link";
 
 const TransactionSuccess = () => {
   return <div className="flex flex-col items-center justify-center h-screen">

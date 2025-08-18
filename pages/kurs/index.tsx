@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = 
   if (!session?.user?.hasAccess) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/login",
         permanent: false,
       },
     };
