@@ -138,12 +138,12 @@ const Logo = React.forwardRef<
 
 Logo.displayName = "Logo";
 
-export const Nav = Object.assign({
+export const Nav = {
   NavMobile,
   Root,
   TopLinks,
   Logo,
-});
+};
 
 const MainNav = React.forwardRef<
   HTMLDivElement,

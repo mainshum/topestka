@@ -3,6 +3,9 @@ import MailLayout from "@/components/mail-layout";
 import { ChevronRight } from "lucide-react";
 import { signIn } from "next-auth/react";
 import React from "react";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth";
 
 const Login = () => {
   return (
@@ -40,6 +43,14 @@ const Login = () => {
       </p>
     </form>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (session) {
+    return { redirect: { destination: "/", permanent: false } };
+  }
+  return { props: {} };
 };
 
 Login.getLayout = (page: React.ReactNode) => <MailLayout>{page}</MailLayout>;

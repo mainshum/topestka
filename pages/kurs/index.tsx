@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
-import React, { HTMLAttributes, useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { cn } from "@/utils/misc";
 import { getCompletedItems } from "@/utils/completedItems/server";
 import { Title } from '../../components/kurs/Title';

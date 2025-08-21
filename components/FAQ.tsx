@@ -15,7 +15,7 @@ const faqItems = [
     <>
       <span>Możesz wybrać jedną z poniższych metod płatności:</span>
       <ul className="pl-4 list-disc *:relative *:left-2">
-        <li>Szybki przelewzonline za pośrednictwem Przelewy24.</li>
+        <li>Szybki przelew online za pośrednictwem Przelewy24.</li>
         <li>Tradycyjny przelew bankowy na konto fundacji.</li>
         <li>Rozłożenie płatności na raty za pomocą usługi PayPo.</li>
       </ul>
