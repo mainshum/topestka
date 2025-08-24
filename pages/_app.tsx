@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import { SessionProvider } from "next-auth/react";
 import Layout from "components/layout";
 import { Toaster } from "react-hot-toast";
+import { EnvProvider } from "components/EnvContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Head from "next/head";
@@ -42,14 +43,16 @@ const MyApp: AppType = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Script onLoad={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />
-      <SessionProvider session={session}>
-        <QueryClientProvider client={queryClient}>
-          {getLayout(<Component {...pageProps} />)}
-          <div>
-            <Toaster />
-          </div>
-        </QueryClientProvider>
-      </SessionProvider>
+      <EnvProvider kursEnabled={true}>
+        <SessionProvider session={session}>
+          <QueryClientProvider client={queryClient}>
+            {getLayout(<Component {...pageProps} />)}
+            <div>
+              <Toaster />
+            </div>
+          </QueryClientProvider>
+        </SessionProvider>
+      </EnvProvider>
     </>
   );
 }

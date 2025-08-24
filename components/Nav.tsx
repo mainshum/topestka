@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Justify from "./icons";
 import { HTMLAttributes, useEffect, useState } from "react";
-import { cn, isKursEnabled } from "@/utils/misc";
+import { cn } from "@/utils/misc";
+import { useEnv } from "./EnvContext";
 import React from "react";
 import { Accordion, AccordionItem } from "./Accordion";
 import {
@@ -149,6 +150,7 @@ const MainNav = React.forwardRef<
   HTMLAttributes<HTMLDivElement>
 >(({ className }) => {
   const { data: session } = useSession();
+  const { kursEnabled } = useEnv();
 
   const [lastScrollPos, setLastScrollPos] = useState(resetScroll(0));
 
@@ -218,7 +220,7 @@ const MainNav = React.forwardRef<
         <Nav.Logo />
         <TopLinks className="flex-row items-center text-lg" />
         <div className="flex gap-4">
-          {isKursEnabled && (
+          {kursEnabled && (
             <>
               {session?.user?.hasAccess && (
                 <Link

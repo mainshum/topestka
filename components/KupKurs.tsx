@@ -1,6 +1,7 @@
 
 import { Button, buttonVariants } from "./Button";
-import { cn, isKursEnabled } from "@/utils/misc";
+import { cn } from "@/utils/misc";
+import { useEnv } from "./EnvContext";
 import React from "react";
 import { trpc } from "@/utils/trpc";
 import { useSession } from "next-auth/react";
@@ -13,9 +14,10 @@ export const KupKurs = React.forwardRef<
 
   const { mutate: startTransaction, isPending } = trpc.transaction.startTransaction.useMutation();
   const { data: session } = useSession();
+  const { kursEnabled } = useEnv();
 
   const handleClick = () => {
-    if (!isKursEnabled) {
+    if (!kursEnabled) {
       window.location.href = 'https://actionnetwork.org/forms/mrkh-to-pestka';
       return;
     }
@@ -49,7 +51,7 @@ export const KupKurs = React.forwardRef<
     className,
   );
 
-  return isKursEnabled ? (
+  return kursEnabled ? (
     <Button
       disabled={isPending}
       onClick={handleClick}
