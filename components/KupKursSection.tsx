@@ -5,6 +5,7 @@ import { buttonVariants } from "./Button";
 import Link from "next/link";
 import { NEWSLETTER_URL } from "@/utils/const";
 import { KupKurs } from "./KupKurs";
+import { cn } from "@/utils/misc";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -22,6 +23,16 @@ const Cena = ({ children, koszt }: CenaProps) => {
     </div>
   );
 };
+
+const PowiadomOSprzedazy = React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>((props, ref) => {
+  return (
+    <Link ref={ref} {...props} href="https://actionnetwork.org/forms/mrkh-to-pestka" target="_blank" rel="noopener noreferrer" >
+      {props.children}
+    </Link>
+  );
+});
+
+PowiadomOSprzedazy.displayName = 'PowiadomOSprzedazy';
 
 const KupKursSection = () => {
   return (
@@ -42,15 +53,19 @@ const KupKursSection = () => {
           </span>
         </Cena>
         <div className="h-0" />
-        <KupKurs className={`${buttonVariants({variant: 'powiadom', size: 'lg'})} whitespace-nowrap xl:hidden`} />
-        <KupKurs className={`${buttonVariants({variant: 'powiadom', size: 'xl'})} whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0`} />
+        <PowiadomOSprzedazy className={cn(buttonVariants({variant: 'powiadom', size: 'lg'}), 'whitespace-nowrap xl:hidden')} >
+          Powiadom o sprzedaży
+        </PowiadomOSprzedazy>
+        <PowiadomOSprzedazy className={cn(buttonVariants({variant: 'powiadom', size: 'xl'}), 'whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0')} >
+          Powiadom o sprzedaży
+        </PowiadomOSprzedazy>
       </OfferingSection>
       <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">
         <span className="text-xl">
-          Dołącz do newslettera, aby nie przegapić oferty
+          Dołącz do newslettera, aby nie przegapić naszych działań
         </span>
         <div className="h-5 xl:h-0" />
-        <Link href={NEWSLETTER_URL} className={`${buttonVariants({variant: 'kupkurs', size: 'lg'})}whitespace-nowrap ` }  >
+        <Link href={NEWSLETTER_URL} className={`${buttonVariants({variant: 'kupkurs', size: 'lg'})} whitespace-nowrap` }  >
           Zapisz się
         </Link>
       </section>

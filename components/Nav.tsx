@@ -1,11 +1,10 @@
 "use client";
 
-import Head from "next/head";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Justify from "./icons";
-import { HTMLAttributes, PropsWithoutRef, useEffect, useState } from "react";
-import { cn } from "@/utils/misc";
+import { HTMLAttributes, useEffect, useState } from "react";
+import { cn, isKursEnabled } from "@/utils/misc";
 import React from "react";
 import { Accordion, AccordionItem } from "./Accordion";
 import {
@@ -69,7 +68,7 @@ const NavMobile = ({
           </RadixTrigger>
         </div>
         <Content className={cn("text-sm  pb-0 border-b-[1px] data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]", !useStaticNav && "border-b-electric-300")}>
-            <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [&>li:first-child]:pt-10 [&>li:last-child]:pb-10" />
+          <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [&>li:first-child]:pt-10 [&>li:last-child]:pb-10" />
         </Content>
       </AccordionItem>
     </Accordion>
@@ -89,16 +88,16 @@ const TopLinks = React.forwardRef<
       {...props}
     >
       <li>
-        <Link href="#program" className={buttonVariants({variant: "navlink"})}> Program </Link>
+        <Link href="#program" className={buttonVariants({ variant: "navlink" })}> Program </Link>
       </li>
       <li>
-        <Link href="#o-nas" className={buttonVariants({variant: "navlink"})}>O prowadzących</Link>
+        <Link href="#o-nas" className={buttonVariants({ variant: "navlink" })}>O prowadzących</Link>
       </li>
       <li>
-        <Link href="#kup-kurs" className={buttonVariants({variant: "navlink"})}> Kup kurs </Link>
+        <Link href="#kup-kurs" className={buttonVariants({ variant: "navlink" })}> Kup kurs </Link>
       </li>
       <li>
-        <Link href="#kontakt" className={buttonVariants({variant: "navlink"})}> Kontakt </Link>
+        <Link href="#kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
       </li>
     </ul>
   );
@@ -219,20 +218,24 @@ const MainNav = React.forwardRef<
         <Nav.Logo />
         <TopLinks className="flex-row items-center text-lg" />
         <div className="flex gap-4">
-          {session && session.user.hasAccess && (
-            <Link
-              href="/kurs"
-              className={`${buttonVariants({ variant: "panel" })} flex items-center`}
-            >
-              Kurs
-            </Link>
+          {isKursEnabled && (
+            <>
+              {session?.user?.hasAccess && (
+                <Link
+                  href="/kurs"
+                  className={`${buttonVariants({ variant: "panel" })} flex items-center`}
+                >
+                  Kurs
+                </Link>
+              )}
+              <Link
+                href={session ? "/api/auth/signout" : "/login"}
+                className={`${buttonVariants({ variant: "panel" })} flex items-center`}
+              >
+                {session ? "Wyloguj" : "Panel logowania"}
+              </Link>
+            </>
           )}
-          <Link
-            href={session ? "/api/auth/signout" : "/login"}
-            className={`${buttonVariants({ variant: "panel" })} flex items-center`}
-          >
-            {session ? "Wyloguj" : "Panel logowania"}
-          </Link>
         </div>
       </Nav.Root>
     </>

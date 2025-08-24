@@ -80,7 +80,7 @@ const kursWLiczbachItems: KursWLiczbachItem[] = [
     </span>,
   ],
   ["13", "tyle rodziałów ma nasz kurs "],
-  ["8", "tyle wykładów przeprowadziłyśmy na uczelniach medycznych w Polsce"],
+  ["13", "tyle warsztatów i wykładów przeprowadziłyśmy na uczelniach medycznych w Polsce"],
   [
     "10K",
     "to liczba wydrukowanych przez nas broszur, które dystrybuujemy w całej Polsce",

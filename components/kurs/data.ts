@@ -58,7 +58,7 @@ export const flashcardData = [
   },
   {
     flashcardNo: 5,
-    textContent: "Pamiętaj, że choć 4999 na 5000 kobiet mam macicę, to niepłodność jest problemem, który dotyczy co piątej pary. "
+    textContent: "Pamiętaj, że choć 4999 na 5000 kobiet ma macicę, to niepłodność jest problemem, który dotyczy co piątej pary. "
   },
 ];
 

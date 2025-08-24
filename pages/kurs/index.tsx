@@ -12,7 +12,7 @@ import { FlashcardChapter } from '../../components/kurs/FlashcardChapter';
 import dynamic from 'next/dynamic';
 import Video from '../../components/kurs/Video';
 import { Chapter } from '../../components/kurs/Chapter';
-import { getId, perspektywaLekarza, perspektywaPacjencka, videoEntries, type Subchapter, flashcardData } from '../../components/kurs/data';
+import { getId, perspektywaLekarza, perspektywaPacjencka, videoEntries, flashcardData } from '../../components/kurs/data';
 import { KursProvider, useKurs } from '../../components/kurs/context';
 import { flushSync } from 'react-dom';
 import { Subchapter as SubchapterComponent } from '../../components/kurs/Subchapter';
