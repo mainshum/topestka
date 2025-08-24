@@ -28,10 +28,10 @@ const Newsletter = () => (
         <span className="md:order-0">© 2024 Fundacja Bezpestkowe</span>
       </footer>
       <div className="flex flex-col gap-3 order-3 md:order-2 pb-16 font-outfit text-xl md:text-3xl">
-        <Link href="https://www.bezpestkowe.pl">www.bezpestkowe.pl</Link>
-        <Link href="mailto:bezpestkowe@gmail.com">bezpestkowe@gmail.com</Link>
-        <Link href="https://www.instagram.com/bezpestkowe/">Instagram</Link>
-        <Link href="https://www.facebook.com/groups/bezpestkowe/">
+        <Link href="https://www.bezpestkowe.pl" target="_blank" rel="noopener noreferrer">www.bezpestkowe.pl</Link>
+        <Link href="mailto:bezpestkowe@gmail.com" target="_blank" rel="noopener noreferrer">bezpestkowe@gmail.com</Link>
+        <Link href="https://www.instagram.com/bezpestkowe/" target="_blank" rel="noopener noreferrer">Instagram</Link>
+        <Link href="https://www.facebook.com/groups/bezpestkowe/" target="_blank" rel="noopener noreferrer">
           Facebook
         </Link>
       </div>
