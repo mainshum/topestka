@@ -21,7 +21,14 @@ export type FlashcardSubchapter = {
   title: string;
 }
 
-export type Subchapter = VideoSubchapter | BroszuraSubchapter | FlashcardSubchapter;
+export type QuizSubchapter = {
+  type: 'quiz';
+  subtype: 'quiz';
+  partNo: number;
+  title: string;
+}
+
+export type Subchapter = VideoSubchapter | BroszuraSubchapter | FlashcardSubchapter | QuizSubchapter;
 
 export const videoSubchapters = new Map<number, VideoSubchapter>([
   [1, { partNo: 1, type: 'video', subtype: 'pp', title: "Kim jesteśmy?", from: 5, to: 52 }],

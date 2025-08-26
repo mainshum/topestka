@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { QuizLayout } from '../quiz-layout';
+import { useCounter } from '@/utils/useCounter';
+import { cn } from '@/utils/misc';
 
 interface FlashcardData {
   flashcardNo: number;
@@ -12,57 +15,79 @@ interface FlashcardProps {
 
 const FLASHCARD_TITLE = "Mamo dziecka z zespołem MRKH, pamiętaj!";
 
-export const Flashcard: React.FC<FlashcardProps> = ({ data }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const Header = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
+  return (
+    <h1 ref={ref} className="text-lg font-semibold mb-4 border-b border-white pb-2">
+      {children}
+    </h1>
+  );
+});
 
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : data.length - 1));
-  };
+const Content = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
+  return (
+    <div ref={ref} className={cn("mb-6 flex items-center justify-center", props.className)}>
+      {children}
+    </div>
+  );
+});
 
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev < data.length - 1 ? prev + 1 : 0));
-  };
+const Footer = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
+  return (
+    <div ref={ref} className={cn("text-lg font-semibold mb-4 border-b border-white pb-2", props.className)}>
+      {children}
+    </div>
+  );
+});
 
-  const currentCard = data[currentIndex];
+const Root = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
+  return (
+      <div {...props} ref={ref} className={cn("text-ewhite flex flex-col justify-between md:text-3xl font-monarcha rounded-lg shadow-lg pb-2 pt-3 px-6 md:h-[460px] aspect-[0.85] bg-eblue-600", props.className)}>
+      {children}
+    </div>
+  );
+});
+
+
+export const Flashcards: React.FC<FlashcardProps> = ({ data }) => {
+  const { count, increment, decrement } = useCounter(0, 0, data.length - 1);
+
+  const currentCard = data[count];
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-0 sm:flex-row items-center justify-center w-full pt-10 pb-4 sm:pt-10 sm:pb-10 bg bg-[#B4C0EE] rounded-lg">
+    <QuizLayout className='gap-4 flex-wrap'>
       {/* Left Arrow */}
       <button
-        onClick={goToPrevious}
+        onClick={decrement}
         className="p-2 hidden sm:block hover:bg-white/20 rounded-full transition-colors"
         aria-label="Poprzednia fiszka"
       >
         <ChevronLeft className="w-8 h-8 text-white" />
       </button>
+      <Root>
+        <Header>
+          {FLASHCARD_TITLE}
+        </Header>
+        
+        <Content>
+          {currentCard.textContent}
+        </Content>
+        
+        <Footer>
+          Porada nr {currentCard.flashcardNo}
+        </Footer>
+      </Root>
 
-      {/* Flashcard */}
-      <div className="mx-8 text-ewhite md:text-3xl font-monarcha rounded-lg shadow-lg pb-2 pt-3 px-6 h-[300px] md:h-[460px] aspect-[0.85] bg-eblue-600">
-        <div className="text-center flex flex-col justify-between h-full">
-          <h3 className="text-lg font-semibold mb-4 border-b border-white pb-2">
-            {FLASHCARD_TITLE}
-          </h3>
-          
-          <div className="mb-6 flex items-center justify-center">
-            {currentCard.textContent}
-          </div>
-          
-          <div className="text-lg font- border-t border-white pt-1">
-            Porada nr {currentCard.flashcardNo}
-          </div>
-        </div>
-      </div>
       <div className="flex sm:hidden flex-row items-center justify-center">
 
       <button
-        onClick={goToPrevious}
+        onClick={decrement}
         className="p-2  hover:bg-white/20 rounded-full transition-colors"
         aria-label="Poprzednia fiszka"
       >
         <ChevronLeft className="w-8 h-8 text-white" />
       </button>
       <button
-        onClick={goToNext}
+        onClick={increment}
         className="p-2  hover:bg-white/20 rounded-full transition-colors"
         aria-label="Następna fiszka"
       >
@@ -72,12 +97,24 @@ export const Flashcard: React.FC<FlashcardProps> = ({ data }) => {
 
       {/* Right Arrow */}
       <button
-        onClick={goToNext}
+        onClick={increment}
         className="p-2 hidden sm:block hover:bg-white/20 rounded-full transition-colors"
         aria-label="Następna fiszka"
       >
         <ChevronRight className="w-8 h-8 text-white" />
       </button>
-    </div>
+    </QuizLayout>
   );
 }; 
+
+Header.displayName = 'Flashcard.Header';
+Content.displayName = 'Flashcard.Content';
+Footer.displayName = 'Flashcard.Footer';
+Root.displayName = 'Flashcard.Root';
+
+export const Flashcard  = {
+  Header,
+  Content,
+  Footer,
+  Root
+}

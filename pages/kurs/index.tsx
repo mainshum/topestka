@@ -15,9 +15,13 @@ import { Chapter } from '../../components/kurs/Chapter';
 import { getId, perspektywaLekarza, perspektywaPacjencka, videoEntries, flashcardData } from '../../components/kurs/data';
 import { KursProvider, useKurs } from '../../components/kurs/context';
 import { flushSync } from 'react-dom';
-import { Subchapter as SubchapterComponent } from '../../components/kurs/Subchapter';
-import { Flashcard } from '../../components/kurs/Flashcard';
+import { Subchapter, Subchapter as SubchapterComponent } from '../../components/kurs/Subchapter';
+import { Flashcards, Flashcard } from '../../components/kurs/Flashcard';
 import { Button } from '../../components/Button';
+import { QuizChapter } from "@/components/kurs/QuizChapter";
+import { QuizLayout } from "@/components/quiz-layout";
+
+const quiz = { type: 'quiz' as const, subtype: 'quiz' as const, partNo: 1, title: 'Quiz wiedzy o MRKH' };
 
 const getCompletedPercentage = (total: number, completed: number) => {
   return Math.round((completed / total) * 100);
@@ -151,7 +155,7 @@ function KursPage({
     <>
       <Title />
       <section className="flex xl:flex-row flex-col justify-between gap-x-6 pt-2">
-        <div 
+        <div
           className={cn(
             "relative flex flex-col justify-between items-start gap-6 grow-[1]",
           )}
@@ -163,8 +167,8 @@ function KursPage({
             <BroszuraContent iframeSrc={`/bezpestkowe_broszura_${partNo}.pdf`} />
           )}
           {type === 'flashcard' && (
-            <div className="flex flex-col justify-between items-start gap-6 w-full ">
-              <Flashcard data={flashcardData} />
+            <>
+              <Flashcards data={flashcardData} />
               <Button
                 className="px-6 border border-eblue-600 rounded-md"
                 variant="ghost"
@@ -173,8 +177,9 @@ function KursPage({
               >
                 Oznacz jako lekcję ukończoną
               </Button>
-            </div>
+            </>
           )}
+          {type === 'quiz' &&  <QuizChapter />}
         </div>
         <Chapters>
           <Chapter
@@ -217,6 +222,22 @@ function KursPage({
           </Chapter>
           <BroszuraChapter completed={getCompletedPercentage(2, completedBroszura)} />
           <FlashcardChapter completed={getCompletedPercentage(1, completedFlashcard)} />
+          <Chapter
+            chapterNo={5}
+            subchapterTitle="Quiz wiedzy o MRKH"
+            totalSubchapters={1}
+            completed={0}
+          >
+            <SubchapterComponent
+              isCurrent={currentSubchapter.type === 'quiz'}
+              done={false}
+              onClick={() => {
+                setCurrentSubchapter(quiz);
+              }}
+            >
+              Rozwiąż quiz, aby ukończyć kurs.
+            </SubchapterComponent>
+          </Chapter>
         </Chapters>
       </section>
     </>
