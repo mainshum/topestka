@@ -227,13 +227,12 @@ function KursPage({
             subchapterTitle="Quiz wiedzy o MRKH"
             totalSubchapters={1}
             completed={0}
+            onClick={() => setCurrentSubchapter(quiz) }
           >
             <SubchapterComponent
               isCurrent={currentSubchapter.type === 'quiz'}
               done={false}
-              onClick={() => {
-                setCurrentSubchapter(quiz);
-              }}
+              onClick={() => setCurrentSubchapter(quiz)}
             >
               Rozwiąż quiz, aby ukończyć kurs.
             </SubchapterComponent>

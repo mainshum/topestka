@@ -12,6 +12,7 @@ interface ChapterProps {
   children: React.ReactNode;
   totalSubchapters: number;
   completed: number;
+  onClick?: () => void;
 }
 
 export const Chapter: React.FC<ChapterProps> = ({
@@ -20,12 +21,13 @@ export const Chapter: React.FC<ChapterProps> = ({
   children,
   totalSubchapters,
   completed,
+  onClick,
 }) => {
 
   return (
     <li>
       <AccordionItem value={`chapter-${chapterNo}`}>
-        <AccordionTrigger chevProps={{className: "text-eblue-600"}} className="gap-4 px-0 pt-3 pb-2 border-eblue-400 border-b-[1px] text-nowrap [&>svg]:data-[state=open]:text-eblue-600">
+        <AccordionTrigger chevProps={{className: "text-eblue-600"}} className="gap-4 px-0 pt-3 pb-2 border-eblue-400 border-b-[1px] text-nowrap [&>svg]:data-[state=open]:text-eblue-600" onClick={onClick}>
           <div className="flex gap-3">
             <LoadCircle completionPercent={completed} />
             <div className="flex font-outfit flex-col">

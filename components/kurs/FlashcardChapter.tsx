@@ -15,6 +15,9 @@ export const FlashcardChapter: React.FC<{ completed: number }> = ({ completed })
       subchapterTitle="Zestaw fiszek"
       totalSubchapters={1}
       completed={completed}
+      onClick={() => {
+        setCurrentSubchapter(flashcardSubchapter);
+      }}
     >
       <Subchapter
         isCurrent={currentSubchapter.type === 'flashcard'}
