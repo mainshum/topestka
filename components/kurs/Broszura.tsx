@@ -1,6 +1,6 @@
 import React from 'react';
 import { useKurs } from './context';
-import { Button } from '@/components/Button';
+import { MarkCompleted } from './MarkCompleted';
 
 export default function BroszuraPage({iframeSrc}: {iframeSrc: string}) {
   const { markAsCompleted, currentSubchapterId } = useKurs();
@@ -12,14 +12,7 @@ export default function BroszuraPage({iframeSrc}: {iframeSrc: string}) {
         className="w-full h-[600px]"
         title="Broszura"
       />
-      <Button
-        className="px-6 border border-eblue-600 rounded-md"
-        variant="ghost"
-        size="sm"
-        onClick={() => markAsCompleted(currentSubchapterId)}
-      >
-        Oznacz jako lekcję ukończoną
-      </Button>
+      <MarkCompleted markAsCompleted={markAsCompleted} currentSubchapterId={currentSubchapterId} />
     </div>
   );
 } 

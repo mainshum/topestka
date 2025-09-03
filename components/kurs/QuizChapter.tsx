@@ -6,8 +6,36 @@ import { Flashcard } from './Flashcard';
 import { QuizLayout } from '../quiz-layout';
 import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
+import { Button } from '../Button';
 
-const quizData = [
+type Answer = {
+    text: string;
+    isCorrect: boolean;
+}
+
+type QuizData = {
+    question: string;
+    answers: Answer[];
+}
+
+const quizData: QuizData[] = [
+    {
+        question: 'Co z seksem? Czy będę mogła współżyć?',
+        answers: [
+            {
+                text: 'nie, zespół MRKH jest równoznaczny z niemożnością uprawiania seksu',
+                isCorrect: false,
+            },
+            {
+                text: 'tak, zespół MRKH nie wyklucza możliwości podejmowania aktywności seksualnych, jednak w przypadku podejmowania stosunków waginalnych może to wymagać rozszerzenia pochwy',
+                isCorrect: true,
+            },
+            {
+                text: 'to zależy od typu MRKH',
+                isCorrect: false,
+            }
+        ]
+    },
     {
         question: 'Co z tymi przeszczepami macic?',
         answers: [
@@ -119,11 +147,11 @@ const quizData = [
             },
             {
                 text: 'to zależy od typu MRKH',
-                isCorrect: true,
+                isCorrect: false,
             },
             {
                 text: 'oczywiście, mimo braku comiesięcznego krwawienia, posiada Pani cykl menstruacyjny',
-                isCorrect: false,
+                isCorrect: true,
             },
         ]
     },
@@ -238,11 +266,11 @@ const quizData = [
             },
             {
                 text: 'laparoskopia diagnostyczna, USG miednicy mniejszej, badania hormonalne, badanie ginekologiczne',
-                isCorrect: true,
+                isCorrect: false,
             },
             {
                 text: 'USG miednicy mniejszej, badanie ginekologiczne, badania hormonalne, rezonans magnetyczny',
-                isCorrect: false,
+                isCorrect: true,
             },
         ]
     },

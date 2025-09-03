@@ -76,24 +76,17 @@ export const flashcardSubchapter: FlashcardSubchapter = {
   title: "Kilka porad dla mam osób z MRKH"
 };
 
+export const quizSubchapter: QuizSubchapter = {
+  type: 'quiz',
+  subtype: 'quiz',
+  partNo: 1,
+  title: "Quiz wiedzy o MRKH"
+};
+
 export const videoEntries = Array.from(videoSubchapters.entries());
 export const perspektywaPacjencka = videoEntries.filter(([sub, value]) => sub < 9);
 export const perspektywaLekarza = videoEntries.filter(([sub, value]) => sub > 9);
 
 export const getId = (subchapter: Subchapter) => {
   return `${subchapter.type}#${subchapter.subtype}#${subchapter.partNo}`;
-}
-
-export const getChapterNo = (subchapter: Subchapter) => {
-  if (subchapter.type === 'video') {
-    return 1;
-  }
-  return 2;
-}
-
-export const getTitle = (subchapter: Subchapter) => {
-  if (subchapter.type === 'video') {
-    return `${subchapter.partNo}. ${subchapter.title}`;
-  }
-  return subchapter.title;
 }

@@ -1,14 +1,12 @@
-import React, { useCallback, useRef } from 'react';
+import React from 'react';
 import Video from 'next-video';
-import { Button } from '@/components/Button';
 import { useKurs } from './context';
+import { MarkCompleted } from './MarkCompleted';
 
 const VideoPage = React.forwardRef<HTMLVideoElement, { muxToken: string; playbackId: string }>(
   ({ muxToken, playbackId }, ref) => {
 
     const {currentSubchapterId, markAsCompleted} = useKurs();
-
-    const handleMarkAsCompleted = () => markAsCompleted(currentSubchapterId);
 
     return (
       <div className="relative flex flex-col justify-between items-start gap-6 w-full">
@@ -22,14 +20,7 @@ const VideoPage = React.forwardRef<HTMLVideoElement, { muxToken: string; playbac
               <Loader2 className="w-10 h-10 text-white animate-spin" />
             </div>
           )} */}
-        <Button
-          className="px-6 border border-eblue-600 rounded-md"
-          variant="ghost"
-          size="sm"
-          onClick={handleMarkAsCompleted}
-        >
-          Oznacz jako lekcję ukończoną
-        </Button>
+        <MarkCompleted markAsCompleted={markAsCompleted} currentSubchapterId={currentSubchapterId} />
       </div>
     );
   }

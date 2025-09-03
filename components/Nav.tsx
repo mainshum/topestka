@@ -234,7 +234,7 @@ const MainNav = React.forwardRef<
                 href={session ? "/api/auth/signout" : "/login"}
                 className={`${buttonVariants({ variant: "panel" })} flex items-center`}
               >
-                {session ? "Wyloguj" : "Panel logowania"}
+                {session ? "Wyloguj" : "Zaloguj"}
               </Link>
             </>
           )}
