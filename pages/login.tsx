@@ -1,11 +1,14 @@
 import { Input } from "@/components/Input";
 import MailLayout from "@/components/mail-layout";
 import { ChevronRight } from "lucide-react";
+
 import { signIn } from "next-auth/react";
 import React from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
+
 
 const Login = () => {
   return (
@@ -19,9 +22,9 @@ const Login = () => {
       }}
       className="flex flex-col justify-center items-center gap-3 md:w-[470px] md:px-0 px-8 pb-20"
     >
-      <h1 className="font-outfit text-xl sm:text-2xl font-extralight">
+      <h2 className="font-outfit text-xl sm:text-2xl font-extralight">
         Wpisz swój adres e-mail aby otrzymać jednorazowy link do logowania.
-      </h1>
+      </h2>
       <div className="flex w-full">
         <Input
           className="border-x-0 pl-0 border-t-0 border-b-[1px] border-b-ewhite py-7 rounded-none text-electric-500 md:text-xl placeholder:text-electric-500"
@@ -38,8 +41,10 @@ const Login = () => {
         </button>
       </div>
       <p className="text-eblue-100 font-monarcha text-sm">
-        Kontynuując, zgadzasz się z Warunkami korzystania z usług i
-        potwierdzasz, że przeczytałaś/łeś naszą Politykę prywatności.
+        <span>
+          Kontynuując, zgadzasz się z Warunkami korzystania z usług i potwierdzasz, że przeczytałaś/łeś naszą
+        </span>
+        <Link href="/polityka-prywatnosci" className="text-eblue-100"> Politykę prywatności</Link>.
       </p>
     </form>
   );

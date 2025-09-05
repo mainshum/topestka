@@ -10,10 +10,10 @@ const KursWLiczbach = ({ items }: { items: KursWLiczbachItem[] }) => {
         Kurs w <br /> liczbach
       </h1>
       <>
-        {items.map(([liczba, opis]) => (
+        {items.map(([liczba, opis], index) => (
           <div
             className="flex justify-between w-full items-center gap-8 md:pb-8 border-ewhite border-b-[1px]"
-            key={liczba}
+            key={index}
           >
             <span className="text-5xl md:text-7xl">{liczba}</span>
             <span className="text-right font-monarcha font-normal text-base md:text-3xl lg:text-4xl">

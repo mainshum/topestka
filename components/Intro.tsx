@@ -3,7 +3,6 @@ import Link from "next/link";
 import { buttonVariants } from "./Button";
 import HomeSection from "./HomeSection";
 import { cn } from "@/utils/misc";
-import { KupKurs } from "./KupKurs";
 
 const Intro = () => {
   return (
@@ -16,7 +15,9 @@ const Intro = () => {
         <br className="md:inline hidden"></br> informacje o zespole MRKH
       </h2>
       <section className="flex md:flex-row flex-col justify-center items-center gap-4">
-        <KupKurs />
+        <Link className={cn(buttonVariants({ variant: "kupkurs", size: "lg" }))} href="#kup-kurs" >
+          Kup kurs
+        </Link>
         <Link
           className={cn(buttonVariants({ variant: "program", size: "lg" }))}
           href="#program"
@@ -28,4 +29,4 @@ const Intro = () => {
   );
 };
 
-export { Intro, KupKurs };
+export { Intro };

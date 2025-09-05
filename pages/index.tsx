@@ -7,7 +7,7 @@ import { Intro } from "@/components/Intro";
 import Pitch from "@/components/Pitch";
 import OpisKursu from "@/components/OpisKursu";
 import DowiedzSie from "@/components/DowiedzSie";
-import ProgramFull, { AccordionItemData } from "@/components/ProgramFull";
+import ProgramFull from "@/components/ProgramFull";
 import DlaKogo, {
   AccordionItemData as DlaKogoItemData,
 } from "@/components/DlaKogo";
@@ -17,21 +17,18 @@ import KupKursSection from "@/components/KupKursSection";
 import FAQ from "@/components/FAQ";
 import Sponsors from "@/components/Sponsors";
 import Newsletter from "@/components/Newsletter";
+import Nav from "@/components/Nav";
 
 // Images
-import ff from "../public/images/ff.png";
-import kulawa from "../public/images/kulawa.png";
-import tranzycja from "../public/images/tranzycja.png";
-import skrzyneczka from "../public/images/skrzyneczka.png";
-import kolektyw from "../public/images/kolektyw-chemia.png";
-import mago from "../public/images/mago-vox.png";
 
 // Accordion Components
 import { Promo } from "@/components/Promo";
 
-const Home: NextPage = () => {
+const Home: NextPage<{ kursEnabled: boolean }> = (props) => {
+  const { kursEnabled } = props;
   return (
     <>
+      <Nav kursEnabled={kursEnabled} />
       <Intro />
       <Promo />
       <Pitch />
@@ -41,12 +38,20 @@ const Home: NextPage = () => {
       <DlaKogo items={dlaKogoItems} />
       <KursWLiczbach items={kursWLiczbachItems} />
       <AboutUs />
-      <KupKursSection />
+      <KupKursSection kursEnabled={kursEnabled} />
       <FAQ />
       <Sponsors />
       <Newsletter />
     </>
   );
+};
+
+export const getStaticProps = async () => {
+  return {
+    props: {
+      kursEnabled: process.env.KURS_ENABLED === 'true',
+    },
+  };
 };
 
 export default Home;
@@ -88,12 +93,3 @@ const kursWLiczbachItems: KursWLiczbachItem[] = [
 ];
 
 ;
-
-const sponsorItems = [
-  { src: ff, alt: "Fundacja Feminoteka" },
-  { src: kulawa, alt: "Kulawa Warszawa" },
-  { src: tranzycja, alt: "Tranzycja" },
-  { src: skrzyneczka, alt: "Skrzyneczka" },
-  { src: kolektyw, alt: "Kolektyw Chemia" },
-  { src: mago, alt: "Mago Vox" },
-];

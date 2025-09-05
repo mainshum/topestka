@@ -4,8 +4,8 @@ import { OfferingSection, OfferingList } from "./Offering";
 import { buttonVariants } from "./Button";
 import Link from "next/link";
 import { NEWSLETTER_URL } from "@/utils/const";
-import { KupKurs } from "./KupKurs";
 import { cn } from "@/utils/misc";
+import { PowiadomLubKup } from "./PowiadomLubKup";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -24,17 +24,8 @@ const Cena = ({ children, koszt }: CenaProps) => {
   );
 };
 
-const PowiadomOSprzedazy = React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>((props, ref) => {
-  return (
-    <Link ref={ref} {...props} href="https://actionnetwork.org/forms/mrkh-to-pestka" target="_blank" rel="noopener noreferrer" >
-      {props.children}
-    </Link>
-  );
-});
 
-PowiadomOSprzedazy.displayName = 'PowiadomOSprzedazy';
-
-const KupKursSection = () => {
+const KupKursSection = ({kursEnabled}: {kursEnabled: boolean}) => {
   return (
     <HomeSection
       id="kup-kurs"
@@ -53,12 +44,8 @@ const KupKursSection = () => {
           </span>
         </Cena>
         <div className="h-0" />
-        <PowiadomOSprzedazy className={cn(buttonVariants({variant: 'powiadom', size: 'lg'}), 'whitespace-nowrap xl:hidden')} >
-          Powiadom o sprzedaży
-        </PowiadomOSprzedazy>
-        <PowiadomOSprzedazy className={cn(buttonVariants({variant: 'powiadom', size: 'xl'}), 'whitespace-nowrap hidden xl:inline relative bottom-4 xl:bottom-0')} >
-          Powiadom o sprzedaży
-        </PowiadomOSprzedazy>
+        <PowiadomLubKup className={cn(buttonVariants({variant: 'powiadom', size: 'lg'}), 'xl:hidden')} kursEnabled={kursEnabled} />
+        <PowiadomLubKup className={cn(buttonVariants({variant: 'powiadom', size: 'xl'}), 'hidden xl:inline relative bottom-4 xl:bottom-0')} kursEnabled={kursEnabled} />
       </OfferingSection>
       <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">
         <span className="text-xl">

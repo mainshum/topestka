@@ -42,8 +42,7 @@ const MyApp: AppType = ({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script onLoad={console.log} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />
-      <EnvProvider kursEnabled={true}>
+      <Script onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
             {getLayout(<Component {...pageProps} />)}
@@ -52,7 +51,6 @@ const MyApp: AppType = ({
             </div>
           </QueryClientProvider>
         </SessionProvider>
-      </EnvProvider>
     </>
   );
 }

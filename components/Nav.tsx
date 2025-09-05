@@ -95,7 +95,7 @@ const TopLinks = React.forwardRef<
         <Link href="#o-nas" className={buttonVariants({ variant: "navlink" })}>O prowadzących</Link>
       </li>
       <li>
-        <Link href="#kup-kurs" className={buttonVariants({ variant: "navlink" })}> Kup kurs </Link>
+        <Link className={buttonVariants({ variant: "navlink" })} href="#kup-kurs">Kup kurs</Link>
       </li>
       <li>
         <Link href="#kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
@@ -145,12 +145,15 @@ export const Nav = {
   Logo,
 };
 
+type MainNavProps = HTMLAttributes<HTMLDivElement> & {
+  kursEnabled: boolean;
+}
+
 const MainNav = React.forwardRef<
   HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(({ className }) => {
+  MainNavProps
+>(({ className, kursEnabled }) => {
   const { data: session } = useSession();
-  const { kursEnabled } = useEnv();
 
   const [lastScrollPos, setLastScrollPos] = useState(resetScroll(0));
 
