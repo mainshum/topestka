@@ -120,7 +120,7 @@ const faqItems = [
 
 const FAQ = () => {
   return (
-    <HomeSection className="flex flex-col bg-eblue px-6 md:px-24 py-12 md:py-20 text-ewhite">
+    <HomeSection decreaseSize className="flex flex-col bg-eblue px-6 md:px-24 pt-12 md:py-20 text-ewhite">
       <h1 className="text-4xl">F.A.Q</h1>
       <div className="h-12 md:h-16" />
       <section className="flex flex-col gap-3">
@@ -132,7 +132,7 @@ const FAQ = () => {
         >
           {faqItems.map(([question, answer, bottom]) => (
             <AccordionItem
-              className="md:grid grid-cols-2 gap-x-10 pt-3 grid-rows-[min-content]"
+              className="md:grid grid-cols-2 gap-x-10 grid-rows-[min-content]"
               key={question}
               value={question}
             >
@@ -140,11 +140,11 @@ const FAQ = () => {
                 chevProps={{
                   className: "text-ewhite shrink-0 transform md:-rotate-90 ",
                 }}
-                className="h-fit border-ewhite pb-3 pt-0 border-b-[1px] border-solid md:[&[data-state=open]>svg]:rotate-90 font-outfit text-base md:text-xl"
+                className="h-fit border-ewhite py-4 border-b-[1px] border-solid md:[&[data-state=open]>svg]:rotate-90 font-outfit text-base md:text-xl"
               >
                 {question}
               </AccordionTrigger>
-              <AccordionContent className={cn("pt-4 md:pt-0 md:text-xl md:h-0 relative", bottom)}>
+              <AccordionContent className={cn("pt-4 md:pt-0 md:text-xl md:h-0", bottom)}>
                 {answer}
               </AccordionContent>
             </AccordionItem>

@@ -5,7 +5,7 @@ import { cn } from "@/utils/misc";
 
 const DowiedzSie = () => {
   return (
-    <HomeSection className="flex flex-col justify-start bg-eblue px-8 md:px-40 md:pt-24 pt-20 md:gap-6 text-butter-100">
+    <HomeSection decreaseSize className="flex flex-col justify-start bg-eblue px-8 md:px-40 md:pt-24 pt-20 md:gap-6 text-butter-100">
       <h1 className="font-outfit text-4xl md:text-6xl md:pb-20">
         Dowiedz się jak kluczowe znaczenie ma:
       </h1>
