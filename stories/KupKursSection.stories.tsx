@@ -13,12 +13,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Desktop: Story = {
+  args: {
+    kursEnabled: true,
+  },
   parameters: {
     viewport: { defaultViewport: "desktop" },
   },
 };
 
 export const Mobile: Story = {
+  args: {
+    kursEnabled: true,
+  },
   parameters: {
     viewport: { defaultViewport: "mobile" },
   },
