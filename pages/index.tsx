@@ -47,9 +47,13 @@ const Home: NextPage<{ kursEnabled: boolean }> = (props) => {
 };
 
 export const getStaticProps = async () => {
+  const kursEnabled = process.env.KURS_ENABLED;
+  if (!kursEnabled) {
+    throw new Error('KURS_ENABLED is not set');
+  }
   return {
     props: {
-      kursEnabled: process.env.KURS_ENABLED === 'true',
+      kursEnabled: kursEnabled === 'true',
     },
   };
 };

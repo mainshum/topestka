@@ -7,6 +7,7 @@ import HomeSection from "./HomeSection";
 import insta from "/videos/zwiastun-insta.mp4.json";
 import zwiastun from "/videos/zwiastun.mp4.json";
 import zuzaPoster from "@/public/images/zuza-poster.png";
+import zuzaPosterInsta from "@/public/images/zuza-poster-mobile.png";
 
 const Promo = () => {
   const [useDevice, setUseDevice] = React.useState<null | "desktop" | "mobile">(

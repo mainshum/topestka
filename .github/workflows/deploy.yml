@@ -12,8 +12,38 @@ env:
   DEV_DEPLOY_PATH: /root/repo/dev-topestka
 
 jobs:
-  deploy:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            echo "matrix={\"include\":[{\"environment\":\"prod\"}]}" >> $GITHUB_OUTPUT
+          else
+            echo "matrix={\"include\":[{\"environment\":\"dev\"}]}" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    environment: ${{ matrix.environment }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,7 +58,31 @@ jobs:
         run: npm ci
 
       - name: Build application
-        run: npm run build
+        run: |
+          echo "KURS_ENABLED: ${{ vars.KURS_ENABLED }}" >> .env
+          npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.environment }}
+          include-hidden-files: true
+          path: |
+            .next
+            .env
+            package*.json
+            public
+
+  deploy:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.environment }}
 
       - name: Deploy to VPS
         env:
@@ -44,8 +98,8 @@ jobs:
           # Add host to known hosts
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
-          # Determine deployment path and PM2 process name based on branch
-          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+          # Determine deployment path and PM2 process name based on environment
+          if [[ "${{ matrix.environment }}" == "prod" ]]; then
             DEPLOY_PATH=$PROD_DEPLOY_PATH
             PM2_NAME="topestka-prod"
           else
@@ -57,7 +111,7 @@ jobs:
           ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "mkdir -p $DEPLOY_PATH.tmp"
 
           # Copy the build files
-          scp -i ~/.ssh/deploy_key -r .next package*.json public $SSH_USER@$SSH_HOST:$DEPLOY_PATH.tmp/
+          scp -i ~/.ssh/deploy_key -r .next package*.json public .env $SSH_USER@$SSH_HOST:$DEPLOY_PATH.tmp/
 
           # Install production dependencies and restart PM2 with NVM initialized
           ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST "
@@ -76,11 +130,8 @@ jobs:
             if [ -d $DEPLOY_PATH ]; then mv $DEPLOY_PATH $DEPLOY_PATH.old; fi
             mv $DEPLOY_PATH.tmp $DEPLOY_PATH
 
-            # Set environment variables
-
             # Restart or start PM2
             cd /root/repo
 
             pm2 start ecosystem.config.js --only $PM2_NAME
-
           "
