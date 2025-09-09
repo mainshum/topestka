@@ -18,6 +18,7 @@ const getSubchapterTitle = (subchapter: Subchapter) => {
 }
 
 export const Title: React.FC = () => {
+  return null;
   const { currentSubchapter } = useKurs();
 
   if (!currentSubchapter) return null;
