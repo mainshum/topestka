@@ -31,6 +31,7 @@ type GetServerSidePropsParams = {
   initialCompletedSubchapters: string[];
 };
 
+const playbackId = "SR34w8OYDqmeJB3S11msDqJCq7tx22H202Rtkd4UpfoY";
 
 export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -47,7 +48,6 @@ export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = 
   }
 
   const mux = new Mux();
-  const playbackId = "SR34w8OYDqmeJB3S11msDqJCq7tx22H202Rtkd4UpfoY";
 
   let baseOptions = {
     keyId: process.env.MUX_SIGNING_KEY,
