@@ -4,20 +4,16 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
 import React, { } from "react";
 import { getCompletedItems } from "@/utils/completedItems/server";
-import { Title } from '../../components/kurs/Title';
 import { Chapters } from '../../components/kurs/Chapters';
 import dynamic from 'next/dynamic';
 import { Chapter } from '../../components/kurs/Chapter';
-import { perspektywaLekarza, perspektywaPacjencka, flashcardData } from '../../components/kurs/data';
-import { KursProvider } from '../../components/kurs/context';
+import { flashcardData, chapters } from '../../components/kurs/data';
 import { Subchapter, Subchapter as SubchapterComponent } from '../../components/kurs/Subchapter';
 import { Flashcards } from '../../components/kurs/Flashcard';
-import { Button } from '../../components/Button';
 import { QuizChapter } from "@/components/kurs/QuizChapter";
 import Video from "@/components/kurs/Video";
-import router, { useRouter } from "next/router";
-import { MarkCompleted } from "@/components/kurs/MarkCompleted";
-import { ParsedUrlQuery } from "querystring";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 const flashcardSubchapterDescription = "Zapoznaj się z zestawem fiszek! Został stworzony przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH.";
@@ -93,22 +89,28 @@ export default function Page({
   const chapter = router.query?.slug?.[0] || 'video';
   const subchapter = Number(router.query?.slug?.[1]) || 1;
 
-  const completedVideoPP = 0;
-  const completedVideoPL = 0;
-  const completedBroszura = 0;
-  const completedFlashcard = 0;
-
   const handleSubchapterChange = (chapter: string, subchapter: number) => {
     router.replace(`/kurs/${chapter}/${subchapter}`, undefined, { shallow: true });
   }
 
+
+  const {title, subchapters} = chapters[chapter as keyof typeof chapters];
+
   return (
     <div className="flex flex-col w-full">
-      <Title />
+      <section className="basis-[120px] shrink-0">
+        <Link href="/kurs/video/1" className="top-4 left-4 font-monarcha text-xl">
+          MRKH to pestka!
+        </Link>
+        <h1 className="pt-6 pb-1 font-outfit text-orange-500 text-lg">
+          {title}
+        </h1>
+      </section>
       <section className="flex xl:flex-row flex-col justify-between gap-x-6 pt-2">
-        <div className="relative flex flex-col justify-between items-start gap-6 grow-[1]">
+        <div className="relative flex flex-col justify-between items-start gap-6 grow-[1] bottom-11 self-start">
+          <h2 className="font-monarcha text-2xl text-eblue-600">{subchapters[subchapter - 1]?.title}</h2>
           {chapter === 'video' && (
-            <Video subchapter={subchapter} onSubchapterChange={(subchapter) => handleSubchapterChange('video', subchapter)} muxToken={muxToken} playbackId={playbackId} />
+            <Video subchapter={subchapter} onSubchapterChange={(subchapter) => { }} muxToken={muxToken} playbackId={playbackId} />
           )}
           {chapter === 'badanie' && (
             <BroszuraContent iframeSrc="/bezpestkowe_broszura_3.pdf" />
@@ -122,24 +124,23 @@ export default function Page({
             </>
           )}
           {chapter === 'quiz' && <QuizChapter />}
-          <MarkCompleted markAsCompleted={() => { }} currentSubchapterId={subchapter.toString()} />
+          {/* <MarkCompleted markAsCompleted={() => { }} currentSubchapterId={subchapter.toString()} /> */}
         </div>
         <Chapters>
           <Chapter
             chapterNo={1}
-            subchapterTitle="MRKH: perspektywa pacjencka"
-            totalSubchapters={perspektywaPacjencka.length}
-            completed={getCompletedPercentage(perspektywaPacjencka.length, completedVideoPP)}
+            subchapterTitle={chapters.video.title}
+            completed={chapters.video.subchapters.length}
           >
-            {perspektywaPacjencka.map(([sub, sc]) => {
+            {chapters.video.subchapters.slice(0, 9).map((sc, index) => {
               return (
                 <SubchapterComponent
-                  key={`${sub}-${sc.title}`}
-                  isCurrent={sc.partNo === subchapter}
+                  key={`${index}-${sc.title}`}
+                  isCurrent={index + 1 === subchapter}
                   done={false}
-                  onClick={() => handleSubchapterChange('video', sc.partNo)}
+                  onClick={() => handleSubchapterChange('video', index + 1)}
                 >
-                  {`${sc.partNo}. ${sc.title}`}
+                  {`${index + 1}. ${sc.title}`}
                 </SubchapterComponent>
               );
             })}
@@ -147,18 +148,17 @@ export default function Page({
           <Chapter
             chapterNo={2}
             subchapterTitle="MRKH: perspektywa lekarza"
-            totalSubchapters={perspektywaLekarza.length}
-            completed={getCompletedPercentage(perspektywaLekarza.length, completedVideoPL)}
+            completed={10}
           >
-            {perspektywaLekarza.map(([sub, sc]) => {
+            {chapters.video.subchapters.slice(9).map((sc, index) => {
               return (
                 <SubchapterComponent
-                  key={`${sub}-${sc.title}`}
-                  isCurrent={sc.partNo === subchapter}
+                  key={`${index}-${sc.title}`}
+                  isCurrent={index + 10 === subchapter}
                   done={false}
-                  onClick={() => handleSubchapterChange('video', sc.partNo)}
+                  onClick={() => handleSubchapterChange('video', index + 10)}
                 >
-                  {`${sc.partNo}. ${sc.title}`}
+                  {`${index + 1}. ${sc.title}`}
                 </SubchapterComponent>
               );
             })}
@@ -166,9 +166,8 @@ export default function Page({
           <Chapter
             chapterNo={3}
             subchapterTitle="Podsumowanie badania - publikacja"
-            totalSubchapters={1}
-            completed={0}
-            onClick={() => { }}
+            completed={chapters.badanie.subchapters.length}
+            onClick={() => handleSubchapterChange('badanie', 1)}
           >
             <SubchapterComponent
               isCurrent={chapter === 'badanie'}
@@ -184,8 +183,7 @@ export default function Page({
           <Chapter
             chapterNo={5}
             subchapterTitle="Broszury"
-            totalSubchapters={2}
-            completed={getCompletedPercentage(2, completedBroszura)}
+            completed={chapters.broszura.subchapters.length}
           >
             <Subchapter
               isCurrent={chapter === 'broszura' && subchapter === 1}
@@ -209,8 +207,7 @@ export default function Page({
           <Chapter
             chapterNo={4}
             subchapterTitle="Zestaw fiszek"
-            totalSubchapters={1}
-            completed={getCompletedPercentage(1, completedFlashcard)}
+            completed={chapters.flashcard.subchapters.length}
             onClick={() => {
               handleSubchapterChange('flashcard', 1);
             }}
@@ -228,8 +225,7 @@ export default function Page({
           <Chapter
             chapterNo={6}
             subchapterTitle="Quiz wiedzy o MRKH"
-            totalSubchapters={1}
-            completed={0}
+            completed={chapters.quiz.subchapters.length}
             onClick={() => {
               handleSubchapterChange('quiz', 1);
             }}

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import Video from 'next-video';
 import { MarkCompleted } from './MarkCompleted';
-import { videoEntries } from './data';
+import { chapters } from './data';
 
 type VideoPageProps = {
   muxToken: string;
@@ -10,14 +10,16 @@ type VideoPageProps = {
   onSubchapterChange: (subchapter: number) => void;
 }
 
-const subchapterFromTime = (time: number) => {
-  const match = videoEntries.find(([_sub, current]) => {
+const videoEntries = chapters.video.subchapters;
+
+const subchatperIndexFromTime = (time: number) => {
+  const match = videoEntries.findIndex((current) => {
     if (time >= current.from && time < current.to) {
       return true;
     }
   })
 
-  return match?.[1];
+  return match;
 }
 
 const VideoPage = React.forwardRef<HTMLVideoElement, VideoPageProps>(
@@ -31,7 +33,7 @@ const VideoPage = React.forwardRef<HTMLVideoElement, VideoPageProps>(
 
   useEffect(() => {
     if (!videoRef.current) return;
-    videoRef.current.currentTime = videoEntries.find(([_sub, current]) => current.partNo === subchapter)?.[1].from || 0;
+    videoRef.current.currentTime = videoEntries[subchapter - 1].from || 0;
   }, [subchapter]);
 
 
@@ -40,12 +42,13 @@ const VideoPage = React.forwardRef<HTMLVideoElement, VideoPageProps>(
 
     videoRef.current = ref;
     // initial current time
-    videoRef.current.currentTime = videoEntries.find(([_sub, current]) => current.partNo === subchapterRef.current)?.[1].from || 0;
+    videoRef.current.currentTime = videoEntries[subchapterRef.current - 1].from || 0;
 
     ref.addEventListener('timeupdate', () => {
-      const fromTime = subchapterFromTime(ref.currentTime);
-      if (!fromTime || fromTime.partNo === subchapterRef.current) return;
-      onSubchapterChange(fromTime.partNo);
+      console.log('timeupdate', ref.currentTime);
+      const fromTime = subchatperIndexFromTime(ref.currentTime);
+      if (!fromTime || fromTime === subchapterRef.current) return;
+      onSubchapterChange(fromTime + 1);
     })
   }, [onSubchapterChange]);
 

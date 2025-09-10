@@ -10,7 +10,6 @@ interface ChapterProps {
   chapterNo: number;
   subchapterTitle: string;
   children: React.ReactNode;
-  totalSubchapters: number;
   completed: number;
   onClick?: () => void;
 }
@@ -19,7 +18,6 @@ export const Chapter: React.FC<ChapterProps> = ({
   chapterNo,
   subchapterTitle,
   children,
-  totalSubchapters,
   completed,
   onClick,
 }) => {

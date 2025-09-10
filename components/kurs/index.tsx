@@ -1,6 +1,5 @@
 import React, { HTMLAttributes } from "react";
 import { Accordion } from "../Accordion";
-import { KursProvider } from "./context";
 import { cn } from "@/utils/misc";
 
 function Root({ children, initialCompletedSubchapters }: { children: React.ReactNode, initialCompletedSubchapters: string[] }) {

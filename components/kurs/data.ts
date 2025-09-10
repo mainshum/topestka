@@ -30,22 +30,51 @@ export type QuizSubchapter = {
 
 export type Subchapter = VideoSubchapter | BroszuraSubchapter | FlashcardSubchapter | QuizSubchapter;
 
-export const videoSubchapters = new Map<number, VideoSubchapter>([
-  [1, { partNo: 1, type: 'video', subtype: 'pp', title: "Kim jesteśmy?", from: 5, to: 52 }],
-  [2, { partNo: 2, type: 'video', subtype: 'pp', title: "Czym jest zespół MRKH i z czym się wiąże?", from: 52, to: 4 * 60 + 37 }],
-  [3, { partNo: 3, type: 'video', subtype: 'pp', title: "Siedem rad dla Bezpestkowych", from: 4 * 60 + 37, to: 7 * 60 + 51 }],
-  [4, { partNo: 4, type: 'video', subtype: 'pp', title: "Kluczowe punkty w życiu osób z zespołem MRKH", from: 7 * 60 + 51, to: 15 * 60 + 3 }],
-  [5, { partNo: 5, type: 'video', subtype: 'pp', title: "Wnioski", from: 15 * 60 + 3, to: 16 * 60 + 11 }],
-  [6, { partNo: 6, type: 'video', subtype: 'pp', title: "Raport dotyczący komunikacji lekarzy z pacjentami", from: 16 * 60 + 11, to: 18 * 60 + 19 }],
-  [7, { partNo: 7, type: 'video', subtype: 'pp', title: "Dwie historie pacjentek z zespołem MRKH", from: 18 * 60 + 19, to: 21 * 60 + 46 }],
-  [8, { partNo: 8, type: 'video', subtype: 'pp', title: "Wnioski", from: 21 * 60 + 46, to: 24 * 60 + 15 }],
-  [9, { partNo: 9, type: 'video', subtype: 'pp', title: "Dlaczego istotnie jest słuchanie organizacji pacjenckich", from: 24 * 60 + 15, to: 24 * 60 + 57 }],
-  [10, { partNo: 10, type: 'video', subtype: 'pl', title: "Czym jest zespół MRKH?", from: 24 * 60 + 57, to: 25 * 60 + 19 }],
-  [11, { partNo: 11, type: 'video', subtype: 'pl', title: "Jak rozpoznać MRKH?", from: 25 * 60 + 19, to: 35 * 60 + 19 }],
-  [12, { partNo: 12, type: 'video', subtype: 'pl', title: "W jaki sposób przekazywać diagnoze o zespole MRKH", from: 35 * 60 + 19, to: 48 * 60 + 51 }],
-  [13, { partNo: 13, type: 'video', subtype: 'pl', title: "Z czym się wiąże MRKH?", from: 48 * 60 + 51, to: Infinity }],
-]);
-
+  export const chapters = {
+    video: {
+      title: "MRKH: perspektywa pacjencka",
+      subchapters: [
+        { title: "Kim jesteśmy?", from: 5, to: 53 },
+        { title: "Czym jest zespół MRKH i z czym się wiąże?", from: 53, to: 4 * 60 + 38 },
+        { title: "Siedem rad dla Bezpestkowych", from: 4 * 60 + 38, to: 7 * 60 + 51 },
+        { title: "Kluczowe punkty w życiu osób z zespołem MRKH", from: 7 * 60 + 51, to: 15 * 60 + 5 },
+        { title: "Wnioski", from: 15 * 60 + 5, to: 16 * 60 + 11 },
+        { title: "Raport dotyczący komunikacji lekarzy z pacjentami", from: 16 * 60 + 11, to: 18 * 60 + 19 },
+        { title: "Dwie historie pacjentek z zespołem MRKH", from: 18 * 60 + 19, to: 21 * 60 + 48 },
+        { title: "Wnioski", from: 21 * 60 + 48, to: 24 * 60 + 17 },
+        { title: "Dlaczego istotnie jest słuchanie organizacji pacjenckich", from: 24 * 60 + 15, to: 24 * 60 + 57 },
+        { title: "Czym jest zespół MRKH?", from: 24 * 60 + 57, to: 35 * 60 + 19 },
+        { title: "Jak rozpoznać MRKH?", from: 35 * 60 + 19, to: 48 * 60 + 51 },
+        { title: "W jaki sposób przekazywać diagnozę o zespole MRKH?", from: 48 * 60 + 51, to: 52 * 60 + 32 },
+        { title: "Z czym się wiąże MRKH?", from: 52 * 60 + 32, to: Infinity },
+      ]
+    },
+    badanie: {
+      title: "Podsumowanie badania - publikacja",
+      subchapters: [
+        { title: "Wszystko zaczyna się w gabinecie, czyli o tym, jak studenci i studentki są przygotowywani do komunikacji z pacjentami i pacjentkami." },
+      ]
+    },
+    broszura: {
+      title: "Broszury",
+      subchapters: [
+        { title: "Zespół MRKH - o osobach, które nie mają pestki" },
+        { title: "O zespole MRKH, jego objawach i kwestiach z nim związanych" },
+      ]
+    },
+    flashcard: {
+      title: "Zestaw fiszek",
+      subchapters: [
+        { title: "Zapoznaj się z zestawem fiszek! Został stworzony przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH." },
+      ]
+    },
+    quiz: {
+      title: "Quiz wiedzy o MRKH",
+      subchapters: [
+        { title: "Rozwiąż quiz, aby ukończyć kurs." },
+      ]
+    }
+  }
 export const flashcardData = [
   {
     flashcardNo: 1,
@@ -82,10 +111,6 @@ export const quizSubchapter: QuizSubchapter = {
   partNo: 1,
   title: "Quiz wiedzy o MRKH"
 };
-
-export const videoEntries = Array.from(videoSubchapters.entries());
-export const perspektywaPacjencka = videoEntries.filter(([sub, value]) => sub < 9);
-export const perspektywaLekarza = videoEntries.filter(([sub, value]) => sub > 9);
 
 export const getId = (subchapter: Subchapter) => {
   return `${subchapter.type}#${subchapter.subtype}#${subchapter.partNo}`;

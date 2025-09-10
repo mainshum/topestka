@@ -1,12 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { useKurs } from './context';
-import { Chapter } from './Chapter';
-import { Subchapter } from './Subchapter';
 import { Flashcard } from './Flashcard';
 import { QuizLayout } from '../quiz-layout';
 import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
-import { Button } from '../Button';
 
 type Answer = {
     text: string;
