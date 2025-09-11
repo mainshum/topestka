@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
-import React, { } from "react";
+import React, { useState } from "react";
 import { getCompletedItems } from "@/utils/completedItems/server";
 import { Chapters } from '../../components/kurs/Chapters';
 import dynamic from 'next/dynamic';
@@ -75,6 +75,8 @@ export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = 
   };
 };
 
+const videoEntries = chapters.video.subchapters;
+
 // Main component
 export default function Page({
   muxToken,
@@ -83,18 +85,16 @@ export default function Page({
 
   const router = useRouter();
 
-  // todo fix done
-  console.log(initialCompletedSubchapters);
-
   const chapter = router.query?.slug?.[0] || 'video';
-  const subchapter = Number(router.query?.slug?.[1]) || 1;
+  const subchapterFromQuery = Number(router.query?.slug?.[1]) || 1;
 
   const handleSubchapterChange = (chapter: string, subchapter: number) => {
     router.replace(`/kurs/${chapter}/${subchapter}`, undefined, { shallow: true });
   }
 
+  const [currentSubchapter, setCurrentSubchapter] = useState(subchapterFromQuery);
 
-  const {title, subchapters} = chapters[chapter as keyof typeof chapters];
+  const { title, subchapters } = chapters[chapter as keyof typeof chapters];
 
   return (
     <div className="flex flex-col w-full">
@@ -108,15 +108,15 @@ export default function Page({
       </section>
       <section className="flex xl:flex-row flex-col justify-between gap-x-6 pt-2">
         <div className="relative flex flex-col justify-between items-start gap-6 grow-[1] bottom-11 self-start">
-          <h2 className="font-monarcha text-2xl text-eblue-600">{subchapters[subchapter - 1]?.title}</h2>
+          <h2 className="font-monarcha text-2xl text-eblue-600">{subchapters[currentSubchapter - 1]?.title}</h2>
           {chapter === 'video' && (
-            <Video subchapter={subchapter} onSubchapterChange={(subchapter) => { }} muxToken={muxToken} playbackId={playbackId} />
+            <Video notifySubchatperPlaying={(subchapter) => { setCurrentSubchapter(subchapter); }} muxToken={muxToken} playbackId={playbackId} startTime={videoEntries[subchapterFromQuery - 1]?.from || 0} />
           )}
           {chapter === 'badanie' && (
             <BroszuraContent iframeSrc="/bezpestkowe_broszura_3.pdf" />
           )}
           {chapter === 'broszura' && (
-            <BroszuraContent iframeSrc={`/bezpestkowe_broszura_${subchapter}.pdf`} />
+            <BroszuraContent iframeSrc={`/bezpestkowe_broszura_${subchapterFromQuery}.pdf`} />
           )}
           {chapter === 'flashcard' && (
             <>
@@ -136,7 +136,7 @@ export default function Page({
               return (
                 <SubchapterComponent
                   key={`${index}-${sc.title}`}
-                  isCurrent={index + 1 === subchapter}
+                  isCurrent={index + 1 === currentSubchapter}
                   done={false}
                   onClick={() => handleSubchapterChange('video', index + 1)}
                 >
@@ -154,7 +154,7 @@ export default function Page({
               return (
                 <SubchapterComponent
                   key={`${index}-${sc.title}`}
-                  isCurrent={index + 10 === subchapter}
+                  isCurrent={index + 10 === currentSubchapter}
                   done={false}
                   onClick={() => handleSubchapterChange('video', index + 10)}
                 >
@@ -186,7 +186,7 @@ export default function Page({
             completed={chapters.broszura.subchapters.length}
           >
             <Subchapter
-              isCurrent={chapter === 'broszura' && subchapter === 1}
+              isCurrent={chapter === 'broszura' && currentSubchapter === 1}
               done={false}
               onClick={() => {
                 handleSubchapterChange('broszura', 1);
@@ -195,7 +195,7 @@ export default function Page({
               1. Zespół MRKH - o osobach, które nie mają pestki
             </Subchapter>
             <Subchapter
-              isCurrent={chapter === 'broszura' && subchapter === 2}
+              isCurrent={chapter === 'broszura' && currentSubchapter === 2}
               done={false}
               onClick={() => {
                 handleSubchapterChange('broszura', 2);
@@ -213,7 +213,7 @@ export default function Page({
             }}
           >
             <Subchapter
-              isCurrent={chapter === 'flashcard' && subchapter === 1}
+              isCurrent={chapter === 'flashcard' && currentSubchapter === 1}
               done={false}
               onClick={() => {
                 handleSubchapterChange('flashcard', 1);
