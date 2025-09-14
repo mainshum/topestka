@@ -1,14 +1,28 @@
 import React from 'react';
 
-export default function BroszuraPage({iframeSrc}: {iframeSrc: string}) {
+interface BroszuraPageProps {
+  iframeSrc: string;
+}
 
+export default function BroszuraPage({ iframeSrc }: BroszuraPageProps) {
   return (
-    <div className="relative flex flex-col justify-between items-start gap-6 w-full">
-      <iframe
-        src={iframeSrc}
-        className="w-full h-[600px]"
-        title="Broszura"
-      />
-    </div>
+        <iframe
+          src={`${iframeSrc}`}
+          className="border-0 w-full aspect-square md:aspect-video rounded-lg overflow-hidden"
+          title="Broszura"
+          style={{
+            // Additional CSS to hide any remaining browser UI elements
+            border: 'none',
+            outline: 'none',
+            // Mobile-specific scrolling fixes
+            WebkitOverflowScrolling: 'touch',
+            overflow: 'auto',
+            // Ensure proper touch handling
+            touchAction: 'pan-x pan-y',
+            // Prevent zoom on double tap
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+          }}
+        />
   );
 } 

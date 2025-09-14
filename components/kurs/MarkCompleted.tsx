@@ -1,14 +1,24 @@
+import React from "react";
 import { Button } from "../Button";
+import { cn } from "@/utils/misc";
 
-export function MarkCompleted({markAsCompleted, currentSubchapterId}: {markAsCompleted: (id: string) => void, currentSubchapterId: string}) {
+interface MarkCompletedProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  markAsCompleted: () => void;
+}
+
+export const MarkCompleted = React.forwardRef<HTMLButtonElement, MarkCompletedProps>(({markAsCompleted, className, ...props}, ref) => {
     return (
       <Button
-        className="px-6 border border-eblue-600 rounded-md"
+        className={className}
         variant="ghost"
         size="sm"
-        onClick={() => markAsCompleted(currentSubchapterId)}
+        onClick={() => markAsCompleted()}
+        ref={ref}
+        {...props}
       >
         Oznacz lekcję jako ukończoną
       </Button>
     )
-}
+})
+
+MarkCompleted.displayName = "MarkCompleted";

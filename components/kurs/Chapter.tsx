@@ -25,17 +25,17 @@ export const Chapter: React.FC<ChapterProps> = ({
   return (
     <li>
       <AccordionItem value={`chapter-${chapterNo}`}>
-        <AccordionTrigger chevProps={{className: "text-eblue-600"}} className="gap-4 px-0 pt-3 pb-2 border-eblue-400 border-b-[1px] text-nowrap [&>svg]:data-[state=open]:text-eblue-600" onClick={onClick}>
-          <div className="flex gap-3">
+        <AccordionTrigger chevProps={{className: "text-eblue-600"}} className="gap-4 px-0 pt-3 pb-3 border-eblue-400 border-b-[1px] text-nowrap [&>svg]:data-[state=open]:text-eblue-600" onClick={onClick}>
+          <div className="flex gap-3 w-full items-center">
             <LoadCircle completionPercent={completed} />
             <div className="flex font-outfit flex-col">
               <h1 className="text-sm">Część {chapterNo}</h1>
-              <h2 className="text-base">{subchapterTitle}</h2>
+              <h2 className="text-base text-wrap">{subchapterTitle}</h2>
             </div>
           </div>
         </AccordionTrigger>
         <AccordionContent asChild className="pb-0">
-          <ol className="flex flex-col items-center pt-2">{children}</ol>
+          <ol className="flex flex-col items-center">{children}</ol>
         </AccordionContent>
       </AccordionItem>
     </li>

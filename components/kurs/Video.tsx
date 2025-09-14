@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Video from 'next-video';
-import { chapters } from './data';
+import { videoSubchapters } from './data';
 
 type VideoPageProps = {
   muxToken: string;
@@ -9,10 +9,13 @@ type VideoPageProps = {
   notifySubchatperPlaying: (subchapter: number) => void;
 }
 
-const videoEntries = chapters.video.subchapters;
+const Spinner = () => (
+  <div className="animate-spin z-10 rounded-full h-4 w-4 border-t-1 border-b-2 border-ewhite absolute top-[calc(50%-4px)] left-[calc(50%-4px)]"></div>
+)
+
 
 const subchatperIndexFromTime = (time: number) => {
-  const match = videoEntries.findIndex((current) => {
+  const match = videoSubchapters.findIndex((current) => {
     if (time >= current.from && time < current.to) {
       return true;
     }
@@ -24,29 +27,42 @@ const subchatperIndexFromTime = (time: number) => {
 const VideoPage = React.forwardRef<HTMLVideoElement, VideoPageProps>(
   ({ muxToken, playbackId, notifySubchatperPlaying, startTime }, ref) => {
 
-  const notifySubchatperPlayingRef = useRef<((subchapter: number) => void)>(notifySubchatperPlaying);
+    const notifySubchatperPlayingRef = useRef<((subchapter: number) => void)>(notifySubchatperPlaying);
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const onVideoMount = useCallback((ref: HTMLVideoElement | null) => {
-    if (!ref) return;
+    useEffect(() => {
+      if (!videoRef.current) return;
 
-    videoRef.current = ref;
-    // initial current time
-    videoRef.current.currentTime = startTime;
+      const handleTimeUpdate = () => {
+        notifySubchatperPlayingRef.current(subchatperIndexFromTime(videoRef.current?.currentTime || 0));
+      };
 
+      videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
 
-    ref.addEventListener('timeupdate', () => {
-      notifySubchatperPlayingRef.current(subchatperIndexFromTime(ref.currentTime));
-    });
-  }, [startTime]);
+      return () => {
+        videoRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
+      };
+    }, []);
+
+    const onVideoMount = useCallback((ref: HTMLVideoElement | null) => {
+      if (!ref) return;
+
+      videoRef.current = ref;
+    }, []);
+
+    const [showSpinner, setShowSpinner] = useState(true);
 
     return (
-      <div className="relative flex flex-col justify-between items-start gap-6 w-full">
+      <div className="relative flex flex-col justify-between items-start gap-6 w-full aspect-video">
+        {showSpinner && <Spinner />}
         <Video
           ref={onVideoMount}
           playbackToken={muxToken}
           playbackId={playbackId}
+          startTime={startTime}
+          onCanPlay={() => setShowSpinner(false)}
+          onSeeking={() => setShowSpinner(true)}
         />
       </div>
     );
