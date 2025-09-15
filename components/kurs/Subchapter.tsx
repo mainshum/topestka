@@ -30,12 +30,9 @@ export const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
 
 export const SubchapterDownloadableContent = ({ text }: { text: string }) => {
   return (
-    <>
-              <span>
-              {text}
-              </span>
-              <CloudDownload className="w-4 h-4 shrink-0"/>
-</>
+    <span>
+      {text}
+    </span>
   );
 };
 
