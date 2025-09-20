@@ -9,8 +9,7 @@ interface MarkCompletedProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const MarkCompleted = React.forwardRef<HTMLButtonElement, MarkCompletedProps>(({markAsCompleted, className, ...props}, ref) => {
     return (
       <Button
-        className={className}
-        variant="ghost"
+        className={cn(className, 'px-6 rounded-xl text-lg hover:bg-butter-100 hover:border-orange-500 hover:text-orange-500')} variant="program"
         size="sm"
         onClick={() => markAsCompleted()}
         ref={ref}

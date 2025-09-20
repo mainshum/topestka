@@ -18,6 +18,11 @@ import { createServerSideHelpers } from '@trpc/react-query/server'
 import { appRouter } from "@/server/routers/_app";
 import { completedItemsSchema } from "@/components/kurs/data";
 import { MarkCompleted } from "@/components/kurs/MarkCompleted";
+import { cn } from "@/utils/misc";
+
+import { Outfit } from "next/font/google";
+
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 
 const flashcardSubchapterDescription = "Zapoznaj się z zestawem fiszek! Został stworzony przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH.";
@@ -251,7 +256,7 @@ export default function Page({
           </Chapter>
           <Chapter
             chapterNo={6}
-            subchapterTitle="Quiz wiedzy o MRKH"
+            subchapterTitle="Quiz wiedzy o zespole MRKH"
             completed={completedItems.quiz ? 100 : 0}
             onClick={() => {
               handleSubchapterChange('quiz', 1);
@@ -271,6 +276,8 @@ export default function Page({
   );
 }
 
+
+
 Page.getLayout = (page: React.ReactNode) => (
-  <main className="flex justify-center px-10 py-16 min-h-dvh">{page}</main>
+  <main className={cn(outfit.variable, "flex justify-center px-10 py-16 min-h-dvh")}>{page}</main>
 );

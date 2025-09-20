@@ -17,7 +17,7 @@ const FLASHCARD_TITLE = "Mamo dziecka z zespołem MRKH, pamiętaj!";
 
 const Header = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
   return (
-    <h1 ref={ref} className="text-lg font-semibold mb-4 border-b border-white pb-2">
+    <h1 ref={ref} className={cn("text-lg font-semibold mb-4 border-b border-white pb-2", props.className)}>
       {children}
     </h1>
   );
