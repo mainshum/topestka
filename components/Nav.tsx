@@ -15,6 +15,7 @@ import {
 
 import clsx from "clsx";
 import { buttonVariants } from "./Button";
+import { useCourseStatus } from "@/utils/useCourseStatus";
 
 const HEADER_H = 106;
 const STATIC_WHEN_FROM_TOP = 500;
@@ -80,6 +81,7 @@ const TopLinks = React.forwardRef<
   HTMLUListElement,
   HTMLAttributes<HTMLUListElement>
 >(({ className, ...props }) => {
+  const {kupLabel} = useCourseStatus();
   return (
     <ul
       className={cn(
@@ -95,7 +97,7 @@ const TopLinks = React.forwardRef<
         <Link href="#o-nas" className={buttonVariants({ variant: "navlink" })}>O prowadzących</Link>
       </li>
       <li>
-        <Link className={buttonVariants({ variant: "navlink" })} href="#kup-kurs">Kup kurs</Link>
+        <Link className={buttonVariants({ variant: "navlink" })} href="#kup-kurs">{kupLabel}</Link>
       </li>
       <li>
         <Link href="#kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>

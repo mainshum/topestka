@@ -3,8 +3,10 @@ import Link from "next/link";
 import { buttonVariants } from "./Button";
 import HomeSection from "./HomeSection";
 import { cn } from "@/utils/misc";
+import { useCourseStatus } from "@/utils/useCourseStatus";
 
 const Intro = () => {
+  const {kupLabel} = useCourseStatus();
   return (
     <HomeSection className="flex flex-col justify-center md:justify-start items-center gap-8 md:gap-0 px-6 md:pt-72">
       <h1 className="font-medium font-outfit  text-6xl text-nowrap md:text-7xl">
@@ -16,7 +18,7 @@ const Intro = () => {
       </h2>
       <section className="flex md:flex-row flex-col justify-center items-center gap-4">
         <Link className={cn(buttonVariants({ variant: "kupkurs", size: "lg" }))} href="#kup-kurs" >
-          Kup kurs
+          {kupLabel}
         </Link>
         <Link
           className={cn(buttonVariants({ variant: "program", size: "lg" }))}

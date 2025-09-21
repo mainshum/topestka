@@ -127,7 +127,12 @@ export default function Page({
     localStorage.setItem('completedItems', JSON.stringify(newCompletedItems));
   }
 
-  const { title, subchapters } = chapters[chapter as keyof typeof chapters];
+  let { title, subchapters } = chapters[chapter as keyof typeof chapters];
+
+  // hack 
+  if (chapter === 'video' && subchapterFromQuery >= 10) {
+    title = 'MRKH: perspektywa lekarza';
+  }
 
   const completedPP = getCompletedPercentage(9, completedItems.video.filter((item) => item < 10).length);
   const completedPL = getCompletedPercentage(4, completedItems.video.filter((item) => item >= 10).length);
