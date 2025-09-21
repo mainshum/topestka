@@ -108,13 +108,13 @@ export const completedItems = mysqlTable("completedItems", {
   updatedAt: timestamp("updatedAt").notNull().$defaultFn(() => new Date()),
 });
 
-const transactionStatus = mysqlEnum("status", ["pending", "success", "failed"]);
+const transactionStatus = mysqlEnum("status", ["pending", "success", "failed", "started"]);
 
 export const transactions = mysqlTable("transaction", {
   sessionId: varchar("sessionId", { length: 255 }).primaryKey(),
   email: varchar("email", { length: 255 }).notNull(),
   token: varchar("token", { length: 255 }).notNull(),
   amount: int("amount").notNull(),
-  status: transactionStatus.notNull().default("pending"),
+  status: transactionStatus.notNull().default("started"),
   updatedAt: timestamp("updatedAt").notNull().$defaultFn(() => new Date()),
 });

@@ -18,5 +18,16 @@ declare namespace NodeJS {
     MUX_SIGNING_KEY: string;
     MUX_PRIVATE_KEY: string;
     MUX_AUDIENCE: string;
+    KURS_ENABLED: string;
+    EMAILS_ALLOWED_TO_PURCHASE_REGEX: string,
+    COURSE_PRICE: string,
+    COURSE_DISCOUNT_PRICE: string,
+    P24_MERCHANT_ID: string;
+    P24_POS_ID: string;
+    P24_API_KEY: string;
+    P24_CRC_KEY: string;
+    P24_API_KEY_PROD: string;
+    P24_CRC_KEY_PROD: string;
+    P24_ENV: "sandbox" | "production";
   }
 }

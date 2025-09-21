@@ -24,8 +24,8 @@ import Nav from "@/components/Nav";
 // Accordion Components
 import { Promo } from "@/components/Promo";
 
-const Home: NextPage<{ kursEnabled: boolean }> = (props) => {
-  const { kursEnabled } = props;
+const Home: NextPage<{ kursEnabled: boolean, coursePrice: number, courseDiscountPrice: number }> = (props) => {
+  const { kursEnabled, coursePrice, courseDiscountPrice } = props;
   return (
     <>
       <Nav kursEnabled={kursEnabled} />
@@ -38,7 +38,7 @@ const Home: NextPage<{ kursEnabled: boolean }> = (props) => {
       <DlaKogo items={dlaKogoItems} />
       <KursWLiczbach items={kursWLiczbachItems} />
       <AboutUs />
-      <KupKursSection kursEnabled={kursEnabled} />
+      <KupKursSection kursEnabled={kursEnabled} coursePrice={coursePrice} courseDiscountPrice={courseDiscountPrice} />
       <FAQ />
       <Sponsors />
       <Newsletter />
@@ -46,14 +46,21 @@ const Home: NextPage<{ kursEnabled: boolean }> = (props) => {
   );
 };
 
-export const getStaticProps = async () => {
-  const kursEnabled = process.env.KURS_ENABLED;
-  if (!kursEnabled) {
-    throw new Error('KURS_ENABLED is not set');
+export const getServerSideProps = async () => {
+  const {KURS_ENABLED, COURSE_PRICE, COURSE_DISCOUNT_PRICE} = process.env;
+  if (KURS_ENABLED == null || COURSE_PRICE == null || COURSE_DISCOUNT_PRICE == null) {
+    throw new Error('KURS_ENABLED, COURSE_PRICE or COURSE_DISCOUNT_PRICE is not set');
+  }
+  const parsedCoursePrice = parseInt(COURSE_PRICE);
+  const parsedCourseDiscountPrice = parseInt(COURSE_DISCOUNT_PRICE);
+  if (isNaN(parsedCoursePrice) || isNaN(parsedCourseDiscountPrice)) {
+    throw new Error('COURSE_PRICE or COURSE_DISCOUNT_PRICE is not a number');
   }
   return {
     props: {
-      kursEnabled: kursEnabled === 'true',
+      kursEnabled: Boolean(KURS_ENABLED),
+      coursePrice: parsedCoursePrice,
+      courseDiscountPrice: parsedCourseDiscountPrice,
     },
   };
 };

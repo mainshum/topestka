@@ -31,11 +31,13 @@ const NavMobile = ({
   classNames,
   accordionRef,
   useStaticNav,
+  hasSession,
 }: {
   style: React.CSSProperties;
   classNames?: string;
   accordionRef?: React.RefObject<HTMLDivElement>;
   useStaticNav: boolean;
+  hasSession: boolean;
 
 }) => {
 
@@ -70,7 +72,16 @@ const NavMobile = ({
           </RadixTrigger>
         </div>
         <Content className={cn("text-sm  pb-0 border-b-[1px] data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]", !useStaticNav && "border-b-electric-300")}>
-          <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [&>li:first-child]:pt-10 [&>li:last-child]:pb-10" />
+          <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [& >li:first-child]:pt-10 [&>li:last-child]:pb-10" >
+            <li>
+              <Link
+                href={hasSession ? "/api/auth/signout" : "/login"}
+                className={buttonVariants({ variant: "navlink" })}
+              >
+                {hasSession ? "Wyloguj" : "Zaloguj"}
+              </Link>
+            </li>
+          </TopLinks>
         </Content>
       </AccordionItem>
     </Accordion>
@@ -102,6 +113,7 @@ const TopLinks = React.forwardRef<
       <li>
         <Link href="#kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
       </li>
+      {props.children}
     </ul>
   );
 });
@@ -113,7 +125,7 @@ const Root = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     return (
       <nav
         className={clsx(
-          "lg:flex bg-butter-100 justify-between items-center p-10 py-8 border border-b-eblue-100 font-medium",
+          "lg:flex bg-butter-100 justify-between items-center p-10 py-8 border border-b-eblue-100 font-medium z-10",
           className,
         )}
         {...props}
@@ -219,6 +231,7 @@ const MainNav = React.forwardRef<
         style={style}
         classNames={classNames}
         accordionRef={accordionRef}
+        hasSession={!!session}
       />
       {/* desktop */}
       <Nav.Root style={style} className={clsx("hidden lg:flex", classNames)}>

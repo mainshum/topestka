@@ -9,7 +9,7 @@ import { PowiadomLubKup } from "./PowiadomLubKup";
 
 type CenaProps = {
   children: React.ReactNode;
-  koszt: string;
+  koszt: number;
 };
 
 const Cena = ({ children, koszt }: CenaProps) => {
@@ -25,7 +25,7 @@ const Cena = ({ children, koszt }: CenaProps) => {
 };
 
 
-const KupKursSection = ({kursEnabled}: {kursEnabled: boolean}) => {
+const KupKursSection = ({kursEnabled, coursePrice, courseDiscountPrice}: {kursEnabled: boolean, coursePrice: number, courseDiscountPrice: number}) => {
   return (
     <HomeSection
       id="kup-kurs"
@@ -35,10 +35,10 @@ const KupKursSection = ({kursEnabled}: {kursEnabled: boolean}) => {
         <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
           MRKH to pestka!
         </h1>
-        <Cena koszt="299">
+        <Cena koszt={coursePrice}>
           <span className="pl-2 font-monarcha">cena</span>
         </Cena>
-        <Cena koszt="200">
+        <Cena koszt={courseDiscountPrice}>
           <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
             cena do końca października
           </span>
