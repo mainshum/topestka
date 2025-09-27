@@ -6,7 +6,7 @@ import React, { useRef, useState } from "react";
 import { Chapters } from '../../components/kurs/Chapters';
 import dynamic from 'next/dynamic';
 import { Chapter } from '../../components/kurs/Chapter';
-import { flashcardData, emptyCompletedItems, VideoSubchapter, chapters, chaptersEnum } from '@/components/kurs/data';
+import { emptyCompletedItems, VideoSubchapter, chapters, chaptersEnum } from '@/components/kurs/data';
 import { Subchapter, Subchapter as SubchapterComponent, SubchapterDownloadableContent } from '../../components/kurs/Subchapter';
 import { Flashcards } from '../../components/kurs/Flashcard';
 import { QuizChapter } from "@/components/kurs/QuizChapter";
@@ -25,15 +25,11 @@ import { Outfit } from "next/font/google";
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 
-const flashcardSubchapterDescription = "Zapoznaj się z zestawem fiszek! Został stworzony przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH.";
+const flashcardSubchapterDescription = "Wspierające hasła w rozmowie z rodzicami osób z zespołem MRKH";
 
 const getCompletedPercentage = (total: number, completed: number) => {
   return Math.round((completed / total) * 100);
 }
-
-const BroszuraContent = dynamic(() => import('../../components/kurs/Broszura'), {
-  ssr: false,
-});
 
 type GetServerSidePropsParams = {
   muxToken: string;
@@ -162,7 +158,7 @@ export default function Page({
           )}
           {chapter === 'flashcard' && (
             <>
-              <Flashcards data={flashcardData} />
+              <Flashcards  />
             </>
           )}
           {chapter === 'quiz' && <QuizChapter />}

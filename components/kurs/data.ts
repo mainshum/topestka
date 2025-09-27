@@ -101,7 +101,7 @@ export const chapters: Record<Chapter[number], { title: string; subchapters: Sub
     subchapters: [
       {
         title:
-          "Zapoznaj się z zestawem fiszek! Został stworzony przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH.",
+          "Kilka porad dla mam osób z MRKH",
       },
     ],
   },
@@ -110,28 +110,3 @@ export const chapters: Record<Chapter[number], { title: string; subchapters: Sub
     subchapters: [{ title: "Rozwiąż quiz, aby ukończyć kurs." }],
   },
 };
-export const flashcardData = [
-  {
-    flashcardNo: 1,
-    textContent: "Zespół MRKH nie zagraża życiu Twojego dziecka.",
-  },
-  {
-    flashcardNo: 2,
-    textContent: "Nie obwiniaj się o to, że córka ma zespół MRKH.",
-  },
-  {
-    flashcardNo: 3,
-    textContent:
-      "Uzgodnij z córką, z kim podzielić się informacją czyli komu możecie zaufać i na czyje wsparcie możecie liczyć. ",
-  },
-  {
-    flashcardNo: 4,
-    textContent:
-      "Nie wywieraj presji w kwestii podjęcia leczenia wady pochwy. ",
-  },
-  {
-    flashcardNo: 5,
-    textContent:
-      "Pamiętaj, że choć 4999 na 5000 kobiet ma macicę, to niepłodność jest problemem, który dotyczy co piątej pary. ",
-  },
-];
