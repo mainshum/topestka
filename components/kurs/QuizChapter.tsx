@@ -3,6 +3,7 @@ import { Flashcard } from './Flashcard';
 import { QuizLayout } from '../quiz-layout';
 import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
+import { Button } from '../Button';
 
 type Answer = {
     text: string;
@@ -324,8 +325,21 @@ export const QuizChapter: React.FC = () => {
 
 
     return (
-        <QuizLayout className='flex-col px-8'>
-            <h1 className='text-lg font-outfit font-medium'>Pytanie nr {count + 1}</h1>
+        <QuizLayout className='flex-col px-8 h-[580px]'>
+            <Flashcard.Root className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600'>
+                <Flashcard.Header className='border-eblue-200' />
+                <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
+                    <p>Sprawdź poziom swojej wiedzy rozwiązując quiz, który składa się z najczęściej zadawanych pytań przez bezpestkowe, czyli osoby mające zespół MRKH. </p>
+                    <Button onClick={increment} variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg'>
+                        Rozpocznij quiz
+                    </Button>
+                    <Button onClick={increment} variant='kupkurs' className='!text-lg px-7 rounded-xl md:hidden inline' size='sm'>
+                        Rozpocznij quiz
+                    </Button>
+                </Flashcard.Content>
+                <Flashcard.Footer className='border-eblue-200' />
+            </Flashcard.Root>
+            {/* <h1 className='text-lg font-outfit font-medium'>Pytanie nr {count + 1}</h1>
             <h2 className='text-3xl font-monarcha'>{currentQuestion.question}</h2>
             <div className='flex flex-row gap-4 py-6 flex-wrap justify-center'>
                 {currentQuestion.answers.map((answer, index) => (
@@ -342,7 +356,7 @@ export const QuizChapter: React.FC = () => {
             <h3 className={cn('text-xl font-semibold font-outfit tracking-[-1px]', {
                 'text-eblue-400': answerState.type === 'pending',
                 'text-eblue-600': answerState.type === 'correct' || answerState.type === 'incorrect',
-            })}> {answerText[answerState.type]} </h3>
+            })}> {answerText[answerState.type]} </h3> */}
 
         </QuizLayout>
     );

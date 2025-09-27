@@ -19,11 +19,14 @@ export const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
 
     return (
       <li
-        role="button"
         ref={ref}
         className={style}
         {...rest}
-      />
+      >
+        <button>
+        {rest.children}
+        </button>
+      </li>
     );
   }
 );

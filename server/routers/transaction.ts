@@ -62,7 +62,7 @@ const findTransaction = async (email: string, id: string) => {
     .where(eq(transactions.email, email));
 
   const transaction = transactionsList.find((t) => t.sessionId === id);
-  
+
   if (!transaction) {
     throw new TRPCError({
       code: "NOT_FOUND",

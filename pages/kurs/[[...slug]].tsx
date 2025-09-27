@@ -268,7 +268,7 @@ export default function Page({
               isCurrent={chapter === 'quiz'}
               done={completedItems.quiz}
             >
-              Rozwiąż quiz, aby ukończyć kurs.
+              Czy potrafisz przeprowadzić rozmowę z osobą z zespołem MRKH?
             </SubchapterComponent>
           </Chapter>
         </Chapters>
