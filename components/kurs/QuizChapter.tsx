@@ -4,6 +4,7 @@ import { QuizLayout } from '../quiz-layout';
 import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
 import { Button } from '../Button';
+import { useRouter } from 'next/navigation';
 
 type Answer = {
     text: string;
@@ -277,87 +278,127 @@ const indToLetter = (index: number) => {
     return String.fromCharCode(65 + index);
 }
 
-type AnswerState = { type: 'correct', index: number } | { type: 'incorrect', index: number } | { type: 'pending' };
+const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: () => void }) => {
+    const isSuccess = points > 13;
+    return (
+        <Flashcard.Root className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600 px-32'>
+            <Flashcard.Header className='border-eblue-200' />
+            <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
+                {isSuccess && (
+                    <h1 className='text-2xl font-monarcha'>Gratulacje! <br />Twój wynik to:</h1>
+                )}
+                {!isSuccess && (
+                    <h1 className='text-2xl font-monarcha'>Twój wynik to:</h1>
+                )}
+                <p className='text-4xl font-monarcha text-electric-600'>{points} / {quizData.length}</p>
+                {!isSuccess && (
+                    <p className='text-base font-outfit text-electric-600'>
+                        Aby uzyskać certyfikat musisz udzielić minimum 14 poprawnych odpowiedzi. Zanim ponownie rozwiążesz quiz, przeanalizuj swoje odpowiedzi. Poprawnie udzielone odpowiedzi będą zaznaczone na zielono, natomiast błędy na czerwono.
+                    </p>
+                )}
+                {isSuccess && (
+                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg'>Odbierz certyfikat</Button>
+                )}
+                {!isSuccess && (
+                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg' onClick={onCheckAnswers}>Sprawdź swoje odpowiedzi</Button>
+                )}
+            </Flashcard.Content>
+            <Flashcard.Footer className='border-eblue-200' />
+        </Flashcard.Root>
+    )
+}
+
 
 export const QuizChapter: React.FC = () => {
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const { count, increment } = useCounter(0, 0, quizData.length - 1);
-    const [answerState, setAnswerState] = useState<AnswerState>({ type: 'pending' });
+    const { count, increment, reset } = useCounter(0, 0, quizData.length - 1);
+    const [stage, setStage] = useState<'intro' | 'quiz' | 'result' | 'validation'>('intro');
+    const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
+    const [points, setPoints] = useState(0);
+
+    const handleAnswer = (answerIndex: number, currentQuestion: QuizData) => {
+        const { isCorrect } = currentQuestion.answers[answerIndex];
+        setUserAnswers(prev => ({ ...prev, [count]: answerIndex }));
+        if (isCorrect) {
+            setPoints(prev => prev + 1);
+        }
+        if (count === quizData.length - 1) {
+            setStage('result');
+        } else {
+            increment();
+        }
+    }
+
+
+    const handleCheckAnswers = () => {
+        reset();
+        setStage('validation');
+    }
 
     const currentQuestion = quizData[count];
 
-    const handleAnswer = (isCorrect: boolean, cardIndex: number) => {
-        if (timeoutRef.current) {
-            return;
-        }
+    const quizLayout = cn('flex-col px-28 min-h-[580px] items-stretch justify-start gap-6 !py-12 text-eblue-600', {
+        'justify-start': stage === 'quiz',
+        'justify-center': stage === 'result' || stage === 'intro',
+        'items-center': stage === 'result' || stage === 'intro',
+        'items-stretch': stage === 'quiz',
+    });
 
-        if (!isCorrect) {
-            setAnswerState({ type: 'incorrect', index: cardIndex });
-            return;
-        }
+    const currentCorrectIndex = currentQuestion.answers.findIndex(answer => answer.isCorrect);
+    const usersAnswerIndex = userAnswers[count];
+    const userWasCorrect = usersAnswerIndex === currentCorrectIndex;
 
-        setAnswerState({ type: 'correct', index: cardIndex });
-        timeoutRef.current = setTimeout(() => {
-            increment();
-            setAnswerState({ type: 'pending' });
-            timeoutRef.current = null;
-        }, 1000);
+    const buttonClass = (index: number) => {
+        const baseClass = 'flex flex-col gap-6 bg-butter-100 rounded-xl py-4 px-6 outline-0 outline';
+        if (stage === 'quiz') {
+            return cn(baseClass, 'hover:outline-eblue-600 hover:outline-2');
+        }
+        const thisAnswerWasUserAnswer = index === usersAnswerIndex;
+        const thisAnswerIsCorrect = index === currentCorrectIndex;
+        const thisAnswerIsIncorrect = index !== currentCorrectIndex;
+
+        if (thisAnswerIsCorrect) {
+            return cn(baseClass, 'outline-green-600 outline-2');
+        }
+        if (thisAnswerIsIncorrect && thisAnswerWasUserAnswer) {
+            return cn(baseClass, 'outline-red-600 outline-2');
+        }
+        return cn(baseClass);
     }
-
-
-    const getExtraCardClass = (cardIndex: number) => {
-        if (answerState.type === 'pending' || answerState.index !== cardIndex) {
-            return null;
-        }
-
-        if (answerState.type === 'correct') {
-            return 'outline-2 !outline-[#34C759] !hover:outline-[#34C759]';
-        }
-
-        return 'outline-2 !outline-[#FF3B2F] !hover:outline-[#FF3B2F]';
-    }
-
-    const answerText: Record<AnswerState['type'], string> = {
-        correct: 'Prawidłowa odpowiedź! Gratulacje!',
-        incorrect: 'Niestety, to nie jest dobra odpowiedź. Spróbuj ponownie.',
-        pending: 'Zaznacz odpowiedź, żeby odpowiedzieć na pytanie.',
-    }
-
 
     return (
-        <QuizLayout className='flex-col px-8 h-[580px]'>
-            <Flashcard.Root className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600'>
-                <Flashcard.Header className='border-eblue-200' />
-                <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
-                    <p>Sprawdź poziom swojej wiedzy rozwiązując quiz, który składa się z najczęściej zadawanych pytań przez bezpestkowe, czyli osoby mające zespół MRKH. </p>
-                    <Button onClick={increment} variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg'>
-                        Rozpocznij quiz
-                    </Button>
-                    <Button onClick={increment} variant='kupkurs' className='!text-lg px-7 rounded-xl md:hidden inline' size='sm'>
-                        Rozpocznij quiz
-                    </Button>
-                </Flashcard.Content>
-                <Flashcard.Footer className='border-eblue-200' />
-            </Flashcard.Root>
-            {/* <h1 className='text-lg font-outfit font-medium'>Pytanie nr {count + 1}</h1>
-            <h2 className='text-3xl font-monarcha'>{currentQuestion.question}</h2>
-            <div className='flex flex-row gap-4 py-6 flex-wrap justify-center'>
-                {currentQuestion.answers.map((answer, index) => (
-                    <Flashcard.Root onClick={() => handleAnswer(answer.isCorrect, index)} className={cn('w-56 !h-44 justify-start items-stretch bg-butter-100 text-eblue-600 cursor-pointer outline outline-0 hover:outline-eblue-600 hover:outline-2 px-9 pt-5 ', getExtraCardClass(index))} key={answer.text}>
-                        <Flashcard.Header className='text-sm border border-b-2 border-b-eblue-600 text-left pb-0'>
-                            Odpowiedź {indToLetter(index)}
-                        </Flashcard.Header>
-                        <Flashcard.Content className={cn('!h-auto text-left justify-start', answer.text.length < 100 ? 'text-base' : answer.text.length < 135 ? 'text-sm' : 'text-xs')}>
-                            {answer.text}
-                        </Flashcard.Content>
-                    </Flashcard.Root>
-                ))}
-            </div>
-            <h3 className={cn('text-xl font-semibold font-outfit tracking-[-1px]', {
-                'text-eblue-400': answerState.type === 'pending',
-                'text-eblue-600': answerState.type === 'correct' || answerState.type === 'incorrect',
-            })}> {answerText[answerState.type]} </h3> */}
-
+        <QuizLayout className={quizLayout}>
+            {stage === 'intro' && (
+                <Flashcard.Root className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600'>
+                    <Flashcard.Header className='border-eblue-200' />
+                    <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
+                        <p>Sprawdź poziom swojej wiedzy rozwiązując quiz, który składa się z najczęściej zadawanych pytań przez bezpestkowe, czyli osoby mające zespół MRKH. </p>
+                        <Button onClick={() => setStage('quiz')} variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg'>
+                            Rozpocznij quiz
+                        </Button>
+                        <Button onClick={() => setStage('quiz')} variant='kupkurs' className='!text-lg px-7 rounded-xl md:hidden inline' size='sm'>
+                            Rozpocznij quiz
+                        </Button>
+                    </Flashcard.Content>
+                    <Flashcard.Footer className='border-eblue-200' />
+                </Flashcard.Root>
+            )}
+            {(stage === 'quiz' || stage === 'validation') && (
+                <>
+                    <h1 className='text-lg font-outfit pb-2'>Pytanie {count + 1}</h1>
+                    <h2 className='text-2xl font-monarcha pb-2'>{currentQuestion.question}</h2>
+                    {currentQuestion.answers.map((answer, index) => {
+                        return ((
+                            <button key={answer.text} onClick={() => handleAnswer(index, currentQuestion)} className={buttonClass(index)}>
+                                <span className='text-sm font-outfit border-b border-eblue-200 text-left'>Odpowiedź {indToLetter(index)}</span>
+                                <span className='text-base font-monarcha text-left'>{answer.text}</span>
+                            </button>
+                        ))
+                    })}
+                </>
+            )}
+            {stage === 'result' && (
+                <Result points={points} onCheckAnswers={handleCheckAnswers} />
+            )}
         </QuizLayout>
     );
 };

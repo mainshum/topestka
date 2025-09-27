@@ -11,5 +11,9 @@ export const useCounter = (initialValue: number = 0, min: number = 0, max: numbe
     setCount((prev) => prev > min ? prev - 1 : prev);
   };
 
-  return { count, increment, decrement };
+  const reset = () => {
+    setCount(initialValue);
+  };
+
+  return { count, increment, decrement, reset };
 };
