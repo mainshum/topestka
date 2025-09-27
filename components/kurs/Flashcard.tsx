@@ -69,7 +69,7 @@ const Content = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEle
 
 const Footer = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
   return (
-    <div ref={ref} className={cn("text-lg font-semibold mb-4 border-b border-white pb-2", props.className)}>
+    <div ref={ref} className={cn("text-lg font-semibold mb-1 border-t border-white pt-2", props.className)}>
       {children}
     </div>
   );
@@ -116,7 +116,7 @@ export const Flashcards: React.FC = () => {
       )}
       <Root className={rootClass}>
         {currentCard(increment)}
-        <Footer className={cn('max-sm:border-0 max-sm:mb-0', count === 0 && 'mb-5')}>
+        <Footer className={cn('max-sm:border-0 max-sm:mb-0', count === 0 && 'mt-2 mb-4')}>
           {count !== 0 && (
             <>
               <span className='hidden sm:inline'>Porada nr {count}</span>
