@@ -16,8 +16,12 @@ export function useCourseStatus() {
       onSuccess: (data) => {
           window.location.href = data.link;
       },
-      onError: (error) => {
-        if (error.data?.code === 'UNAUTHORIZED') {
+      onError: ({data}) => {
+        if (data?.code === 'CONFLICT') {
+          window.location.href = '/kurs';
+          return;
+        }
+        if (data?.code === 'UNAUTHORIZED') {
           window.location.href = '/login?type=kup-kurs';
         } else {
           // TODO: handle error

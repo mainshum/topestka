@@ -35,7 +35,7 @@ const faqItems = [
     "Studiuję, czy mogę liczyć na zniżkę?",
     <>
       Tak, oferujemy zniżki dla studentów! Skontaktuj się z nami, a znajdziemy
-      najlepsze rozwiązanie. Napisz na adres bezpestkowe@gmail.com, aby
+      najlepsze rozwiązanie. Napisz na adres topestka.org@gmail.com, aby
       dowiedzieć się więcej.
     </>,
     null

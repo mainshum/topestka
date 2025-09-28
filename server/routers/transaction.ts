@@ -92,6 +92,16 @@ export const transactionRouter = router({
         });
       }
 
+      // ensure no access
+      const usersList = await db.select().from(users).where(eq(users.email, email));
+      if (usersList[0]?.hasAccess) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "User already has access",
+        });
+      }
+
+
       const order: Order = {
         sessionId,
         amount: coursePrice,
@@ -138,14 +148,7 @@ export const transactionRouter = router({
 
         console.log(`transDB: ${transDB.status}, transP24: ${transP24.status}`);
 
-        if (transP24.status === 0) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Brak płatności",
-          });
-        }
-
-        if (transP24.status === 2) {
+        const updateDbsAndSession = async () => {
           await Promise.all([
             db
               .update(transactions)
@@ -156,6 +159,20 @@ export const transactionRouter = router({
               .set({ hasAccess: true })
               .where(eq(users.email, email)),
           ]);
+          ctx.user.hasAccess = true;
+        };
+
+
+        if (transP24.status === 0) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Brak płatności",
+          });
+        }
+
+        if (transP24.status === 2) {
+          await updateDbsAndSession();
+          
           return true;
         }
 
@@ -174,16 +191,8 @@ export const transactionRouter = router({
         );
 
         if (isVerified) {
-          await Promise.all([
-            db
-              .update(transactions)
-              .set({ status: "success" })
-              .where(eq(transactions.sessionId, transDB.sessionId)),
-            db
-              .update(users)
-              .set({ hasAccess: true })
-              .where(eq(users.email, email)),
-          ]);
+          await updateDbsAndSession();
+          ctx.user.hasAccess = true;
 
           return true;
         }
