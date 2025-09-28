@@ -78,11 +78,11 @@ const quizData: QuizData[] = [
             },
             {
                 text: 'To zależy od typu MRKH.',
-                isCorrect: true,
+                isCorrect: false,
             },
             {
                 text: 'Zespół MRKH nie wpływa na brak łechtaczki, więc tak.',
-                isCorrect: false,
+                isCorrect: true,
             },
         ]
     },

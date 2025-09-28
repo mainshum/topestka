@@ -82,7 +82,7 @@ export const videoSubchapters: VideoSubchapter[] = [
     to: 24 * 60 + 57,
   },
   { title: "Czym jest zespół MRKH?", from: 24 * 60 + 57, to: 35 * 60 + 19 },
-  { title: "Jak rozpoznać MRKH?", from: 35 * 60 + 19, to: 48 * 60 + 51 },
+  { title: "Jak rozpoznać zespół MRKH?", from: 35 * 60 + 19, to: 48 * 60 + 51 },
   {
     title: "W jaki sposób przekazywać diagnozę o zespole MRKH?",
     from: 48 * 60 + 51,
@@ -106,7 +106,7 @@ export const chapters: Record<Chapter[number], { title: string; subchapters: Sub
     ],
   },
   quiz: {
-    title: "Quiz wiedzy o MRKH",
+    title: "Quiz wiedzy o zespole MRKH",
     subchapters: [{ title: "Rozwiąż quiz, aby ukończyć kurs." }],
   },
 };
