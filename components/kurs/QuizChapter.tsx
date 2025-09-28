@@ -5,6 +5,7 @@ import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
 import { Button } from '../Button';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type Answer = {
     text: string;
@@ -281,7 +282,7 @@ const indToLetter = (index: number) => {
 const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: () => void }) => {
     const isSuccess = points > 13;
     return (
-        <Flashcard.Root className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600 px-32'>
+        <Flashcard.Root className='md:w-[680px] h-auto bg-butter-100 text-eblue-600 px-32'>
             <Flashcard.Header className='border-eblue-200' />
             <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
                 {isSuccess && (
@@ -309,13 +310,15 @@ const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: ()
 }
 
 
-export const QuizChapter: React.FC = () => {
-    const { count, increment, reset } = useCounter(0, 0, quizData.length - 1);
+export const QuizChapter: React.FC<{ onQuizReset: () => void }> = ({ onQuizReset }) => {
+    const { count, increment, reset, decrement } = useCounter(0, 0, quizData.length - 1);
     const [stage, setStage] = useState<'intro' | 'quiz' | 'result' | 'validation'>('intro');
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
     const [points, setPoints] = useState(0);
 
     const handleAnswer = (answerIndex: number, currentQuestion: QuizData) => {
+        if (stage === 'validation') return;
+
         const { isCorrect } = currentQuestion.answers[answerIndex];
         setUserAnswers(prev => ({ ...prev, [count]: answerIndex }));
         if (isCorrect) {
@@ -345,10 +348,9 @@ export const QuizChapter: React.FC = () => {
 
     const currentCorrectIndex = currentQuestion.answers.findIndex(answer => answer.isCorrect);
     const usersAnswerIndex = userAnswers[count];
-    const userWasCorrect = usersAnswerIndex === currentCorrectIndex;
 
     const buttonClass = (index: number) => {
-        const baseClass = 'flex flex-col gap-6 bg-butter-100 rounded-xl py-4 px-6 outline-0 outline';
+        const baseClass = 'flex flex-col gap-6 bg-butter-100 rounded-xl py-4 px-6 outline-0 outline focus:outline-2 focus:outline-black';
         if (stage === 'quiz') {
             return cn(baseClass, 'hover:outline-eblue-600 hover:outline-2');
         }
@@ -388,12 +390,37 @@ export const QuizChapter: React.FC = () => {
                     <h2 className='text-2xl font-monarcha pb-2'>{currentQuestion.question}</h2>
                     {currentQuestion.answers.map((answer, index) => {
                         return ((
-                            <button key={answer.text} onClick={() => handleAnswer(index, currentQuestion)} className={buttonClass(index)}>
+                            <button key={answer.text} onClick={() => handleAnswer(index, currentQuestion)} disabled={stage === 'validation'} className={buttonClass(index)}>
                                 <span className='text-sm font-outfit border-b border-eblue-200 text-left'>Odpowiedź {indToLetter(index)}</span>
                                 <span className='text-base font-monarcha text-left'>{answer.text}</span>
                             </button>
                         ))
                     })}
+                    {stage === 'validation' && (
+                        <div className={cn('flex flex-row gap-2', {
+                            'self-center': quizData.length - 1 === count,
+                            'self-end': quizData.length - 1 !== count,
+                        })}>
+                            {quizData.length - 1 === count ? (
+                                <Button variant='panel' className='!text-sm' size='lg' onClick={onQuizReset}>
+                                    Spróbuj ponownie
+                                </Button>
+                            ) : (
+                                <>
+                                    <button className='border border-eblue-600 rounded-lg w-6 h-6 flex items-center justify-center' disabled={count === 0} onClick={decrement} >
+                                        <ArrowLeft className={cn('w-4 h-4', {
+                                            'opacity-50': count === 0,
+                                        })} />
+                                    </button>
+                                    <button className='border border-eblue-600 rounded-lg w-6 h-6 flex items-center justify-center' disabled={count === quizData.length - 1} onClick={increment} >
+                                        <ArrowRight className={cn('w-4 h-4', {
+                                            'opacity-50': count === quizData.length - 1,
+                                        })} />
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </>
             )}
             {stage === 'result' && (

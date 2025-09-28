@@ -140,6 +140,8 @@ export default function Page({
     window.open(`/bezpestkowe_${broszuraFile}.pdf`, '_blank');
   }
 
+  const [quizKey, setQuizKey] = useState(Math.random());
+
   return (
     <div ref={contentRef} className="flex flex-col w-full">
       <section className="basis-[120px] shrink-0">
@@ -161,7 +163,7 @@ export default function Page({
               <Flashcards  />
             </>
           )}
-          {chapter === 'quiz' && <QuizChapter />}
+          {chapter === 'quiz' && <QuizChapter key={quizKey} onQuizReset={() => setQuizKey(Math.random())} />}
           <MarkCompleted className="self-center" markAsCompleted={handleMarkAsCompleted} />
         </div>
         <Chapters>
