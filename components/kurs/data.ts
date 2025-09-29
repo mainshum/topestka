@@ -101,7 +101,7 @@ export const chapters: Record<Chapter[number], { title: string; subchapters: Sub
     subchapters: [
       {
         title:
-          "Kilka porad dla mam osób z MRKH",
+          "Poznaj wspierające hasła w rozmowie z rodzicami osób z zespołem MRKH",
       },
     ],
   },

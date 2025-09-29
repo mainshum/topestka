@@ -286,7 +286,7 @@ const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: ()
             <Flashcard.Header className='border-eblue-200' />
             <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
                 {isSuccess && (
-                    <h1 className='text-2xl font-monarcha'>Gratulacje! <br />Twój wynik to:</h1>
+                    <h1 className='text-2xl font-monarcha'>Gratulacje! <br />Od teraz rozmowa o zespole MRKH powinna być dla Ciebie pestką!</h1>
                 )}
                 {!isSuccess && (
                     <h1 className='text-2xl font-monarcha'>Twój wynik to:</h1>

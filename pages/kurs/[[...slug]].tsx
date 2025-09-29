@@ -25,7 +25,7 @@ import { Outfit } from "next/font/google";
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 
-const flashcardSubchapterDescription = "Wspierające hasła w rozmowie z rodzicami osób z zespołem MRKH";
+const flashcardSubchapterDescription = "Poznaj wspierające hasła w rozmowie z rodzicami osób z zespołem MRKH";
 
 const getCompletedPercentage = (total: number, completed: number) => {
   return Math.round((completed / total) * 100);
