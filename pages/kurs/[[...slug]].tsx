@@ -19,6 +19,7 @@ import { appRouter } from "@/server/routers/_app";
 import { completedItemsSchema } from "@/components/kurs/data";
 import { MarkCompleted } from "@/components/kurs/MarkCompleted";
 import { cn } from "@/utils/misc";
+import { useSession } from "next-auth/react";
 
 import { Outfit } from "next/font/google";
 
@@ -34,6 +35,7 @@ const getCompletedPercentage = (total: number, completed: number) => {
 type GetServerSidePropsParams = {
   muxToken: string;
   completedItems: InferOutput<typeof completedItemsSchema>;
+  quizPassed: boolean;
 };
 
 const playbackId = "SR34w8OYDqmeJB3S11msDqJCq7tx22H202Rtkd4UpfoY";
@@ -73,7 +75,8 @@ export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = 
   return {
     props: {
       muxToken,
-      completedItems
+      completedItems,
+      quizPassed: session?.user?.quizPassed,
     },
   };
 };
@@ -81,10 +84,13 @@ export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = 
 // Main component
 export default function Page({
   muxToken,
-  // completedItems,
+  quizPassed,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
   const router = useRouter();
+
+  const { data: session } = useSession();
+  const qp = quizPassed || session?.user?.quizPassed;
 
   const chapterParsed = safeParse(chaptersEnum, router.query?.slug?.[0]);
   const chapter = chapterParsed.success ? chapterParsed.output : 'video';
@@ -160,7 +166,7 @@ export default function Page({
           )}
           {chapter === 'flashcard' && (
             <>
-              <Flashcards  />
+              <Flashcards />
             </>
           )}
           {chapter === 'quiz' && <QuizChapter key={quizKey} onQuizReset={() => setQuizKey(Math.random())} />}
@@ -273,22 +279,24 @@ export default function Page({
               Czy potrafisz przeprowadzić rozmowę z osobą z zespołem MRKH?
             </SubchapterComponent>
           </Chapter>
-          <Chapter
-            chapterNo={7}
-            subchapterTitle="Certyfikat ukończenia kursu"
-            completed={completedItems.certyfikat ? 100 : 0}
-          >
-            <SubchapterComponent
-              role="listitem"
-              isCurrent={chapter === 'certyfikat'}
-              done={completedItems.certyfikat}
-              onClick={() => {
-                handleBroszuraDownload('certyfikat');
-              }}
+          {qp && (
+            <Chapter
+              chapterNo={7}
+              subchapterTitle="Certyfikat ukończenia kursu"
+              completed={completedItems.certyfikat ? 100 : 0}
             >
-              Pobierz certyfikat ukończenia kursu
-            </SubchapterComponent>
-          </Chapter>
+              <SubchapterComponent
+                role="listitem"
+                isCurrent={chapter === 'certyfikat'}
+                done={completedItems.certyfikat}
+                onClick={() => {
+                  handleBroszuraDownload('certyfikat');
+                }}
+              >
+                Pobierz certyfikat ukończenia kursu
+              </SubchapterComponent>
+            </Chapter>
+          )}
         </Chapters>
       </section>
     </div>

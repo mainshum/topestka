@@ -3,9 +3,13 @@ import { Flashcard } from './Flashcard';
 import { QuizLayout } from '../quiz-layout';
 import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
-import { Button } from '../Button';
+import { Button, buttonVariants } from '../Button';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+
+const POINTS_TO_PASS = 14;
 
 type Answer = {
     text: string;
@@ -279,8 +283,10 @@ const indToLetter = (index: number) => {
     return String.fromCharCode(65 + index);
 }
 
-const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: () => void }) => {
-    const isSuccess = points > 13;
+
+const Result = ({ points, onCheckAnswers}: { points: number, onCheckAnswers: () => void}) => {
+    const isSuccess = points >= POINTS_TO_PASS;
+
     return (
         <Flashcard.Root className='md:w-[680px] h-auto bg-butter-100 text-eblue-600 px-32'>
             <Flashcard.Header className='border-eblue-200' />
@@ -298,10 +304,12 @@ const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: ()
                     </p>
                 )}
                 {isSuccess && (
-                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg'>Odbierz certyfikat</Button>
+                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl' size='lg' onClick={() => {
+                        window.open(`/bezpestkowe_certyfikat.pdf`, '_blank');
+                    }}>Odbierz certyfikat</Button>
                 )}
                 {!isSuccess && (
-                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg' onClick={onCheckAnswers}>Sprawdź swoje odpowiedzi</Button>
+                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl' size='lg' onClick={onCheckAnswers}>Sprawdź swoje odpowiedzi</Button>
                 )}
             </Flashcard.Content>
             <Flashcard.Footer className='border-eblue-200' />
@@ -315,6 +323,7 @@ export const QuizChapter: React.FC<{ onQuizReset: () => void }> = ({ onQuizReset
     const [stage, setStage] = useState<'intro' | 'quiz' | 'result' | 'validation'>('intro');
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
     const [points, setPoints] = useState(0);
+    const { update, data: session } = useSession();
 
     const handleAnswer = (answerIndex: number, currentQuestion: QuizData) => {
         if (stage === 'validation') return;
@@ -324,11 +333,15 @@ export const QuizChapter: React.FC<{ onQuizReset: () => void }> = ({ onQuizReset
         if (isCorrect) {
             setPoints(prev => prev + 1);
         }
-        if (count === quizData.length - 1) {
-            setStage('result');
-        } else {
+        if (count !== quizData.length - 1) {
             increment();
+            return;
+        }  
+        if (points >= POINTS_TO_PASS) {
+            update({ user: { ...session?.user, quizPassed: true } });
         }
+
+        setStage('result');
     }
 
 

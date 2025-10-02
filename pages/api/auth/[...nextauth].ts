@@ -31,14 +31,16 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async session({ session, trigger, newSession, user }) {
       const use = await db.select().from(users).where(eq(users.id, user.id));
 
       if (use.length !== 1) return session;
 
       const hasAccess = use[0].hasAccess;
+      // todo: get quizPassed from database
+      const quizPassed =  (trigger === 'update' && newSession.user.quizPassed) ? true : false;
 
-      session.user = { ...session.user, hasAccess };
+      session.user = { ...session.user, hasAccess, quizPassed };
 
       return session;
     },
