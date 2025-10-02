@@ -134,7 +134,7 @@ export default function Page({
   const completedPL = getCompletedPercentage(4, completedItems.video.filter((item) => item >= 10).length);
   const completedBroszury = (completedItems.broszura_1 ? 1 : 0) + (completedItems.broszura_2 ? 1 : 0);
 
-  const handleBroszuraDownload = (broszuraFile: 'broszura_1' | 'broszura_2' | 'broszura_3') => {
+  const handleBroszuraDownload = (broszuraFile: 'broszura_1' | 'broszura_2' | 'broszura_3' | 'certyfikat') => {
     setCompletedItems({ ...completedItems, [broszuraFile]: true });
     localStorage.setItem('completedItems', JSON.stringify(completedItems));
     window.open(`/bezpestkowe_${broszuraFile}.pdf`, '_blank');
@@ -271,6 +271,22 @@ export default function Page({
               done={completedItems.quiz}
             >
               Czy potrafisz przeprowadzić rozmowę z osobą z zespołem MRKH?
+            </SubchapterComponent>
+          </Chapter>
+          <Chapter
+            chapterNo={7}
+            subchapterTitle="Certyfikat ukończenia kursu"
+            completed={completedItems.certyfikat ? 100 : 0}
+          >
+            <SubchapterComponent
+              role="listitem"
+              isCurrent={chapter === 'certyfikat'}
+              done={completedItems.certyfikat}
+              onClick={() => {
+                handleBroszuraDownload('certyfikat');
+              }}
+            >
+              Pobierz certyfikat ukończenia kursu
             </SubchapterComponent>
           </Chapter>
         </Chapters>

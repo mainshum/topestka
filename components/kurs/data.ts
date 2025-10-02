@@ -29,6 +29,7 @@ export const emptyCompletedItems = {
   broszura_3: false,
   flashcard: false,
   quiz: false,
+  certyfikat: false,
 };
 
 export const completedItemsSchema = optional(
@@ -39,11 +40,12 @@ export const completedItemsSchema = optional(
     broszura_3: boolean(),
     flashcard: boolean(),
     quiz: boolean(),
+    certyfikat: boolean(),
   }),
   emptyCompletedItems
 );
 
-export const chaptersEnum = union([literal("video"), literal("flashcard"), literal("quiz")]);
+export const chaptersEnum = union([literal("video"), literal("flashcard"), literal("quiz"), literal("certyfikat")]);
 
 export type Chapter = InferInput<typeof chaptersEnum>;
 
