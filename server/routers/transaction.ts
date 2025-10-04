@@ -16,6 +16,7 @@ import {
 import { nanoid } from "nanoid";
 import { MySqlRawQueryResult } from "drizzle-orm/mysql2";
 import { getP24Transaction } from "@/utils/p24";
+import { logInfo, logError, logWarn } from "@/utils/logger";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -77,7 +78,11 @@ const findTransaction = async (email: string, id: string) => {
 export const transactionRouter = router({
   startTransaction: authenticatedProcedure.mutation(async ({ ctx }) => {
     try {
-      console.log(`startTransaction(env: ${process.env.P24_ENV})`);
+      logInfo("Starting transaction", { 
+        userId: ctx.user.id,
+        userEmail: ctx.user.email,
+        p24Env: process.env.P24_ENV 
+      });
 
       const coursePrice = parseInt(process.env.COURSE_PRICE);
 
@@ -86,6 +91,11 @@ export const transactionRouter = router({
       const allowedPurchasers = process.env.EMAILS_ALLOWED_TO_PURCHASE_REGEX;
 
       if (!email.match(allowedPurchasers)) {
+        logWarn("Email not allowed to purchase", { 
+          userId: ctx.user.id,
+          email,
+          allowedPurchasers 
+        });
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Email not allowed to purchase",
@@ -95,6 +105,10 @@ export const transactionRouter = router({
       // ensure no access
       const usersList = await db.select().from(users).where(eq(users.email, email));
       if (usersList[0]?.hasAccess) {
+        logWarn("User already has access", { 
+          userId: ctx.user.id,
+          email 
+        });
         throw new TRPCError({
           code: "CONFLICT",
           message: "User already has access",
@@ -119,11 +133,27 @@ export const transactionRouter = router({
 
       await saveTransactionInDb(sessionId, email, token);
 
+      logInfo("Transaction started successfully", { 
+        userId: ctx.user.id,
+        sessionId,
+        email,
+        coursePrice 
+      });
+
       return { link };
     } catch (error) {
       if (error instanceof TRPCError) {
+        logError("Transaction start failed with TRPC error", error, { 
+          userId: ctx.user.id,
+          userEmail: ctx.user.email 
+        });
         throw error;
       }
+
+      logError("Transaction start failed with unexpected error", error as Error, { 
+        userId: ctx.user.id,
+        userEmail: ctx.user.email 
+      });
 
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
@@ -136,8 +166,11 @@ export const transactionRouter = router({
     .input(getTransactionStatusSchema)
     .query(async ({ ctx, input }): Promise<true> => {
       try {
-
-        console.log(`getTransactionStatus(env: ${ctx.user.email}, ${input.id})`);
+        logInfo("Getting transaction status", { 
+          userId: ctx.user.id,
+          userEmail: ctx.user.email,
+          transactionId: input.id 
+        });
 
         const email = ctx.user.email;
 
@@ -146,9 +179,20 @@ export const transactionRouter = router({
           getP24Transaction(input.id),
         ]);
 
-        console.log(`transDB: ${transDB.status}, transP24: ${transP24.status}`);
+        logInfo("Transaction status retrieved", { 
+          userId: ctx.user.id,
+          transactionId: input.id,
+          dbStatus: transDB.status,
+          p24Status: transP24.status 
+        });
 
         const updateDbsAndSession = async () => {
+          logInfo("Updating transaction and user access", { 
+            userId: ctx.user.id,
+            transactionId: input.id,
+            sessionId: transDB.sessionId 
+          });
+          
           await Promise.all([
             db
               .update(transactions)
@@ -160,10 +204,20 @@ export const transactionRouter = router({
               .where(eq(users.email, email)),
           ]);
           ctx.user.hasAccess = true;
+          
+          logInfo("Transaction and user access updated successfully", { 
+            userId: ctx.user.id,
+            transactionId: input.id 
+          });
         };
 
 
         if (transP24.status === 0) {
+          logWarn("No payment found", { 
+            userId: ctx.user.id,
+            transactionId: input.id,
+            p24Status: transP24.status 
+          });
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Brak płatności",
@@ -171,12 +225,21 @@ export const transactionRouter = router({
         }
 
         if (transP24.status === 2) {
+          logInfo("Payment confirmed, updating access", { 
+            userId: ctx.user.id,
+            transactionId: input.id 
+          });
           await updateDbsAndSession();
           
           return true;
         }
 
         if (transP24.status !== 1) {
+          logWarn("Unknown transaction status", { 
+            userId: ctx.user.id,
+            transactionId: input.id,
+            p24Status: transP24.status 
+          });
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Nieznany status transakcji",
@@ -191,6 +254,10 @@ export const transactionRouter = router({
         );
 
         if (isVerified) {
+          logInfo("Transaction verified, updating access", { 
+            userId: ctx.user.id,
+            transactionId: input.id 
+          });
           await updateDbsAndSession();
           ctx.user.hasAccess = true;
 
@@ -198,19 +265,40 @@ export const transactionRouter = router({
         }
 
         if (transDB.status !== "pending") {
+          logInfo("Updating transaction status to pending", { 
+            userId: ctx.user.id,
+            transactionId: input.id,
+            sessionId: transDB.sessionId 
+          });
           await db
             .update(transactions)
             .set({ status: "pending" })
             .where(eq(transactions.sessionId, transDB.sessionId));
         }
+        
+        logWarn("Payment registered but not confirmed", { 
+          userId: ctx.user.id,
+          transactionId: input.id,
+          p24Status: transP24.status 
+        });
+        
         throw new TRPCError({
           code: "PAYMENT_REQUIRED",
           message: "Płatność zarejestrowana, ale nie potwierdzona",
         });
       } catch (error) {
         if (error instanceof TRPCError) {
+          logError("Transaction status check failed with TRPC error", error, { 
+            userId: ctx.user.id,
+            transactionId: input.id 
+          });
           throw error;
         }
+
+        logError("Transaction status check failed with unexpected error", error as Error, { 
+          userId: ctx.user.id,
+          transactionId: input.id 
+        });
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

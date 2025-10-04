@@ -4,7 +4,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
 import React, { useRef, useState } from "react";
 import { Chapters } from '../../components/kurs/Chapters';
-import dynamic from 'next/dynamic';
 import { Chapter } from '../../components/kurs/Chapter';
 import { emptyCompletedItems, VideoSubchapter, chapters, chaptersEnum } from '@/components/kurs/data';
 import { Subchapter, Subchapter as SubchapterComponent, SubchapterDownloadableContent } from '../../components/kurs/Subchapter';

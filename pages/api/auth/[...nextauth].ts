@@ -4,6 +4,7 @@ import { accounts, users, verificationTokens } from "../../../utils/db/schema";
 import EmailProvider from "next-auth/providers/email";
 import { db } from "@/utils/db/pool";
 import { eq } from "drizzle-orm";
+import { logInfo, logError } from "@/utils/logger";
 
 const transportObj = {
   host: "smtp.hostinger.com",
@@ -32,17 +33,37 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, trigger, newSession, user }) {
-      const use = await db.select().from(users).where(eq(users.id, user.id));
+      try {
+        logInfo("Session callback triggered", { 
+          userId: user.id, 
+          trigger,
+          userEmail: session.user?.email 
+        });
 
-      if (use.length !== 1) return session;
+        const use = await db.select().from(users).where(eq(users.id, user.id));
 
-      const hasAccess = use[0].hasAccess;
-      // todo: get quizPassed from database
-      const quizPassed =  (trigger === 'update' && newSession.user.quizPassed) ? true : false;
+        if (use.length !== 1) {
+          logError("User not found in database", undefined, { userId: user.id });
+          return session;
+        }
 
-      session.user = { ...session.user, hasAccess, quizPassed };
+        const hasAccess = use[0].hasAccess;
+        // todo: get quizPassed from database
+        const quizPassed =  (trigger === 'update' && newSession.user.quizPassed) ? true : false;
 
-      return session;
+        session.user = { ...session.user, hasAccess, quizPassed };
+
+        logInfo("Session updated successfully", { 
+          userId: user.id, 
+          hasAccess, 
+          quizPassed 
+        });
+
+        return session;
+      } catch (error) {
+        logError("Error in session callback", error as Error, { userId: user.id });
+        return session;
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
