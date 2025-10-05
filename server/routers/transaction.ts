@@ -5,7 +5,6 @@ import { db } from "@/utils/db/pool";
 import { transactions, users } from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
 import { client } from "@/utils/p24";
-import { TransactionStatus } from "@/utils/types";
 import {
   Country,
   Currency,

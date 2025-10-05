@@ -72,7 +72,7 @@ const NavMobile = ({
           </RadixTrigger>
         </div>
         <Content className={cn("text-sm  pb-0 border-b-[1px] data-[state=closed]:animate-[accordion-up_500ms] data-[state=open]:animate-[accordion-down_500ms]", !useStaticNav && "border-b-electric-300")}>
-          <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [& >li:first-child]:pt-10 [&>li:last-child]:pb-10" >
+          <TopLinks onClick={simulateButtonClick} className="pl-6 flex gap-8 h-full overflow-hidden text-electric-600 font-monarcha text-3xl items-start flex-col border-electric-500 font-semibold [&>li:first-child]:pt-10 [&>li:last-child]:pb-10" >
             <li>
               <Link
                 href={hasSession ? "/api/auth/signout" : "/login"}

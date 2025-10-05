@@ -23,7 +23,7 @@ export const Subchapter = React.forwardRef<HTMLLIElement, SubchapterProps>(
         className={style}
         {...rest}
       >
-        <button>
+        <button className='text-left'>
         {rest.children}
         </button>
       </li>

@@ -16,7 +16,7 @@ const Acc = ({ title, content }: { title: string, content: string }) => {
         chevProps={{
           className: "w-6 h-6 text-eblue-600 ",
         }}
-        className="px-4 border-b border-b-eblue-300  text-eblue-600 font-outfit  text-xl lg:text-4xl transition max-md:duration-500 data-[state=open]:rounded-md transition-discrete data-[state=open]:bg-[rgb(42,75,204)]/85  data-[state=open]:text-butter-100 [&>svg]:data-[state=open]:text-butter-100 "
+        className="px-4 py-6 border-b border-b-eblue-300  text-eblue-600 font-outfit  text-xl lg:text-4xl transition max-md:duration-500 data-[state=open]:rounded-md transition-discrete data-[state=open]:bg-[rgb(42,75,204)]/85  data-[state=open]:text-butter-100 [&>svg]:data-[state=open]:text-butter-100 "
       >
         {title}
       </AccordionTrigger>
@@ -43,12 +43,12 @@ const ProgramFull = () => {
         interaktywną.
       </p>
       <Accordion type="single" collapsible className="lg:gap-x-6 grid grid-cols-1 min-[1320px]:grid-cols-2 lg:pt-24 w-full">
-        <section className="flex flex-col gap-y-4">
+        <section className="flex flex-col">
           <Acc title="dwuczęściowe wideo" content="dzięki któremu poznasz perspektywę pacjencką i ekspercką na temat komunikacji w gabinecie medycznym" />
           <Acc title="zestaw fiszek" content="stworzonych przez dr Karinę Kapczuk w celu przeprowadzenia wspierającej rozmowy z rodzicami osób z zespołem MRKH" />
           <Acc title="dwie broszury" content="stworzone przez Fundację Bezpestkowe na temat zespołu MRKH oraz towarzyszących mu kwestiach" />
         </section>
-        <section className="flex flex-col gap-y-4">
+        <section className="flex flex-col">
           <Acc title="publikację" content="która stanowi podsumowanie badań przeprowadzonych przez Agatą Śmiałkowską na temat przygotowania osób studiujących kierunek lekarski do rozmów z pacjentami" />
           <Acc title="quiz" content="mający na celu sprawdzenie twojej wiedzy z kursu" />
           <Acc title="certyfikat" content="potwierdzający, że MRKH to dla ciebie pestka! " />

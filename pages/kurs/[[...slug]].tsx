@@ -21,6 +21,7 @@ import { cn } from "@/utils/misc";
 import { useSession } from "next-auth/react";
 
 import { Outfit } from "next/font/google";
+import { trpc } from "@/utils/trpc";
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
@@ -139,10 +140,39 @@ export default function Page({
   const completedPL = getCompletedPercentage(4, completedItems.video.filter((item) => item >= 10).length);
   const completedBroszury = (completedItems.broszura_1 ? 1 : 0) + (completedItems.broszura_2 ? 1 : 0);
 
+  const downloadFile = trpc.user.downloadFile.useMutation({
+    onSuccess: (data) => {
+      // Create a blob from the base64 data
+      const byteCharacters = atob(data.data);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: data.mimeType });
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = data.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    },
+  });
+
   const handleBroszuraDownload = (broszuraFile: 'broszura_1' | 'broszura_2' | 'broszura_3' | 'certyfikat') => {
-    setCompletedItems({ ...completedItems, [broszuraFile]: true });
-    localStorage.setItem('completedItems', JSON.stringify(completedItems));
-    window.open(`/bezpestkowe_${broszuraFile}.pdf`, '_blank');
+    downloadFile.mutate(`bezpestkowe_${broszuraFile}.pdf`, {
+      onSuccess: () => {
+        setCompletedItems({ ...completedItems, [broszuraFile]: true });
+        localStorage.setItem('completedItems', JSON.stringify(completedItems));
+      },
+      onError: (error) => {
+        console.error('Download failed:', error.message);
+      }
+    });
   }
 
   const [quizKey, setQuizKey] = useState(Math.random());
