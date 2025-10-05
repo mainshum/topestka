@@ -7,7 +7,6 @@ declare module "next-auth" {
   interface Session {
     user: {
       /** Add the user's id */
-      id: string;
       hasAccess: boolean;
       quizPassed: boolean;
       email: string;

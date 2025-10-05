@@ -13,12 +13,12 @@ import { user } from "@/drizzle/schema";
 export const userRouter = router({
   getCompletedItems: authenticatedProcedure.query(async ({ ctx }) => {
     try {
-      logInfo("Getting completed items", { userId: ctx.user.id });
+      logInfo("Getting completed items", { userId: ctx.user.email });
       
       const res = await db
         .select()
         .from(completedItemsTable)
-        .where(eq(completedItemsTable.userId, ctx.user.id));
+        .where(eq(completedItemsTable.userId, ctx.user.email));
 
       const completedItemsParsed = safeParse(
         completedItemsSchema,
@@ -30,13 +30,13 @@ export const userRouter = router({
         : getDefault(completedItemsSchema);
 
       logInfo("Completed items retrieved successfully", { 
-        userId: ctx.user.id,
+        userId: ctx.user.email,
         itemsCount: Array.isArray(result) ? result.length : 0
       });
 
       return result;
     } catch (error) {
-      logError("Failed to get completed items", error as Error, { userId: ctx.user.id });
+      logError("Failed to get completed items", error as Error, { userId: ctx.user.email });
       throw error;
     }
   }),
@@ -45,7 +45,7 @@ export const userRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         logInfo("Saving completed items", { 
-          userId: ctx.user.id,
+          userId: ctx.user.email,
           itemsCount: Array.isArray(input) ? input.length : 0
         });
 
@@ -54,8 +54,8 @@ export const userRouter = router({
         await db
           .insert(completedItemsTable)
           .values({
-            userId: ctx.user.id,
-            id: ctx.user.id,
+            userId: ctx.user.email,
+            id: ctx.user.email,
             completedSubchapters: JSON.stringify(input),
             createdAt: now,
             updatedAt: now,
@@ -66,9 +66,9 @@ export const userRouter = router({
             },
           });
 
-        logInfo("Completed items saved successfully", { userId: ctx.user.id });
+        logInfo("Completed items saved successfully", { userId: ctx.user.email });
       } catch (error) {
-        logError("Failed to save completed items", error as Error, { userId: ctx.user.id });
+        logError("Failed to save completed items", error as Error, { userId: ctx.user.email });
         throw error;
       }
     }),
@@ -77,13 +77,13 @@ export const userRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         logInfo("Pobieranie pliku", { 
-          userId: ctx.user.id,
+          userId: ctx.user.email,
           filename: input 
         });
 
         if (!ctx.user.hasAccess) {
           logError("Brak dostępu do pobierania plików", undefined, { 
-            userId: ctx.user.id,
+            userId: ctx.user.email,
             filename: input 
           });
           throw new TRPCError({
@@ -102,7 +102,7 @@ export const userRouter = router({
 
         if (!allowedFiles.includes(input)) {
           logError("Pobieranie nieautoryzowanego pliku", undefined, { 
-            userId: ctx.user.id,
+            userId: ctx.user.email,
             filename: input 
           });
           throw new TRPCError({
@@ -116,7 +116,7 @@ export const userRouter = router({
         const fileBuffer = await readFile(filePath);
 
         logInfo("Plik pobrany pomyślnie", { 
-          userId: ctx.user.id,
+          userId: ctx.user.email,
           filename: input,
           fileSize: fileBuffer.length 
         });
@@ -131,7 +131,7 @@ export const userRouter = router({
           throw error;
         }
         logError("Failed to download file", error as Error, { 
-          userId: ctx.user.id,
+          userId: ctx.user.email,
           filename: input 
         });
         throw new TRPCError({
@@ -143,17 +143,17 @@ export const userRouter = router({
   updateQuizStatus: authenticatedProcedure
     .mutation(async ({ ctx }) => {
       try {
-        logInfo("Updating quiz status", { userId: ctx.user.id });
+        logInfo("Updating quiz status", { userId: ctx.user.email });
 
         await db
           .update(user)
           .set({ quizPassed: true })
-          .where(eq(user.id, ctx.user.id));
+          .where(eq(user.email, ctx.user.email));
 
-        logInfo("Quiz status updated successfully", { userId: ctx.user.id });
+        logInfo("Quiz status updated successfully", { userId: ctx.user.email });
         return true;
       } catch (error) {
-        logError("Failed to update quiz status", error as Error, { userId: ctx.user.id });
+        logError("Failed to update quiz status", error as Error, { userId: ctx.user.email });
         throw error;
       }
     }),

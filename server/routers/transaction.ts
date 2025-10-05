@@ -79,7 +79,6 @@ export const transactionRouter = router({
   startTransaction: authenticatedProcedure.mutation(async ({ ctx }) => {
     try {
       logInfo("Starting transaction", { 
-        userId: ctx.user.id,
         userEmail: ctx.user.email,
         p24Env: process.env.P24_ENV 
       });
@@ -92,7 +91,6 @@ export const transactionRouter = router({
 
       if (!email.match(allowedPurchasers)) {
         logWarn("Email not allowed to purchase", { 
-          userId: ctx.user.id,
           email,
           allowedPurchasers 
         });
@@ -106,7 +104,6 @@ export const transactionRouter = router({
       const usersList = await db.select().from(user).where(eq(user.email, email));
       if (usersList[0]?.hasAccess) {
         logWarn("User already has access", { 
-          userId: ctx.user.id,
           email 
         });
         throw new TRPCError({
@@ -134,7 +131,6 @@ export const transactionRouter = router({
       await saveTransactionInDb(sessionId, email, token);
 
       logInfo("Transaction started successfully", { 
-        userId: ctx.user.id,
         sessionId,
         email,
         coursePrice 
@@ -144,14 +140,12 @@ export const transactionRouter = router({
     } catch (error) {
       if (error instanceof TRPCError) {
         logError("Transaction start failed with TRPC error", error, { 
-          userId: ctx.user.id,
           userEmail: ctx.user.email 
         });
         throw error;
       }
 
       logError("Transaction start failed with unexpected error", error as Error, { 
-        userId: ctx.user.id,
         userEmail: ctx.user.email 
       });
 
@@ -167,7 +161,6 @@ export const transactionRouter = router({
     .query(async ({ ctx, input }): Promise<true> => {
       try {
         logInfo("Getting transaction status", { 
-          userId: ctx.user.id,
           userEmail: ctx.user.email,
           transactionId: input.id 
         });
@@ -180,7 +173,6 @@ export const transactionRouter = router({
         ]);
 
         logInfo("Transaction status retrieved", { 
-          userId: ctx.user.id,
           transactionId: input.id,
           dbStatus: transDB.status,
           p24Status: transP24.status 
@@ -188,7 +180,6 @@ export const transactionRouter = router({
 
         const updateDbsAndSession = async () => {
           logInfo("Updating transaction and user access", { 
-            userId: ctx.user.id,
             transactionId: input.id,
             sessionId: transDB.sessionId 
           });
@@ -206,7 +197,6 @@ export const transactionRouter = router({
           ctx.user.hasAccess = true;
           
           logInfo("Transaction and user access updated successfully", { 
-            userId: ctx.user.id,
             transactionId: input.id 
           });
         };
@@ -214,7 +204,6 @@ export const transactionRouter = router({
 
         if (transP24.status === 0) {
           logWarn("No payment found", { 
-            userId: ctx.user.id,
             transactionId: input.id,
             p24Status: transP24.status 
           });
@@ -226,7 +215,6 @@ export const transactionRouter = router({
 
         if (transP24.status === 2) {
           logInfo("Payment confirmed, updating access", { 
-            userId: ctx.user.id,
             transactionId: input.id 
           });
           await updateDbsAndSession();
@@ -236,7 +224,6 @@ export const transactionRouter = router({
 
         if (transP24.status !== 1) {
           logWarn("Unknown transaction status", { 
-            userId: ctx.user.id,
             transactionId: input.id,
             p24Status: transP24.status 
           });
@@ -255,7 +242,6 @@ export const transactionRouter = router({
 
         if (isVerified) {
           logInfo("Transaction verified, updating access", { 
-            userId: ctx.user.id,
             transactionId: input.id 
           });
           await updateDbsAndSession();
@@ -266,7 +252,6 @@ export const transactionRouter = router({
 
         if (transDB.status !== "pending") {
           logInfo("Updating transaction status to pending", { 
-            userId: ctx.user.id,
             transactionId: input.id,
             sessionId: transDB.sessionId 
           });
@@ -277,7 +262,6 @@ export const transactionRouter = router({
         }
         
         logWarn("Payment registered but not confirmed", { 
-          userId: ctx.user.id,
           transactionId: input.id,
           p24Status: transP24.status 
         });
@@ -289,14 +273,12 @@ export const transactionRouter = router({
       } catch (error) {
         if (error instanceof TRPCError) {
           logError("Transaction status check failed with TRPC error", error, { 
-            userId: ctx.user.id,
             transactionId: input.id 
           });
           throw error;
         }
 
         logError("Transaction status check failed with unexpected error", error as Error, { 
-          userId: ctx.user.id,
           transactionId: input.id 
         });
 

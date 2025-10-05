@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { account, user, verificationToken } from "@/drizzle/schema";
+import { account, user as userTable, verificationToken } from "@/drizzle/schema";
 import EmailProvider from "next-auth/providers/email";
 import { db } from "@/utils/db/pool";
 import { eq } from "drizzle-orm";
@@ -18,7 +18,7 @@ const transportObj = {
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, {
-    usersTable: user,
+    usersTable: userTable,
     accountsTable: account,
     verificationTokensTable: verificationToken,
   }),
@@ -35,15 +35,15 @@ export const authOptions: NextAuthOptions = {
     async session({ session, trigger, newSession }) {
       try {
         logInfo("Session callback triggered", { 
-          userId: session.user?.id, 
+          userId: session.user?.email, 
           trigger,
           userEmail: session.user?.email 
         });
 
-        const use = await db.select().from(user).where(eq(user.id, user.id));
+        const use = await db.select().from(userTable).where(eq(userTable.email, session.user?.email));
 
         if (use.length !== 1) {
-          logError("User not found in database", undefined, { userId: user.id });
+          logError("User not found in database", undefined, { userId: session.user?.email });
           return session;
         }
 
@@ -52,14 +52,14 @@ export const authOptions: NextAuthOptions = {
         session.user = { ...session.user, hasAccess, quizPassed };
 
         logInfo("Session updated successfully", { 
-          userId: user.id, 
+          userId: session.user?.email, 
           hasAccess, 
           quizPassed 
         });
 
         return session;
       } catch (error) {
-        logError("Error in session callback", error as Error, { userId: user.id });
+        logError("Error in session callback", error as Error, { userId: session.user?.email });
         return session;
       }
     },
