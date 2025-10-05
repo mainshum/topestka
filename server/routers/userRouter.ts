@@ -147,7 +147,7 @@ export const userRouter = router({
 
         await db
           .update(user)
-          .set({ quizPassed: 1 })
+          .set({ quizPassed: true })
           .where(eq(user.id, ctx.user.id));
 
         logInfo("Quiz status updated successfully", { userId: ctx.user.id });

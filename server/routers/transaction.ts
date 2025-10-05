@@ -200,7 +200,7 @@ export const transactionRouter = router({
               .where(eq(transaction.sessionId, transDB.sessionId)),
             db
               .update(user)
-              .set({ hasAccess: 1 })
+              .set({ hasAccess: true })
               .where(eq(user.email, email)),
           ]);
           ctx.user.hasAccess = true;
