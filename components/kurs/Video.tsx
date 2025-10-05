@@ -24,8 +24,8 @@ const subchatperIndexFromTime = (time: number) => {
   return match + 1;
 }
 
-const VideoPage = React.forwardRef<HTMLVideoElement, VideoPageProps>(
-  ({ muxToken, playbackId, notifySubchatperPlaying, startTime }, ref) => {
+const VideoPage = React.forwardRef<HTMLDivElement, VideoPageProps>(
+  ({ muxToken, playbackId, notifySubchatperPlaying, startTime }, outRef) => {
 
     const notifySubchatperPlayingRef = useRef<((subchapter: number) => void)>(notifySubchatperPlaying);
 
@@ -54,7 +54,7 @@ const VideoPage = React.forwardRef<HTMLVideoElement, VideoPageProps>(
     const [showSpinner, setShowSpinner] = useState(true);
 
     return (
-      <div className="relative flex flex-col justify-between items-start gap-6 w-full aspect-video">
+      <div ref={outRef} id="video-container" className="relative flex flex-col justify-between items-start gap-6 w-full aspect-video">
         {showSpinner && <Spinner />}
         <Video
           ref={onVideoMount}

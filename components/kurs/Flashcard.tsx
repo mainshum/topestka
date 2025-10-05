@@ -84,7 +84,7 @@ const Root = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 });
 
 
-export const Flashcards: React.FC = () => {
+export const Flashcards = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
   const flashcardDataLength = Object.keys(flashcardData).length;
   const { count, increment, decrement } = useCounter(0, 0, flashcardDataLength - 1);
 
@@ -114,7 +114,7 @@ export const Flashcards: React.FC = () => {
           <ChevronLeft className="w-8 h-8 text-eblue-600" />
         </button>
       )}
-      <Root className={rootClass}>
+      <Root ref={ref} className={rootClass}>
         {currentCard(increment)}
         <Footer className={cn('max-sm:border-0 max-sm:mb-0', count === 0 && 'mt-2 mb-4')}>
           {count !== 0 && (
@@ -166,8 +166,9 @@ export const Flashcards: React.FC = () => {
       )}
     </QuizLayout>
   );
-};
+});
 
+Flashcards.displayName = 'Flashcards';
 Header.displayName = 'Flashcard.Header';
 Content.displayName = 'Flashcard.Content';
 Footer.displayName = 'Flashcard.Footer';

@@ -15,6 +15,10 @@ html {
     scroll-behavior: smooth;
 }
 
+#video-container {
+    scroll-margin-top: 20px;
+}
+
 .accordions:has([data-state="open"]) {
     * [data-state="closed"] {
         opacity: 0.5;

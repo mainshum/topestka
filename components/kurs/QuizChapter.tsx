@@ -318,7 +318,7 @@ const Result = ({ points, onCheckAnswers}: { points: number, onCheckAnswers: () 
 }
 
 
-export const QuizChapter: React.FC<{ onQuizReset: () => void }> = ({ onQuizReset }) => {
+export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () => void }>(({ onQuizReset }, outRef) => {
     const { count, increment, reset, decrement } = useCounter(0, 0, quizData.length - 1);
     const [stage, setStage] = useState<'intro' | 'quiz' | 'result' | 'validation'>('intro');
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
@@ -383,7 +383,7 @@ export const QuizChapter: React.FC<{ onQuizReset: () => void }> = ({ onQuizReset
     return (
         <QuizLayout className={quizLayout}>
             {stage === 'intro' && (
-                <Flashcard.Root className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600'>
+                <Flashcard.Root ref={outRef} className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600'>
                     <Flashcard.Header className='border-eblue-200' />
                     <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
                         <p>Sprawdź poziom swojej wiedzy rozwiązując quiz, który składa się z najczęściej zadawanych pytań przez bezpestkowe, czyli osoby mające zespół MRKH. </p>
@@ -441,6 +441,6 @@ export const QuizChapter: React.FC<{ onQuizReset: () => void }> = ({ onQuizReset
             )}
         </QuizLayout>
     );
-};
+});
 
 QuizChapter.displayName = 'Kurs.QuizChapter'; 

@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Chapters } from '../../components/kurs/Chapters';
 import { Chapter } from '../../components/kurs/Chapter';
 import { emptyCompletedItems, VideoSubchapter, chapters, chaptersEnum } from '@/components/kurs/data';
@@ -110,11 +110,8 @@ export default function Page({
 
   const [completedItems, setCompletedItems] = useState<InferOutput<typeof completedItemsSchema>>(getFromLocalStorage());
 
-  const handleSubchapterChange = (chapter: string, subchapter: number) => {
-    // scroll entire document to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleSubchapterChange = (chapter: string, subchapter: number) => 
     router.push(`/kurs/${chapter}/${subchapter}`, undefined, { shallow: true });
-  }
 
   const handleMarkAsCompleted = () => {
 
@@ -177,6 +174,12 @@ export default function Page({
 
   const [quizKey, setQuizKey] = useState(Math.random());
 
+  const scroll20PxFromTop = useCallback((ref: HTMLElement | null) => {
+    if (!ref) return;
+    ref.style.scrollMarginTop = '20px';
+    ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
   return (
     <div ref={contentRef} className="flex flex-col w-full">
       <section className="basis-[120px] shrink-0">
@@ -191,14 +194,12 @@ export default function Page({
         <div className="relative flex flex-col justify-between items-start gap-6 grow-[1] bottom-11 self-start w-full">
           <h2 className="font-monarcha text-2xl text-eblue-600">{subchapters[subchapterFromQuery - 1]?.title}</h2>
           {chapter === 'video' && (
-            <Video key={subchapterFromQuery} notifySubchatperPlaying={() => { }} muxToken={muxToken} playbackId={playbackId} startTime={(subchapters[subchapterFromQuery - 1] as VideoSubchapter)?.from || 0} />
+            <Video ref={scroll20PxFromTop} key={subchapterFromQuery} notifySubchatperPlaying={() => { }} muxToken={muxToken} playbackId={playbackId} startTime={(subchapters[subchapterFromQuery - 1] as VideoSubchapter)?.from || 0} />
           )}
           {chapter === 'flashcard' && (
-            <>
-              <Flashcards />
-            </>
+            <Flashcards ref={scroll20PxFromTop} />
           )}
-          {chapter === 'quiz' && <QuizChapter key={quizKey} onQuizReset={() => setQuizKey(Math.random())} />}
+          {chapter === 'quiz' && <QuizChapter ref={scroll20PxFromTop} key={quizKey} onQuizReset={() => setQuizKey(Math.random())} />}
           <MarkCompleted className="self-center" markAsCompleted={handleMarkAsCompleted} />
         </div>
         <Chapters>
