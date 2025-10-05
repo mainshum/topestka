@@ -1,13 +1,14 @@
 import { getDefault, safeParse, string } from "valibot";
 import { authenticatedProcedure, router } from "../trpc";
 import { db } from "@/utils/db/pool";
-import { completedItems as completedItemsTable, users } from "@/utils/db/schema";
+import { completedItems as completedItemsTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { completedItemsSchema } from "@/components/kurs/data";
 import { logInfo, logError } from "@/utils/logger";
 import { TRPCError } from "@trpc/server";
 import { readFile } from "fs/promises";
 import { join } from "path";
+import { user } from "@/drizzle/schema";
 
 export const userRouter = router({
   getCompletedItems: authenticatedProcedure.query(async ({ ctx }) => {
@@ -48,12 +49,16 @@ export const userRouter = router({
           itemsCount: Array.isArray(input) ? input.length : 0
         });
 
+        const now = new Date().toISOString();
+
         await db
           .insert(completedItemsTable)
           .values({
             userId: ctx.user.id,
             id: ctx.user.id,
             completedSubchapters: JSON.stringify(input),
+            createdAt: now,
+            updatedAt: now,
           })
           .onDuplicateKeyUpdate({
             set: {
@@ -141,9 +146,9 @@ export const userRouter = router({
         logInfo("Updating quiz status", { userId: ctx.user.id });
 
         await db
-          .update(users)
-          .set({ quizPassed: true })
-          .where(eq(users.id, ctx.user.id));
+          .update(user)
+          .set({ quizPassed: 1 })
+          .where(eq(user.id, ctx.user.id));
 
         logInfo("Quiz status updated successfully", { userId: ctx.user.id });
         return true;

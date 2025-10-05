@@ -5,7 +5,7 @@ config();
 
 export default defineConfig({
   dialect: "mysql",
-  schema: "./utils/db/schema.ts",
+  schema: "./drizzle/schema.ts",
   out: "./drizzle",
   dbCredentials: {
     database: process.env.DB_NAME,

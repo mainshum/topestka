@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1759689632186,
+      "tag": "0001_dashing_speed_demon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1759689882207,
+      "tag": "0002_concerned_mantis",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1759691763374,
+      "tag": "0003_illegal_firestar",
+      "breakpoints": true
+    }
+  ]
+}

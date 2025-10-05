@@ -5126,10 +5126,10 @@ drizzle-kit@^0.30.4:
     esbuild-register "^3.5.0"
     gel "^2.0.0"
 
-drizzle-orm@^0.39.2:
-  version "0.39.3"
-  resolved "https://registry.npmjs.org/drizzle-orm/-/drizzle-orm-0.39.3.tgz"
-  integrity sha512-EZ8ZpYvDIvKU9C56JYLOmUskazhad+uXZCTCRN4OnRMsL+xAJ05dv1eCpAG5xzhsm1hqiuC5kAZUCS924u2DTw==
+drizzle-orm@0.40.0:
+  version "0.40.0"
+  resolved "https://registry.npmjs.org/drizzle-orm/-/drizzle-orm-0.40.0.tgz"
+  integrity sha512-7ptk/HQiMSrEZHnAsSlBESXWj52VwgMmyTEfoNmpNN2ZXpcz13LwHfXTIghsAEud7Z5UJhDOp8U07ujcqme7wg==
 
 dunder-proto@^1.0.0, dunder-proto@^1.0.1:
   version "1.0.1"
@@ -6073,7 +6073,7 @@ functions-have-names@^1.2.3:
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-gel@^2.0.0:
+gel@^2.0.0, gel@>=2:
   version "2.1.1"
   resolved "https://registry.npmjs.org/gel/-/gel-2.1.1.tgz"
   integrity sha512-Newg9X7mRYskoBjSw70l1YnJ/ZGbq64VPyR821H5WVkTGpHG2O0mQILxCeUhxdYERLFY9B4tUyKLyf3uMTjtKw==

@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { accounts, users, verificationTokens } from "../../../utils/db/schema";
+import { account, user, verificationToken } from "@/drizzle/schema";
 import EmailProvider from "next-auth/providers/email";
 import { db } from "@/utils/db/pool";
 import { eq } from "drizzle-orm";
@@ -18,10 +18,10 @@ const transportObj = {
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    verificationTokensTable: verificationTokens,
-  }) as any,
+    usersTable: user,
+    accountsTable: account,
+    verificationTokensTable: verificationToken,
+  }),
   pages: {
     verifyRequest: "/verify-request",
   },
@@ -32,15 +32,15 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, trigger, newSession, user }) {
+    async session({ session, trigger, newSession }) {
       try {
         logInfo("Session callback triggered", { 
-          userId: user.id, 
+          userId: session.user?.id, 
           trigger,
           userEmail: session.user?.email 
         });
 
-        const use = await db.select().from(users).where(eq(users.id, user.id));
+        const use = await db.select().from(user).where(eq(user.id, user.id));
 
         if (use.length !== 1) {
           logError("User not found in database", undefined, { userId: user.id });

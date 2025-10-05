@@ -11,8 +11,4 @@ export const pool = await mysql.createPool({
   queueLimit: 0
 });
 
-pool.on('connection', (connection) => {
-    console.log(`Connection ${connection.threadId} connected`);
-});
-
 export const db = await drizzle(pool);

@@ -2,7 +2,7 @@ import { string, object, number } from "valibot";
 import { TRPCError } from "@trpc/server";
 import { authenticatedProcedure, router } from "../trpc";
 import { db } from "@/utils/db/pool";
-import { transactions, users } from "@/utils/db/schema";
+import { transaction, user } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { client } from "@/utils/p24";
 import {
@@ -31,12 +31,13 @@ function saveTransactionInDb(
   token: string
 ): Promise<MySqlRawQueryResult> {
   return db
-    .insert(transactions)
+    .insert(transaction)
     .values({
       amount: parseInt(process.env.COURSE_PRICE),
       sessionId,
       email,
       token,
+      updatedAt: new Date().toISOString(),
     })
     .execute();
 }
@@ -58,19 +59,19 @@ function verifyTransaction(
 const findTransaction = async (email: string, id: string) => {
   const transactionsList = await db
     .select()
-    .from(transactions)
-    .where(eq(transactions.email, email));
+    .from(transaction)
+    .where(eq(transaction.email, email));
 
-  const transaction = transactionsList.find((t) => t.sessionId === id);
+  const match = transactionsList.find((t) => t.sessionId === id);
 
-  if (!transaction) {
+  if (!match) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "Transaction not found",
     });
   }
 
-  return transaction;
+  return match;
 };
 
 // todo compare to price from input data from user
@@ -102,7 +103,7 @@ export const transactionRouter = router({
       }
 
       // ensure no access
-      const usersList = await db.select().from(users).where(eq(users.email, email));
+      const usersList = await db.select().from(user).where(eq(user.email, email));
       if (usersList[0]?.hasAccess) {
         logWarn("User already has access", { 
           userId: ctx.user.id,
@@ -194,13 +195,13 @@ export const transactionRouter = router({
           
           await Promise.all([
             db
-              .update(transactions)
+              .update(transaction)
               .set({ status: "success" })
-              .where(eq(transactions.sessionId, transDB.sessionId)),
+              .where(eq(transaction.sessionId, transDB.sessionId)),
             db
-              .update(users)
-              .set({ hasAccess: true })
-              .where(eq(users.email, email)),
+              .update(user)
+              .set({ hasAccess: 1 })
+              .where(eq(user.email, email)),
           ]);
           ctx.user.hasAccess = true;
           
@@ -270,9 +271,9 @@ export const transactionRouter = router({
             sessionId: transDB.sessionId 
           });
           await db
-            .update(transactions)
+            .update(transaction)
             .set({ status: "pending" })
-            .where(eq(transactions.sessionId, transDB.sessionId));
+            .where(eq(transaction.sessionId, transDB.sessionId));
         }
         
         logWarn("Payment registered but not confirmed", { 
