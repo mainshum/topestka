@@ -135,4 +135,21 @@ export const userRouter = router({
         });
       }
     }),
+  updateQuizStatus: authenticatedProcedure
+    .mutation(async ({ ctx }) => {
+      try {
+        logInfo("Updating quiz status", { userId: ctx.user.id });
+
+        await db
+          .update(users)
+          .set({ quizPassed: true })
+          .where(eq(users.id, ctx.user.id));
+
+        logInfo("Quiz status updated successfully", { userId: ctx.user.id });
+        return true;
+      } catch (error) {
+        logError("Failed to update quiz status", error as Error, { userId: ctx.user.id });
+        throw error;
+      }
+    }),
 });

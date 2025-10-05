@@ -16,6 +16,7 @@ export const users = mysqlTable("user", {
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).unique(),
   hasAccess: boolean("hasAccess").notNull().default(false),
+  quizPassed: boolean("quizPassed").notNull().default(false),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
     fsp: 3,

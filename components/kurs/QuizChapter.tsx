@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { trpc } from '@/utils/trpc';
 
 const POINTS_TO_PASS = 14;
 
@@ -324,6 +325,7 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
     const [points, setPoints] = useState(0);
     const { update, data: session } = useSession();
+    const updateQuizStatus = trpc.user.updateQuizStatus.useMutation();
 
     const handleAnswer = (answerIndex: number, currentQuestion: QuizData) => {
         if (stage === 'validation') return;
@@ -338,7 +340,11 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
             return;
         }  
         if (points >= POINTS_TO_PASS) {
-            update({ user: { ...session?.user, quizPassed: true } });
+            updateQuizStatus.mutate(undefined, {
+                onSuccess: () => {
+                    update({ user: { ...session?.user, quizPassed: true } });
+                }
+            });
         }
 
         setStage('result');

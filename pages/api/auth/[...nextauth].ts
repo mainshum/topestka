@@ -47,9 +47,7 @@ export const authOptions: NextAuthOptions = {
           return session;
         }
 
-        const hasAccess = use[0].hasAccess;
-        // todo: get quizPassed from database
-        const quizPassed =  (trigger === 'update' && newSession.user.quizPassed) ? true : false;
+        const {hasAccess, quizPassed} = use[0];
 
         session.user = { ...session.user, hasAccess, quizPassed };
 
