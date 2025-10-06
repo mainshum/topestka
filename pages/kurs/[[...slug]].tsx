@@ -336,5 +336,5 @@ export default function Page({
 
 
 Page.getLayout = (page: React.ReactNode) => (
-  <main className={cn(outfit.variable, "flex justify-center px-10 py-16 min-h-dvh")}>{page}</main>
+  <main className={cn(outfit.variable, "flex justify-center px-8 sm:px-10 py-16 min-h-dvh")}>{page}</main>
 );

@@ -285,13 +285,13 @@ const indToLetter = (index: number) => {
 }
 
 
-const Result = ({ points, onCheckAnswers}: { points: number, onCheckAnswers: () => void}) => {
+const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: () => void }) => {
     const isSuccess = points >= POINTS_TO_PASS;
 
     return (
-        <Flashcard.Root className='md:w-[680px] h-auto bg-butter-100 text-eblue-600 px-32'>
+        <Flashcard.Root className='md:w-[680px] md:h-[400px] bg-butter-100 text-eblue-600 '>
             <Flashcard.Header className='border-eblue-200' />
-            <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
+            <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl max-sm:pb-4'>
                 {isSuccess && (
                     <h1 className='text-2xl font-monarcha'>Gratulacje! <br />Od teraz rozmowa o zespole MRKH powinna być dla Ciebie pestką!</h1>
                 )}
@@ -310,7 +310,10 @@ const Result = ({ points, onCheckAnswers}: { points: number, onCheckAnswers: () 
                     }}>Odbierz certyfikat</Button>
                 )}
                 {!isSuccess && (
-                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl' size='lg' onClick={onCheckAnswers}>Sprawdź swoje odpowiedzi</Button>
+                    <>
+                        <Button variant='kupkurs' className='!text-sm px-7 rounded-xl inline-block sm:hidden' size='sm' onClick={onCheckAnswers}>Sprawdź swoje odpowiedzi</Button>
+                        <Button variant='kupkurs' className='!text-lg px-7 rounded-xl sm:inline-block hidden' size='lg' onClick={onCheckAnswers}>Sprawdź swoje odpowiedzi</Button>
+                    </>
                 )}
             </Flashcard.Content>
             <Flashcard.Footer className='border-eblue-200' />
@@ -338,7 +341,7 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
         if (count !== quizData.length - 1) {
             increment();
             return;
-        }  
+        }
         if (points >= POINTS_TO_PASS) {
             updateQuizStatus.mutate(undefined, {
                 onSuccess: () => {
@@ -358,7 +361,7 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
 
     const currentQuestion = quizData[count];
 
-    const quizLayout = cn('flex-col px-28 min-h-[580px] items-stretch justify-start gap-6 !py-12 text-eblue-600', {
+    const quizLayout = cn('flex-col px-4 sm:px-28 min-h-[580px] items-stretch justify-start gap-6 !py-12 text-eblue-600', {
         'justify-start': stage === 'quiz',
         'justify-center': stage === 'result' || stage === 'intro',
         'items-center': stage === 'result' || stage === 'intro',
@@ -389,9 +392,9 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
     return (
         <QuizLayout className={quizLayout}>
             {stage === 'intro' && (
-                <Flashcard.Root ref={outRef} className='md:w-[680px] h-[400px] bg-butter-100 text-eblue-600'>
+                <Flashcard.Root ref={outRef} className='md:w-[680px] md:h-[400px] bg-butter-100 text-eblue-600'>
                     <Flashcard.Header className='border-eblue-200' />
-                    <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl'>
+                    <Flashcard.Content className='flex flex-col gap-10 text-lg md:text-2xl max-sm:pb-4'>
                         <p>Sprawdź poziom swojej wiedzy rozwiązując quiz, który składa się z najczęściej zadawanych pytań przez bezpestkowe, czyli osoby mające zespół MRKH. </p>
                         <Button onClick={() => setStage('quiz')} variant='kupkurs' className='!text-lg px-7 rounded-xl hidden md:inline' size='lg'>
                             Rozpocznij quiz
@@ -405,8 +408,8 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
             )}
             {(stage === 'quiz' || stage === 'validation') && (
                 <>
-                    <h1 className='text-lg font-outfit pb-2'>Pytanie {count + 1}</h1>
-                    <h2 className='text-2xl font-monarcha pb-2'>{currentQuestion.question}</h2>
+                    <h1 className='text-lg font-outfit font-semibold pb-2'>Pytanie {count + 1}</h1>
+                    <h2 className='text-xl sm:text-2xl font-monarcha pb-2'>{currentQuestion.question}</h2>
                     {currentQuestion.answers.map((answer, index) => {
                         return ((
                             <button key={answer.text} onClick={() => handleAnswer(index, currentQuestion)} disabled={stage === 'validation'} className={buttonClass(index)}>
@@ -416,9 +419,9 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
                         ))
                     })}
                     {stage === 'validation' && (
-                        <div className={cn('flex flex-row gap-2', {
-                            'self-center': quizData.length - 1 === count,
-                            'self-end': quizData.length - 1 !== count,
+                        <div className={cn('flex flex-row gap-2 self-center sm:self-end', {
+                            'self-center sm:self-center': quizData.length - 1 === count,
+                            'self-center sm:self-end': quizData.length - 1 !== count,
                         })}>
                             {quizData.length - 1 === count ? (
                                 <Button variant='panel' className='!text-sm' size='lg' onClick={onQuizReset}>

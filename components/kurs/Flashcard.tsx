@@ -77,7 +77,7 @@ const Footer = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElem
 
 const Root = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
   return (
-    <div {...props} ref={ref} className={cn("text-ewhite flex flex-col justify-between text-xl sm:text-3xl font-monarcha rounded-3xl shadow-lg pb-2 pt-3 px-6 max-h-[460px] aspect-[0.85] bg-eblue-600", props.className)}>
+    <div {...props} ref={ref} className={cn("text-ewhite flex flex-col justify-between text-xl sm:text-3xl font-monarcha rounded-3xl shadow-lg pb-2 pt-3 px-6 max-h-[460px] sm:aspect-[0.85] bg-eblue-600", props.className)}>
       {children}
     </div>
   );
