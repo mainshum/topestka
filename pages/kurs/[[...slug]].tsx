@@ -199,7 +199,7 @@ export default function Page({
           {chapter === 'flashcard' && (
             <Flashcards ref={scroll20PxFromTop} />
           )}
-          {chapter === 'quiz' && <QuizChapter ref={scroll20PxFromTop} key={quizKey} onQuizReset={() => setQuizKey(Math.random())} />}
+          {chapter === 'quiz' && <QuizChapter ref={scroll20PxFromTop} key={quizKey} onQuizReset={() => setQuizKey(Math.random())} onCertyfikatDownload={() => handleBroszuraDownload('certyfikat')} />}
           <MarkCompleted className="self-center" markAsCompleted={handleMarkAsCompleted} />
         </div>
         <Chapters>

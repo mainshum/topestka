@@ -285,7 +285,7 @@ const indToLetter = (index: number) => {
 }
 
 
-const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: () => void }) => {
+const Result = ({ points, onCheckAnswers, onCertyfikatDownload }: { points: number, onCheckAnswers: () => void, onCertyfikatDownload: () => void }) => {
     const isSuccess = points >= POINTS_TO_PASS;
 
     return (
@@ -305,9 +305,7 @@ const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: ()
                     </p>
                 )}
                 {isSuccess && (
-                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl' size='lg' onClick={() => {
-                        window.open(`/bezpestkowe_certyfikat.pdf`, '_blank');
-                    }}>Odbierz certyfikat</Button>
+                    <Button variant='kupkurs' className='!text-lg px-7 rounded-xl' size='lg' onClick={onCertyfikatDownload}>Odbierz certyfikat</Button>
                 )}
                 {!isSuccess && (
                     <>
@@ -322,7 +320,7 @@ const Result = ({ points, onCheckAnswers }: { points: number, onCheckAnswers: ()
 }
 
 
-export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () => void }>(({ onQuizReset }, outRef) => {
+export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () => void, onCertyfikatDownload: () => void }>(({ onQuizReset, onCertyfikatDownload }, outRef) => {
     const { count, increment, reset, decrement } = useCounter(0, 0, quizData.length - 1);
     const [stage, setStage] = useState<'intro' | 'quiz' | 'result' | 'validation'>('intro');
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
@@ -446,7 +444,7 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
                 </>
             )}
             {stage === 'result' && (
-                <Result points={points} onCheckAnswers={handleCheckAnswers} />
+                <Result points={points} onCheckAnswers={handleCheckAnswers} onCertyfikatDownload={onCertyfikatDownload} />
             )}
         </QuizLayout>
     );
