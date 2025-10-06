@@ -129,6 +129,7 @@ jobs:
             if [ -d $DEPLOY_PATH ]; then rm -rf $DEPLOY_PATH.old; fi
             if [ -d $DEPLOY_PATH ]; then mv $DEPLOY_PATH $DEPLOY_PATH.old; fi
             mv $DEPLOY_PATH.tmp $DEPLOY_PATH
+            cp -r /root/repo/private $DEPLOY_PATH/private
 
             # Restart or start PM2
             cd /root/repo
