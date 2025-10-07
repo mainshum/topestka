@@ -17,7 +17,6 @@ const faqItems = [
       <ul className="pl-4 list-disc *:relative *:left-2">
         <li>Szybki przelew online za pośrednictwem Przelewy24.</li>
         <li>Tradycyjny przelew bankowy na konto fundacji.</li>
-        <li>Rozłożenie płatności na raty za pomocą usługi PayPo.</li>
       </ul>
     </>,
     null
@@ -35,7 +34,7 @@ const faqItems = [
     "Studiuję, czy mogę liczyć na zniżkę?",
     <>
       Tak, oferujemy zniżki dla studentów! Skontaktuj się z nami, a znajdziemy
-      najlepsze rozwiązanie. Napisz na adres topestka.org@gmail.com, aby
+      najlepsze rozwiązanie. Napisz na adres <a href="mailto:topestka.org@gmail.com">topestka.org@gmail.com</a>, aby
       dowiedzieć się więcej.
     </>,
     null
@@ -109,10 +108,9 @@ const faqItems = [
   [
     "Czy mogę w jakiś sposób wesprzeć działania fundacji?",
     <>
-      Tak, możesz wspierać nas na różne sposoby: Śledząc nasze materiały
-      edukacyjne w mediach społecznościowych i na naszej stronie internetowej.
-      Dokonując darowizny na konto fundacji. Stawiając kawę fundacji poprzez
-      platformę Buy Coffee.
+      Tak, możesz wspierać nas na różne sposoby: śledząc nasze materiały
+      edukacyjne w mediach społecznościowych i na naszej stronie internetowej
+      lub dokonując darowizny na konto fundacji. 
     </>,
     'bottom-40'
   ],
