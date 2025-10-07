@@ -63,15 +63,12 @@ export const authenticator = mysqlTable(
   );
 
 export const completedItems = mysqlTable("completedItems", {
-  id: varchar({ length: 255 }).notNull(),
   userId: varchar({ length: 255 })
+    .primaryKey()
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   completedSubchapters: varchar({ length: 1000 }).default("NULL"),
-  completedQuizzes: varchar({ length: 1000 }).default("NULL"),
-  completedFlashcards: varchar({ length: 1000 }).default("NULL"),
   createdAt: timestamp({ mode: "string" }).notNull(),
-  updatedAt: timestamp({ mode: "string" }).notNull(),
 });
 
 export const session = mysqlTable("session", {

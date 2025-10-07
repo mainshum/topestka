@@ -1,4 +1,4 @@
-import { getDefault, safeParse, string } from "valibot";
+import { getDefault, parseJson, pipe, safeParse, string } from "valibot";
 import { authenticatedProcedure, router } from "../trpc";
 import { db } from "@/utils/db/pool";
 import { completedItems as completedItemsTable } from "@/drizzle/schema";
@@ -13,15 +13,19 @@ import { user } from "@/drizzle/schema";
 export const userRouter = router({
   getCompletedItems: authenticatedProcedure.query(async ({ ctx }) => {
     try {
-      logInfo("Getting completed items", { userId: ctx.user.email });
+      logInfo("Getting completed items", { userId: ctx.user.id });
       
       const res = await db
         .select()
         .from(completedItemsTable)
-        .where(eq(completedItemsTable.userId, ctx.user.email));
+        .where(eq(completedItemsTable.userId, ctx.user.id));
 
       const completedItemsParsed = safeParse(
-        completedItemsSchema,
+        pipe(
+          string(),
+          parseJson(),
+          completedItemsSchema
+        ),
         res?.[0]?.completedSubchapters
       );
 
@@ -30,13 +34,13 @@ export const userRouter = router({
         : getDefault(completedItemsSchema);
 
       logInfo("Completed items retrieved successfully", { 
-        userId: ctx.user.email,
+        userId: ctx.user.id,
         itemsCount: Array.isArray(result) ? result.length : 0
       });
 
       return result;
     } catch (error) {
-      logError("Failed to get completed items", error as Error, { userId: ctx.user.email });
+      logError("Failed to get completed items", error as Error, { userId: ctx.user.id });
       throw error;
     }
   }),
@@ -45,7 +49,7 @@ export const userRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         logInfo("Saving completed items", { 
-          userId: ctx.user.email,
+          userId: ctx.user.id,
           itemsCount: Array.isArray(input) ? input.length : 0
         });
 
@@ -54,11 +58,9 @@ export const userRouter = router({
         await db
           .insert(completedItemsTable)
           .values({
-            userId: ctx.user.email,
-            id: ctx.user.email,
+            userId: ctx.user.id,
             completedSubchapters: JSON.stringify(input),
             createdAt: now,
-            updatedAt: now,
           })
           .onDuplicateKeyUpdate({
             set: {
@@ -66,9 +68,9 @@ export const userRouter = router({
             },
           });
 
-        logInfo("Completed items saved successfully", { userId: ctx.user.email });
+        logInfo("Completed items saved successfully", { userId: ctx.user.id });
       } catch (error) {
-        logError("Failed to save completed items", error as Error, { userId: ctx.user.email });
+        logError("Failed to save completed items", error as Error, { userId: ctx.user.id });
         throw error;
       }
     }),
@@ -77,13 +79,13 @@ export const userRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         logInfo("Pobieranie pliku", { 
-          userId: ctx.user.email,
+          userId: ctx.user.id,
           filename: input 
         });
 
         if (!ctx.user.hasAccess) {
           logError("Brak dostępu do pobierania plików", undefined, { 
-            userId: ctx.user.email,
+            userId: ctx.user.id,
             filename: input 
           });
           throw new TRPCError({
@@ -102,7 +104,7 @@ export const userRouter = router({
 
         if (!allowedFiles.includes(input)) {
           logError("Pobieranie nieautoryzowanego pliku", undefined, { 
-            userId: ctx.user.email,
+            userId: ctx.user.id,
             filename: input 
           });
           throw new TRPCError({
@@ -116,7 +118,7 @@ export const userRouter = router({
         const fileBuffer = await readFile(filePath);
 
         logInfo("Plik pobrany pomyślnie", { 
-          userId: ctx.user.email,
+          userId: ctx.user.id,
           filename: input,
           fileSize: fileBuffer.length 
         });
@@ -131,7 +133,7 @@ export const userRouter = router({
           throw error;
         }
         logError("Failed to download file", error as Error, { 
-          userId: ctx.user.email,
+          userId: ctx.user.id,
           filename: input 
         });
         throw new TRPCError({
@@ -143,17 +145,17 @@ export const userRouter = router({
   updateQuizStatus: authenticatedProcedure
     .mutation(async ({ ctx }) => {
       try {
-        logInfo("Updating quiz status", { userId: ctx.user.email });
+        logInfo("Updating quiz status", { userId: ctx.user.id });
 
         await db
           .update(user)
           .set({ quizPassed: true })
-          .where(eq(user.email, ctx.user.email));
+          .where(eq(user.id, ctx.user.id));
 
-        logInfo("Quiz status updated successfully", { userId: ctx.user.email });
+        logInfo("Quiz status updated successfully", { userId: ctx.user.id });
         return true;
       } catch (error) {
-        logError("Failed to update quiz status", error as Error, { userId: ctx.user.email });
+        logError("Failed to update quiz status", error as Error, { userId: ctx.user.id });
         throw error;
       }
     }),

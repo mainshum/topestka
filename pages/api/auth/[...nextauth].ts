@@ -47,19 +47,19 @@ export const authOptions: NextAuthOptions = {
           return session;
         }
 
-        const {hasAccess, quizPassed} = use[0];
+        const {hasAccess, quizPassed, id} = use[0];
 
-        session.user = { ...session.user, hasAccess, quizPassed };
+        session.user = { ...session.user, hasAccess, quizPassed, id };
 
         logInfo("Session updated successfully", { 
-          userId: session.user?.email, 
+          userEmail: session.user?.email, 
           hasAccess, 
           quizPassed 
         });
 
         return session;
       } catch (error) {
-        logError("Error in session callback", error as Error, { userId: session.user?.email });
+        logError("Error in session callback", error as Error, { userEmail: session.user?.email });
         return session;
       }
     },

@@ -84,6 +84,7 @@ export const getServerSideProps: GetServerSideProps<GetServerSidePropsParams> = 
 // Main component
 export default function Page({
   muxToken,
+  completedItems,
   quizPassed,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
@@ -108,22 +109,21 @@ export default function Page({
     return emptyCompletedItems;
   }
 
-  const [completedItems, setCompletedItems] = useState<InferOutput<typeof completedItemsSchema>>(getFromLocalStorage());
+  const [localCompletedItems, setLocalCompletedItems] = useState<InferOutput<typeof completedItemsSchema>>(completedItems);
+
+  const saveCompletedItems = trpc.user.saveCompletedItems.useMutation();
 
   const handleSubchapterChange = (chapter: string, subchapter: number) => 
     router.push(`/kurs/${chapter}/${subchapter}`, undefined, { shallow: true });
 
-  const handleMarkAsCompleted = () => {
+  const handleMarkAsCompleted = (x: number | keyof typeof completedItems) => {
 
-    let newCompletedItems: InferOutput<typeof completedItemsSchema>;
-    if (chapter === 'video') {
-      if (completedItems.video.includes(subchapterFromQuery)) { return; }
-      newCompletedItems = { ...completedItems, video: [...completedItems.video, subchapterFromQuery] };
-    } else {
-      newCompletedItems = { ...completedItems, [chapter as keyof typeof completedItems]: true };
-    }
-    setCompletedItems(newCompletedItems);
-    localStorage.setItem('completedItems', JSON.stringify(newCompletedItems));
+    const updated = typeof x === 'number' ? 
+      { ...localCompletedItems, video: Array.from(new Set([...localCompletedItems.video, x])) } : 
+      { ...localCompletedItems, [x]: true };
+
+    setLocalCompletedItems(updated);
+    saveCompletedItems.mutate(updated);
   }
 
   let { title, subchapters } = chapters[chapter as keyof typeof chapters];
@@ -133,9 +133,9 @@ export default function Page({
     title = 'MRKH: perspektywa lekarza';
   }
 
-  const completedPP = getCompletedPercentage(9, completedItems.video.filter((item) => item < 10).length);
-  const completedPL = getCompletedPercentage(4, completedItems.video.filter((item) => item >= 10).length);
-  const completedBroszury = (completedItems.broszura_1 ? 1 : 0) + (completedItems.broszura_2 ? 1 : 0);
+  const completedPP = getCompletedPercentage(9, localCompletedItems.video.filter((item) => item < 10).length);
+  const completedPL = getCompletedPercentage(4, localCompletedItems.video.filter((item) => item >= 10).length);
+  const completedBroszury = (localCompletedItems.broszura_1 ? 1 : 0) + (localCompletedItems.broszura_2 ? 1 : 0);
 
   const downloadFile = trpc.user.downloadFile.useMutation({
     onSuccess: (data) => {
@@ -162,13 +162,7 @@ export default function Page({
 
   const handleBroszuraDownload = (broszuraFile: 'broszura_1' | 'broszura_2' | 'broszura_3' | 'certyfikat') => {
     downloadFile.mutate(`bezpestkowe_${broszuraFile}.pdf`, {
-      onSuccess: () => {
-        setCompletedItems({ ...completedItems, [broszuraFile]: true });
-        localStorage.setItem('completedItems', JSON.stringify(completedItems));
-      },
-      onError: (error) => {
-        console.error('Download failed:', error.message);
-      }
+      onSuccess: () => handleMarkAsCompleted(broszuraFile),
     });
   }
 
@@ -200,7 +194,7 @@ export default function Page({
             <Flashcards ref={scroll20PxFromTop} />
           )}
           {chapter === 'quiz' && <QuizChapter ref={scroll20PxFromTop} key={quizKey} onQuizReset={() => setQuizKey(Math.random())} onCertyfikatDownload={() => handleBroszuraDownload('certyfikat')} />}
-          <MarkCompleted className="self-center" markAsCompleted={handleMarkAsCompleted} />
+          <MarkCompleted className="self-center" markAsCompleted={() => handleMarkAsCompleted(chapter === 'video' ? subchapterFromQuery : chapter)} />
         </div>
         <Chapters>
           <Chapter
@@ -213,7 +207,7 @@ export default function Page({
                 <SubchapterComponent
                   key={`${index}-${sc.title}`}
                   isCurrent={index + 1 === subchapterFromQuery}
-                  done={completedItems.video.includes(index + 1)}
+                  done={localCompletedItems.video.includes(index + 1)}
                   onClick={() => handleSubchapterChange('video', index + 1)}
                 >
                   {`${index + 1}. ${sc.title}`}
@@ -231,7 +225,7 @@ export default function Page({
                 <SubchapterComponent
                   key={`${index}-${sc.title}`}
                   isCurrent={index + 10 === subchapterFromQuery}
-                  done={completedItems.video.includes(index + 10)}
+                  done={localCompletedItems.video.includes(index + 10)}
                   onClick={() => handleSubchapterChange('video', index + 10)}
                 >
                   {`${index + 1}. ${sc.title}`}
@@ -242,11 +236,11 @@ export default function Page({
           <Chapter
             chapterNo={3}
             subchapterTitle="Podsumowanie badania - publikacja"
-            completed={completedItems.broszura_3 ? 100 : 0}
+            completed={localCompletedItems.broszura_3 ? 100 : 0}
           >
             <SubchapterComponent
               isCurrent={false}
-              done={completedItems.broszura_3}
+              done={localCompletedItems.broszura_3}
               className="items-center justify-between gap-2 flex"
               onClick={() => handleBroszuraDownload('broszura_3')}
             >
@@ -262,7 +256,7 @@ export default function Page({
             <Subchapter
               isCurrent={false}
               className="items-center justify-between gap-2 flex"
-              done={completedItems.broszura_1}
+              done={localCompletedItems.broszura_1}
               onClick={() => handleBroszuraDownload('broszura_1')}
             >
               <SubchapterDownloadableContent text="1. Zespół MRKH - o osobach, które nie mają pestki" />
@@ -271,7 +265,7 @@ export default function Page({
             <Subchapter
               isCurrent={false}
               className="items-center justify-between gap-2 flex"
-              done={completedItems.broszura_2}
+              done={localCompletedItems.broszura_2}
               onClick={() => handleBroszuraDownload('broszura_2')}
             >
               <SubchapterDownloadableContent text="2. O zespole MRKH, jego objawach i kwestiach z nim związanych" />
@@ -280,14 +274,14 @@ export default function Page({
           <Chapter
             chapterNo={5}
             subchapterTitle="Zestaw fiszek"
-            completed={completedItems.flashcard ? 100 : 0}
+            completed={localCompletedItems.flashcard ? 100 : 0}
             onClick={() => {
               handleSubchapterChange('flashcard', 1);
             }}
           >
             <Subchapter
               isCurrent={chapter === 'flashcard'}
-              done={completedItems.flashcard}
+              done={localCompletedItems.flashcard}
               role="listitem"
             >
               {flashcardSubchapterDescription}
@@ -296,7 +290,7 @@ export default function Page({
           <Chapter
             chapterNo={6}
             subchapterTitle="Quiz wiedzy o zespole MRKH"
-            completed={completedItems.quiz ? 100 : 0}
+            completed={localCompletedItems.quiz ? 100 : 0}
             onClick={() => {
               handleSubchapterChange('quiz', 1);
             }}
@@ -304,7 +298,7 @@ export default function Page({
             <SubchapterComponent
               role="listitem"
               isCurrent={chapter === 'quiz'}
-              done={completedItems.quiz}
+              done={localCompletedItems.quiz}
             >
               Czy potrafisz przeprowadzić rozmowę z osobą z zespołem MRKH?
             </SubchapterComponent>
@@ -313,12 +307,12 @@ export default function Page({
             <Chapter
               chapterNo={7}
               subchapterTitle="Certyfikat ukończenia kursu"
-              completed={completedItems.certyfikat ? 100 : 0}
+              completed={localCompletedItems.certyfikat ? 100 : 0}
             >
               <SubchapterComponent
                 role="listitem"
                 isCurrent={chapter === 'certyfikat'}
-                done={completedItems.certyfikat}
+                done={localCompletedItems.certyfikat}
                 onClick={() => {
                   handleBroszuraDownload('certyfikat');
                 }}
