@@ -90,7 +90,7 @@ export const videoSubchapters: VideoSubchapter[] = [
     from: 48 * 60 + 51,
     to: 52 * 60 + 32,
   },
-  { title: "Z czym się wiąże MRKH?", from: 52 * 60 + 32, to: Infinity },
+  { title: "Z czym się wiąże zespół MRKH?", from: 52 * 60 + 32, to: Infinity },
 ];
 
 export const chapters: Record<Chapter[number], { title: string; subchapters: Subchapter[] } > = {

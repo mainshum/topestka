@@ -1,13 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Flashcard } from './Flashcard';
 import { QuizLayout } from '../quiz-layout';
 import { useCounter } from '@/utils/useCounter';
 import { cn } from '@/utils/misc';
-import { Button, buttonVariants } from '../Button';
-import { useRouter } from 'next/navigation';
+import { Button } from '../Button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { trpc } from '@/utils/trpc';
 
 const POINTS_TO_PASS = 14;
@@ -285,7 +283,7 @@ const indToLetter = (index: number) => {
 }
 
 
-const Result = ({ points, onCheckAnswers, onCertyfikatDownload }: { points: number, onCheckAnswers: () => void, onCertyfikatDownload: () => void }) => {
+const Result = ({ points, onCheckAnswers, onCertyfikatDownload}: { points: number, onCheckAnswers: () => void, onCertyfikatDownload: () => void }) => {
     const isSuccess = points >= POINTS_TO_PASS;
 
     return (
@@ -320,13 +318,11 @@ const Result = ({ points, onCheckAnswers, onCertyfikatDownload }: { points: numb
 }
 
 
-export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () => void, onCertyfikatDownload: () => void }>(({ onQuizReset, onCertyfikatDownload }, outRef) => {
+export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () => void, onCertyfikatDownload: () => void, onQuizPassed: () => void }>(({ onQuizReset, onCertyfikatDownload, onQuizPassed }, outRef) => {
     const { count, increment, reset, decrement } = useCounter(0, 0, quizData.length - 1);
     const [stage, setStage] = useState<'intro' | 'quiz' | 'result' | 'validation'>('intro');
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
     const [points, setPoints] = useState(0);
-    const { update, data: session } = useSession();
-    const updateQuizStatus = trpc.user.updateQuizStatus.useMutation();
 
     const handleAnswer = (answerIndex: number, currentQuestion: QuizData) => {
         if (stage === 'validation') return;
@@ -334,18 +330,17 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
         const { isCorrect } = currentQuestion.answers[answerIndex];
         setUserAnswers(prev => ({ ...prev, [count]: answerIndex }));
         if (isCorrect) {
-            setPoints(prev => prev + 1);
+            setPoints(prev => {
+                const newPoints = prev + 1;
+                if (newPoints >= POINTS_TO_PASS) {
+                    onQuizPassed();
+                }
+                return newPoints;
+            });
         }
         if (count !== quizData.length - 1) {
             increment();
             return;
-        }
-        if (points >= POINTS_TO_PASS) {
-            updateQuizStatus.mutate(undefined, {
-                onSuccess: () => {
-                    update({ user: { ...session?.user, quizPassed: true } });
-                }
-            });
         }
 
         setStage('result');
@@ -386,6 +381,7 @@ export const QuizChapter = React.forwardRef<HTMLDivElement, { onQuizReset: () =>
         }
         return cn(baseClass);
     }
+
 
     return (
         <QuizLayout className={quizLayout}>

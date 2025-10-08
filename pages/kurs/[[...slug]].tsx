@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Mux from "@mux/mux-node";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Chapters } from '../../components/kurs/Chapters';
 import { Chapter } from '../../components/kurs/Chapter';
 import { emptyCompletedItems, VideoSubchapter, chapters, chaptersEnum } from '@/components/kurs/data';
@@ -90,7 +90,7 @@ export default function Page({
 
   const router = useRouter();
 
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const qp = quizPassed || session?.user?.quizPassed;
 
   const chapterParsed = safeParse(chaptersEnum, router.query?.slug?.[0]);
@@ -116,6 +116,33 @@ export default function Page({
   const handleSubchapterChange = (chapter: string, subchapter: number) => 
     router.push(`/kurs/${chapter}/${subchapter}`, undefined, { shallow: true });
 
+
+  let { title, subchapters } = chapters[chapter as keyof typeof chapters];
+
+  // hack 
+  if (chapter === 'video' && subchapterFromQuery >= 10) {
+    title = 'Zespół MRKH: perspektywa lekarza';
+  }
+  const completedVideosPP = localCompletedItems.video.filter((item) => item < 10).length;
+  const completedVideosPL = localCompletedItems.video.filter((item) => item >= 10).length;
+  const broszura1Completed = localCompletedItems.broszura_1 ? 1 : 0;
+  const broszura2Completed = localCompletedItems.broszura_2 ? 1 : 0;
+  const broszura3Completed = localCompletedItems.broszura_3 ? 1 : 0;
+  const flashcardCompleted = localCompletedItems.flashcard ? 1 : 0;
+  const quizCompleted = localCompletedItems.quiz ? 1 : 0;
+  const certyfikatCompleted = localCompletedItems.certyfikat ? 1 : 0;
+
+  const completedPP = getCompletedPercentage(9, completedVideosPP);
+  const completedPL = getCompletedPercentage(4, completedVideosPL);
+
+  const completedBroszury = broszura1Completed + broszura2Completed;
+
+  const totalCompletedCountWithoutCertificate = useCallback(() => {
+    return  broszura1Completed + broszura2Completed + broszura3Completed + flashcardCompleted + quizCompleted;
+  }, [broszura1Completed, broszura2Completed, broszura3Completed, flashcardCompleted, quizCompleted]);
+
+  const updateQuizStatus = trpc.user.updateQuizStatus.useMutation();
+
   const handleMarkAsCompleted = (x: number | keyof typeof completedItems) => {
 
     const updated = typeof x === 'number' ? 
@@ -124,18 +151,11 @@ export default function Page({
 
     setLocalCompletedItems(updated);
     saveCompletedItems.mutate(updated);
+    if (totalCompletedCountWithoutCertificate() === 5) {
+      updateQuizStatus.mutate();
+      update({ user: { ...session?.user, quizPassed: true } });
+    }
   }
-
-  let { title, subchapters } = chapters[chapter as keyof typeof chapters];
-
-  // hack 
-  if (chapter === 'video' && subchapterFromQuery >= 10) {
-    title = 'Zespół MRKH: perspektywa lekarza';
-  }
-
-  const completedPP = getCompletedPercentage(9, localCompletedItems.video.filter((item) => item < 10).length);
-  const completedPL = getCompletedPercentage(4, localCompletedItems.video.filter((item) => item >= 10).length);
-  const completedBroszury = (localCompletedItems.broszura_1 ? 1 : 0) + (localCompletedItems.broszura_2 ? 1 : 0);
 
   const downloadFile = trpc.user.downloadFile.useMutation({
     onSuccess: (data) => {
@@ -161,9 +181,8 @@ export default function Page({
   });
 
   const handleBroszuraDownload = (broszuraFile: 'broszura_1' | 'broszura_2' | 'broszura_3' | 'certyfikat') => {
-    downloadFile.mutate(`bezpestkowe_${broszuraFile}.pdf`, {
-      onSuccess: () => handleMarkAsCompleted(broszuraFile),
-    });
+    handleMarkAsCompleted(broszuraFile)
+    downloadFile.mutate(`bezpestkowe_${broszuraFile}.pdf`);
   }
 
   const [quizKey, setQuizKey] = useState(Math.random());
@@ -174,6 +193,14 @@ export default function Page({
     ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
+  const showMarkCompleted = chapter === 'video';
+
+  const markQuizAsCompleted = trpc.user.updateQuizStatus.useMutation();
+
+  const handleQuizPassed = () => {
+      handleMarkAsCompleted('quiz');
+      markQuizAsCompleted.mutate();
+  }
   return (
     <div ref={contentRef} className="flex flex-col w-full">
       <section className="basis-[120px] shrink-0">
@@ -191,10 +218,10 @@ export default function Page({
             <Video ref={scroll20PxFromTop} key={subchapterFromQuery} notifySubchatperPlaying={() => { }} muxToken={muxToken} playbackId={playbackId} startTime={(subchapters[subchapterFromQuery - 1] as VideoSubchapter)?.from || 0} />
           )}
           {chapter === 'flashcard' && (
-            <Flashcards ref={scroll20PxFromTop} />
+            <Flashcards onCompleted={() => handleMarkAsCompleted('flashcard')} ref={scroll20PxFromTop} />
           )}
-          {chapter === 'quiz' && <QuizChapter ref={scroll20PxFromTop} key={quizKey} onQuizReset={() => setQuizKey(Math.random())} onCertyfikatDownload={() => handleBroszuraDownload('certyfikat')} />}
-          <MarkCompleted className="self-center" markAsCompleted={() => handleMarkAsCompleted(chapter === 'video' ? subchapterFromQuery : chapter)} />
+          {chapter === 'quiz' && <QuizChapter onQuizPassed={handleQuizPassed} ref={scroll20PxFromTop} key={quizKey} onQuizReset={() => setQuizKey(Math.random())} onCertyfikatDownload={() => handleBroszuraDownload('certyfikat')} />}
+          {showMarkCompleted && <MarkCompleted className="self-center" markAsCompleted={() => handleMarkAsCompleted(chapter === 'video' ? subchapterFromQuery : chapter)} />}
         </div>
         <Chapters>
           <Chapter

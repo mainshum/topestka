@@ -83,10 +83,21 @@ const Root = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
   );
 });
 
+interface FlashcardsProps extends React.HTMLAttributes<HTMLDivElement> {
+  onCompleted: () => void;
+}
 
-export const Flashcards = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ children, ...props }, ref) => {
+export const Flashcards = React.forwardRef<HTMLDivElement, FlashcardsProps>(({ children, onCompleted, ...props }, ref) => {
   const flashcardDataLength = Object.keys(flashcardData).length;
   const { count, increment, decrement } = useCounter(0, 0, flashcardDataLength - 1);
+
+
+  const incrementAndMarkAsCompleted = () => {
+    if (count === flashcardDataLength - 2) {
+      onCompleted();
+    }
+    increment();
+  }
 
   const currentCard = flashcardData[count];
 
@@ -115,7 +126,7 @@ export const Flashcards = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
         </button>
       )}
       <Root ref={ref} className={rootClass}>
-        {currentCard(increment)}
+        {currentCard(incrementAndMarkAsCompleted)}
         <Footer className={cn('max-sm:border-0 max-sm:mb-0', count === 0 && 'mt-2 mb-4')}>
           {count !== 0 && (
             <>
@@ -133,7 +144,7 @@ export const Flashcards = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
                   <ChevronLeft className="w-6 h-6 text-white" />
                 </button>
                 <button
-                  onClick={increment}
+                  onClick={incrementAndMarkAsCompleted}
                   disabled={hideIncrement}
                   className={cn("p-2  hover:bg-white/20 rounded-full transition-colors", {
                     'opacity-50': hideIncrement,
@@ -153,7 +164,7 @@ export const Flashcards = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
       {count !== 0 && (
         <>
           <button
-            onClick={increment}
+            onClick={incrementAndMarkAsCompleted}
             disabled={hideIncrement}
             className={cn("p-2 hidden sm:block hover:bg-white/20 rounded-full transition-colors", {
               'invisible': hideIncrement,
