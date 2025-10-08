@@ -95,7 +95,7 @@ export const videoSubchapters: VideoSubchapter[] = [
 
 export const chapters: Record<Chapter[number], { title: string; subchapters: Subchapter[] } > = {
   video: {
-    title: "MRKH: perspektywa pacjencka",
+    title: "Zespół MRKH: perspektywa pacjencka",
     subchapters: videoSubchapters,
   },
   flashcard: {

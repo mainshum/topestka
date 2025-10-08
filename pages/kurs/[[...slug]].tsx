@@ -130,7 +130,7 @@ export default function Page({
 
   // hack 
   if (chapter === 'video' && subchapterFromQuery >= 10) {
-    title = 'MRKH: perspektywa lekarza';
+    title = 'Zespół MRKH: perspektywa lekarza';
   }
 
   const completedPP = getCompletedPercentage(9, localCompletedItems.video.filter((item) => item < 10).length);
@@ -217,7 +217,7 @@ export default function Page({
           </Chapter>
           <Chapter
             chapterNo={2}
-            subchapterTitle="MRKH: perspektywa lekarza"
+            subchapterTitle="Zespół MRKH: perspektywa lekarza"
             completed={completedPL}
           >
             {chapters.video.subchapters.slice(9).map((sc, index) => {
