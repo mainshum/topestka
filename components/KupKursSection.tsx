@@ -26,6 +26,8 @@ const Cena = ({ children, koszt }: CenaProps) => {
 
 
 const KupKursSection = ({kursEnabled, coursePrice, courseDiscountPrice}: {kursEnabled: boolean, coursePrice: number, courseDiscountPrice: number}) => {
+  const coursePriceGrToPln = coursePrice / 100;
+  const courseDiscountPriceGrToPln = courseDiscountPrice / 100;
   return (
     <HomeSection
       id="kup-kurs"
@@ -35,10 +37,10 @@ const KupKursSection = ({kursEnabled, coursePrice, courseDiscountPrice}: {kursEn
         <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
           MRKH to pestka!
         </h1>
-        <Cena koszt={coursePrice}>
+        <Cena koszt={coursePriceGrToPln}>
           <span className="pl-2 font-monarcha">cena</span>
         </Cena>
-        <Cena koszt={courseDiscountPrice}>
+        <Cena koszt={courseDiscountPriceGrToPln}>
           <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
             cena do końca października
           </span>
