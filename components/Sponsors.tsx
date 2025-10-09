@@ -7,6 +7,7 @@ import Kulawa from "../public/images/kulawa.png";
 import Tranzycja from "../public/images/tranzycja.png";
 import Rozowa from "../public/images/rozowa.png";
 import Chemia from "../public/images/chemia.png";
+import FF from "../public/images/fem.png";
 
 
 const sponsorsData = [
@@ -35,7 +36,13 @@ const sponsorsData = [
     src: Chemia,
     alt: "Logo Kolektyw Chemia",
     href: "https://www.facebook.com/KolektywChemia/"
+  },
+  {
+    src: FF,
+    alt: "Logo Fundusz Feministyczny",
+    href: "https://femfund.pl/"
   }
+
 ];
 
 const Sponsors = () => {
