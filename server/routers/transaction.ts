@@ -83,7 +83,7 @@ export const transactionRouter = router({
         p24Env: process.env.P24_ENV 
       });
 
-      const coursePrice = parseInt(process.env.COURSE_PRICE);
+      const coursePrice = parseInt(process.env.COURSE_DISCOUNT_PRICE);
 
       const sessionId = nanoid();
       const email = ctx.user.email;
