@@ -24,8 +24,10 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const websiteId = process.env.NODE_ENV === "production"
-  ? "80a8892f-7153-4522-bffe-4eab271fecf0"
+  ? "cdb12da1-04e4-4f48-9c7c-a4da91a1a103"
   : "148e155c-49f6-4c96-a523-aba8a97f9491";
+
+console.log(`Loading script with id ${websiteId}`);
 
 const MyApp: AppType = ({
   Component,
@@ -42,8 +44,7 @@ const MyApp: AppType = ({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />
-        <SessionProvider session={session}>
+      <Script onLoad={() => console.log("Script loaded")} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" /> <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
             {getLayout(<Component {...pageProps} />)}
             <div>
