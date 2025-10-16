@@ -4,7 +4,7 @@ import { userRouter } from './userRouter';
 
 export const appRouter = router({
   transaction: transactionRouter,
-  user: userRouter,
+user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

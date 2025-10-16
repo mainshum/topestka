@@ -6,55 +6,64 @@ import Link from "next/link";
 import { NEWSLETTER_URL } from "@/utils/const";
 import { cn } from "@/utils/misc";
 import { PowiadomLubKup } from "./PowiadomLubKup";
+import { UIPricing } from "@/utils/types";
 
 type CenaProps = {
   children: React.ReactNode;
   koszt: number;
+  priceLabel: string;
+  flipFlex?: boolean;
 };
 
-const Cena = ({ children, koszt }: CenaProps) => {
+const Cena = ({ children, koszt, priceLabel, flipFlex }: CenaProps) => {
   return (
-    <div className="flex flex-col w-full pl-2 pb-3 border-b-[1.5px] border-b-butter-100">
+    <div className={cn("flex flex-col w-full pl-2 pb-3 border-b-[1.5px] border-b-butter-100", flipFlex ? 'flex-col-reverse' : 'flex-col')}>
       {children}
       <div>
-        <span className="pr-2 font-outfit text-3xl md:text-5xl">{koszt}</span>
+        <span aria-label={priceLabel} className="pr-2 font-outfit text-3xl md:text-5xl">{koszt}</span>
         <span className="font-outfit text-xl">(PLN brutto)</span>
       </div>
     </div>
   );
 };
 
+const grToPln = (gr: number) => {
+  return gr / 100;
+}
 
-const KupKursSection = ({kursEnabled, coursePrice, courseDiscountPrice}: {kursEnabled: boolean, coursePrice: number, courseDiscountPrice: number}) => {
-  const coursePriceGrToPln = coursePrice / 100;
-  const courseDiscountPriceGrToPln = courseDiscountPrice / 100;
+const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricing: UIPricing }) => {
+
+  const topSpanClass = cn('pl-2 font-monarcha', pricing.type === 'coupon' && pricing.isError ? 'text-red-400' : 'text-green-400');
+
   return (
     <HomeSection
       id="kup-kurs"
       className="grid xl:grid-cols-[1fr_1.22fr] py-16 xl:py-24 gap-10 px-6 md:px-20"
     >
-      <OfferingSection>
+      <OfferingSection aria-label="Cena kursu">
         <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
           MRKH to pestka!
         </h1>
-        <Cena koszt={coursePriceGrToPln}>
-          <span className="pl-2 font-monarcha">cena</span>
+        <Cena koszt={grToPln(pricing.topPrice)} priceLabel="Cena bazowa" flipFlex={pricing.type === 'coupon'}>
+          <span className={topSpanClass}>{pricing.type === 'coupon' ? pricing.topPriceLabel : 'cena'}</span>
         </Cena>
-        <Cena koszt={courseDiscountPriceGrToPln}>
-          <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
-            cena do końca października
-          </span>
-        </Cena>
+        {pricing.type === 'no-coupon' && (
+          <Cena koszt={grToPln(pricing.bottomPrice)} priceLabel="Cena po promocji">
+            <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
+              Cena do końca października
+            </span>
+          </Cena>
+        )}
         <div className="h-0" />
-        <PowiadomLubKup className={cn(buttonVariants({variant: 'powiadom', size: 'lg'}), 'xl:hidden')} kursEnabled={kursEnabled} />
-        <PowiadomLubKup className={cn(buttonVariants({variant: 'powiadom', size: 'xl'}), 'hidden xl:inline relative bottom-4 xl:bottom-0')} kursEnabled={kursEnabled} />
+        <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'lg' }), 'xl:hidden')} kursEnabled={kursEnabled} />
+        <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'xl' }), 'hidden xl:inline relative bottom-4 xl:bottom-0')} kursEnabled={kursEnabled} />
       </OfferingSection>
       <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">
         <span className="text-xl">
           Dołącz do newslettera, aby nie przegapić naszych działań
         </span>
         <div className="h-5 xl:h-0" />
-        <Link href={NEWSLETTER_URL} className={`${buttonVariants({variant: 'kupkurs', size: 'lg'})} whitespace-nowrap` }  >
+        <Link href={NEWSLETTER_URL} className={`${buttonVariants({ variant: 'kupkurs', size: 'lg' })} whitespace-nowrap`}  >
           Zapisz się
         </Link>
       </section>

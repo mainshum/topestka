@@ -1,7 +1,7 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import "../public/trailer.mp4";
-
+import { message, number, object, optional, parse, safeParse, string } from "valibot";
 // Components
 import { Intro } from "@/components/Intro";
 import Pitch from "@/components/Pitch";
@@ -18,14 +18,23 @@ import FAQ from "@/components/FAQ";
 import Sponsors from "@/components/Sponsors";
 import Newsletter from "@/components/Newsletter";
 import Nav from "@/components/Nav";
+import { ok, Ok, Result } from 'neverthrow';
 
-// Images
+const jwt = require('jsonwebtoken');
 
 // Accordion Components
 import { Promo } from "@/components/Promo";
+import { CouponPricing, Pricing, PricingError, UIPricing } from "@/utils/types";
+import { decodedDiscount, tapError } from "@/utils/misc";
+import { logError } from "@/utils/logger";
 
-const Home: NextPage<{ kursEnabled: boolean, coursePrice: number, courseDiscountPrice: number }> = (props) => {
-  const { kursEnabled, coursePrice, courseDiscountPrice } = props;
+type Props = {
+  kursEnabled: boolean;
+  pricing: UIPricing;
+}
+
+const Home: NextPage<Props> = (props) => {
+  const { kursEnabled, pricing } = props;
   return (
     <>
       <Nav kursEnabled={kursEnabled} />
@@ -38,7 +47,7 @@ const Home: NextPage<{ kursEnabled: boolean, coursePrice: number, courseDiscount
       <DlaKogo items={dlaKogoItems} />
       <KursWLiczbach items={kursWLiczbachItems} />
       <AboutUs />
-      <KupKursSection kursEnabled={kursEnabled} coursePrice={coursePrice} courseDiscountPrice={courseDiscountPrice} />
+      <KupKursSection kursEnabled={kursEnabled} pricing={pricing} />
       <FAQ />
       <Sponsors />
       <Newsletter />
@@ -46,21 +55,58 @@ const Home: NextPage<{ kursEnabled: boolean, coursePrice: number, courseDiscount
   );
 };
 
-export const getServerSideProps = async () => {
-  const {KURS_ENABLED, COURSE_PRICE, COURSE_DISCOUNT_PRICE} = process.env;
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const { KURS_ENABLED, COURSE_PRICE, COURSE_DISCOUNT_PRICE } = process.env;
   if (KURS_ENABLED == null || COURSE_PRICE == null || COURSE_DISCOUNT_PRICE == null) {
     throw new Error('KURS_ENABLED, COURSE_PRICE or COURSE_DISCOUNT_PRICE is not set');
   }
-  const parsedCoursePrice = parseInt(COURSE_PRICE);
-  const parsedCourseDiscountPrice = parseInt(COURSE_DISCOUNT_PRICE);
-  if (isNaN(parsedCoursePrice) || isNaN(parsedCourseDiscountPrice)) {
+  let coursePrice = parseInt(COURSE_PRICE);
+  let courseDiscountPrice = parseInt(COURSE_DISCOUNT_PRICE);
+  if (isNaN(coursePrice) || isNaN(courseDiscountPrice)) {
     throw new Error('COURSE_PRICE or COURSE_DISCOUNT_PRICE is not a number');
   }
+  const discount = context.query?.discount;
+
+  const pricing: Result<Pricing, PricingError> = discount == null
+    ? ok({ fullPrice: coursePrice, discountPrice: courseDiscountPrice, type: 'no-coupon' as const, })
+    : decodedDiscount(discount as string)
+      .mapErr(tapError(x => {
+        switch (x.discountError) {
+          case 'invalid-signature':
+            logError('Invalid discount token', x.error);
+          case 'invalid-payload':
+            logError('Invalid discount token', x.error);
+          case 'used':
+            logError('Invalid discount token', x.error);
+        }
+      }))
+
   return {
     props: {
       kursEnabled: Boolean(KURS_ENABLED),
-      coursePrice: parsedCoursePrice,
-      courseDiscountPrice: parsedCourseDiscountPrice,
+      pricing: pricing
+        .match((x: Pricing): UIPricing => {
+          return x.type === 'no-coupon' ? {
+            topPrice: x.fullPrice,
+            bottomPrice: x.discountPrice,
+            type: 'no-coupon' as const,
+          } : {
+            topPrice: x.couponPrice,
+            topPriceLabel: 'Zastosowano kupon!!',
+            isError: false,
+            type: 'coupon' as const,
+          }
+        }, ({ discountError, error }) => {
+          return {
+            topPrice: coursePrice,
+            bottomPrice: courseDiscountPrice,
+            topPriceLabel: discountError === 'used' ? 'Kupon już został użyty' : 'Podano nieprawidłowy kupon',
+            isError: true,
+            type: 'coupon' as const,
+          }
+        })
+
+      ,
     },
   };
 };
