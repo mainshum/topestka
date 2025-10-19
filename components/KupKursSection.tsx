@@ -33,7 +33,7 @@ const grToPln = (gr: number) => {
 
 const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricing: UIPricing }) => {
 
-  const topSpanClass = cn('pl-2 font-monarcha', pricing.type === 'coupon' && pricing.isError ? 'text-red-400' : 'text-green-400');
+  const topSpanClass = cn('pl-2 font-monarcha', pricing.type === 'coupon' && (pricing.isError ? 'text-red-400' : 'text-green-400'));
 
   return (
     <HomeSection
@@ -44,16 +44,21 @@ const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricin
         <h1 className="font-monarcha whitespace-nowrap text-3xl text-center md:text-5xl">
           MRKH to pestka!
         </h1>
-        <Cena koszt={grToPln(pricing.topPrice)} priceLabel="Cena bazowa" flipFlex={pricing.type === 'coupon'}>
-          <span className={topSpanClass}>{pricing.type === 'coupon' ? pricing.topPriceLabel : 'cena'}</span>
-        </Cena>
-        {pricing.type === 'no-coupon' && (
-          <Cena koszt={grToPln(pricing.bottomPrice)} priceLabel="Cena po promocji">
-            <span className="bg-electric-600 text-sm xl:text-base relative bottom-2 px-2 py-1 rounded-md w-fit font-monarcha">
-              Cena do końca października
-            </span>
+        {pricing.type === 'coupon' ? (
+          <Cena koszt={grToPln(pricing.topPrice)} priceLabel={pricing.topPriceLabel} flipFlex={pricing.type === 'coupon'}>
+            <span className={topSpanClass}>{pricing.topPriceLabel}</span>
           </Cena>
+        ): (
+          <>
+          <Cena koszt={grToPln(pricing.fullPrice)} priceLabel="Cena bazowa">
+            <span className={topSpanClass}>Cena</span>
+          </Cena>
+          <Cena koszt={grToPln(pricing.discountPrice)} priceLabel="Cena po promocji">
+            <span className={topSpanClass}>Cena do końca października</span>
+          </Cena>
+          </>
         )}
+        
         <div className="h-0" />
         <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'lg' }), 'xl:hidden')} kursEnabled={kursEnabled} />
         <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'xl' }), 'hidden xl:inline relative bottom-4 xl:bottom-0')} kursEnabled={kursEnabled} />

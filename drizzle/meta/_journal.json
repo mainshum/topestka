@@ -29,6 +29,20 @@
       "when": 1759869044849,
       "tag": "0004_breezy_clea",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1760863125068,
+      "tag": "0005_silly_firelord",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1760906117228,
+      "tag": "0006_nappy_krista_starr",
+      "breakpoints": true
     }
   ]
 }

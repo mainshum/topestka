@@ -18,15 +18,10 @@ import FAQ from "@/components/FAQ";
 import Sponsors from "@/components/Sponsors";
 import Newsletter from "@/components/Newsletter";
 import Nav from "@/components/Nav";
-import { ok, Ok, Result } from 'neverthrow';
-
-const jwt = require('jsonwebtoken');
-
 // Accordion Components
 import { Promo } from "@/components/Promo";
-import { CouponPricing, Pricing, PricingError, UIPricing } from "@/utils/types";
-import { decodedDiscount, tapError } from "@/utils/misc";
-import { logError } from "@/utils/logger";
+import { UIPricing } from "@/utils/types";
+import { validateDiscountToken } from "@/utils/discount";
 
 type Props = {
   kursEnabled: boolean;
@@ -55,7 +50,7 @@ const Home: NextPage<Props> = (props) => {
   );
 };
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<{ props: Props }> => {
   const { KURS_ENABLED, COURSE_PRICE, COURSE_DISCOUNT_PRICE } = process.env;
   if (KURS_ENABLED == null || COURSE_PRICE == null || COURSE_DISCOUNT_PRICE == null) {
     throw new Error('KURS_ENABLED, COURSE_PRICE or COURSE_DISCOUNT_PRICE is not set');
@@ -67,47 +62,50 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
   const discount = context.query?.discount;
 
-  const pricing: Result<Pricing, PricingError> = discount == null
-    ? ok({ fullPrice: coursePrice, discountPrice: courseDiscountPrice, type: 'no-coupon' as const, })
-    : decodedDiscount(discount as string)
-      .mapErr(tapError(x => {
-        switch (x.discountError) {
-          case 'invalid-signature':
-            logError('Invalid discount token', x.error);
-          case 'invalid-payload':
-            logError('Invalid discount token', x.error);
-          case 'used':
-            logError('Invalid discount token', x.error);
+  if (discount == null) {
+    return {
+      props: {
+        kursEnabled: Boolean(KURS_ENABLED),
+        pricing: { 
+          fullPrice: coursePrice, 
+          discountPrice: courseDiscountPrice, 
+          type: 'no-coupon' as const 
         }
-      }))
+      }
+    };
+  }
+  // Validate discount token
+  const validationResult = await validateDiscountToken(discount as string);
+  
+  if (validationResult.success) {
+    return {
+      props: {
+        kursEnabled: Boolean(KURS_ENABLED),
+        pricing: {
+          topPrice: validationResult.price,
+          topPriceLabel: 'Zastosowano kupon!!',
+          isError: false,
+          type: 'coupon' as const,
+        }
+      }
+    };
+  }
+
+  // Handle validation errors
+  const errorMessage = validationResult.error === 'already-used' 
+    ? 'Kupon już został użyty' 
+    : 'Podano nieprawidłowy kupon';
 
   return {
     props: {
       kursEnabled: Boolean(KURS_ENABLED),
-      pricing: pricing
-        .match((x: Pricing): UIPricing => {
-          return x.type === 'no-coupon' ? {
-            topPrice: x.fullPrice,
-            bottomPrice: x.discountPrice,
-            type: 'no-coupon' as const,
-          } : {
-            topPrice: x.couponPrice,
-            topPriceLabel: 'Zastosowano kupon!!',
-            isError: false,
-            type: 'coupon' as const,
-          }
-        }, ({ discountError, error }) => {
-          return {
-            topPrice: coursePrice,
-            bottomPrice: courseDiscountPrice,
-            topPriceLabel: discountError === 'used' ? 'Kupon już został użyty' : 'Podano nieprawidłowy kupon',
-            isError: true,
-            type: 'coupon' as const,
-          }
-        })
-
-      ,
-    },
+      pricing: {
+        topPrice: courseDiscountPrice,
+        topPriceLabel: errorMessage,
+        isError: true,
+        type: 'coupon' as const,
+      }
+    }
   };
 };
 

@@ -88,6 +88,7 @@ export const transaction = mysqlTable("transaction", {
     .default("pending")
     .notNull(),
   updatedAt: timestamp({ mode: "string" }).notNull(),
+  discountToken: varchar({ length: 255 }),
 });
 
 export const user = mysqlTable(
