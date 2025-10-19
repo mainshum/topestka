@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
 import Link from "next/link";
 import { buttonVariants } from "@/components/Button";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 const retryTime = 120 * 1000;
 
@@ -26,6 +28,7 @@ const ErrorComponent = ({error}: {error: string}) => {
 export default function Transaction() {
 
   const router = useRouter();
+  const {update} = useSession();
 
   const { id } = router.query;
 
@@ -36,6 +39,13 @@ export default function Transaction() {
     retryDelay: 2000,
     enabled: !!id, // Only run the query when id is available
   });
+
+  useEffect(() => {
+    if (!error && !isLoading && data) {
+      console.log('updating session');
+      update();
+    }
+  }, [error, data, isLoading]);
 
   if (!id) {
     return <ErrorComponent error="Brak ID transakcji" />
