@@ -3,8 +3,7 @@ export type TransactionStatus = 'success' | 'failed' | 'already-verified' | 'no-
 export type UIPricing = 
   | {
       type: 'no-coupon';
-      fullPrice: number;
-      discountPrice: number;
+      price: number;
     }
   | {
       type: 'coupon';

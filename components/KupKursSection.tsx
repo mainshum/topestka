@@ -49,14 +49,9 @@ const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricin
             <span className={topSpanClass}>{pricing.topPriceLabel}</span>
           </Cena>
         ): (
-          <>
-          <Cena koszt={grToPln(pricing.fullPrice)} priceLabel="Cena bazowa">
+          <Cena koszt={grToPln(pricing.price)} priceLabel="Cena">
             <span className={topSpanClass}>Cena</span>
           </Cena>
-          <Cena koszt={grToPln(pricing.discountPrice)} priceLabel="Cena po promocji">
-            <span className={topSpanClass}>Cena do końca października</span>
-          </Cena>
-          </>
         )}
         
         <div className="h-0" />

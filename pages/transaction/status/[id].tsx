@@ -45,7 +45,7 @@ export default function Transaction() {
       console.log('updating session');
       update();
     }
-  }, [error, data, isLoading]);
+  }, [error, data, isLoading, update]);
 
   if (!id) {
     return <ErrorComponent error="Brak ID transakcji" />

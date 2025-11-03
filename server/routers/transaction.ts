@@ -93,7 +93,7 @@ export const transactionRouter = router({
           hasDiscountToken: !!input.discountToken
         });
 
-        let coursePrice = parseInt(process.env.COURSE_DISCOUNT_PRICE);
+        let coursePrice = parseInt(process.env.COURSE_PRICE);
         const discountToken = input.discountToken;
 
         // Validate discount token if provided

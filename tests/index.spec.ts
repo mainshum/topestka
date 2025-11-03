@@ -5,8 +5,8 @@ const VALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjZW5hIjo0MjB9.h6STr
 test('should display correct pricing when using valid discount token', async ({ page }) => {
   await page.goto(`http://localhost:3000?discount=${VALID_TOKEN}`);
 
-  // find cena kursu
-  const cena = await page.getByLabel('Cena bazowa');
+  // find cena kursu with discount token
+  const cena = await page.getByLabel('Zastosowano kupon!!');
   await expect(cena).toHaveText('4.2');
 
 });

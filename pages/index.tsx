@@ -51,14 +51,13 @@ const Home: NextPage<Props> = (props) => {
 };
 
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<{ props: Props }> => {
-  const { KURS_ENABLED, COURSE_PRICE, COURSE_DISCOUNT_PRICE } = process.env;
-  if (KURS_ENABLED == null || COURSE_PRICE == null || COURSE_DISCOUNT_PRICE == null) {
-    throw new Error('KURS_ENABLED, COURSE_PRICE or COURSE_DISCOUNT_PRICE is not set');
+  const { KURS_ENABLED, COURSE_PRICE } = process.env;
+  if (KURS_ENABLED == null || COURSE_PRICE == null) {
+    throw new Error('KURS_ENABLED or COURSE_PRICE is not set');
   }
   let coursePrice = parseInt(COURSE_PRICE);
-  let courseDiscountPrice = parseInt(COURSE_DISCOUNT_PRICE);
-  if (isNaN(coursePrice) || isNaN(courseDiscountPrice)) {
-    throw new Error('COURSE_PRICE or COURSE_DISCOUNT_PRICE is not a number');
+  if (isNaN(coursePrice)) {
+    throw new Error('COURSE_PRICE is not a number');
   }
   const discount = context.query?.discount;
 
@@ -67,8 +66,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
       props: {
         kursEnabled: Boolean(KURS_ENABLED),
         pricing: { 
-          fullPrice: coursePrice, 
-          discountPrice: courseDiscountPrice, 
+          price: coursePrice, 
           type: 'no-coupon' as const 
         }
       }
@@ -100,7 +98,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
     props: {
       kursEnabled: Boolean(KURS_ENABLED),
       pricing: {
-        topPrice: courseDiscountPrice,
+        topPrice: coursePrice,
         topPriceLabel: errorMessage,
         isError: true,
         type: 'coupon' as const,
