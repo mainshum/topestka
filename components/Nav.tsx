@@ -102,16 +102,16 @@ const TopLinks = React.forwardRef<
       {...props}
     >
       <li>
-        <Link href="#program" className={buttonVariants({ variant: "navlink" })}> Program </Link>
+        <Link href="/program" className={buttonVariants({ variant: "navlink" })}> Program </Link>
       </li>
       <li>
-        <Link href="#o-nas" className={buttonVariants({ variant: "navlink" })}>O prowadzących</Link>
+        <Link href="/o-nas" className={buttonVariants({ variant: "navlink" })}>O prowadzących</Link>
       </li>
       <li>
-        <Link className={buttonVariants({ variant: "navlink" })} href="#kup-kurs">{kupLabel}</Link>
+        <Link className={buttonVariants({ variant: "navlink" })} href="/kup">{kupLabel}</Link>
       </li>
       <li>
-        <Link href="#kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
+        <Link href="/kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
       </li>
       {props.children}
     </ul>
@@ -159,14 +159,11 @@ export const Nav = {
   Logo,
 };
 
-type MainNavProps = HTMLAttributes<HTMLDivElement> & {
-  kursEnabled: boolean;
-}
-
 const MainNav = React.forwardRef<
   HTMLDivElement,
-  MainNavProps
->(({ className, kursEnabled }) => {
+  HTMLAttributes<HTMLDivElement>
+>(({ className }) => {
+  const { kursEnabled } = useEnv();
   const { data: session } = useSession();
 
   const [lastScrollPos, setLastScrollPos] = useState(resetScroll(0));
@@ -234,7 +231,7 @@ const MainNav = React.forwardRef<
         hasSession={!!session}
       />
       {/* desktop */}
-      <Nav.Root style={style} className={clsx("hidden lg:flex", classNames)}>
+      <Nav.Root style={style} className={clsx("hidden lg:flex relative", classNames)}>
         <Nav.Logo />
         <TopLinks className="flex-row items-center text-lg" />
         <div className="flex gap-4">

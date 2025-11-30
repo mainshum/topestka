@@ -31,7 +31,7 @@ console.log(`Loading script with id ${websiteId}`);
 
 const MyApp: AppType = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, kursEnabled, ...pageProps },
 }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
@@ -44,7 +44,9 @@ const MyApp: AppType = ({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script onLoad={() => console.log("Script loaded")} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" /> <SessionProvider session={session}>
+      <Script onLoad={() => console.log("Script loaded")} onError={console.error} src="https://analityka.topestka.org/script.js" data-website-id={websiteId} strategy="afterInteractive" />
+      <EnvProvider kursEnabled={Boolean(kursEnabled)}>
+        <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
             {getLayout(<Component {...pageProps} />)}
             <div>
@@ -52,6 +54,7 @@ const MyApp: AppType = ({
             </div>
           </QueryClientProvider>
         </SessionProvider>
+      </EnvProvider>
     </>
   );
 }

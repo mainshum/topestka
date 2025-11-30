@@ -1,26 +1,19 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
-import "../public/trailer.mp4";
 // Components
-import { Intro } from "@/components/Intro";
-import Pitch from "@/components/Pitch";
-import OpisKursu from "@/components/OpisKursu";
-import DowiedzSie from "@/components/DowiedzSie";
-import { Promo } from "@/components/Promo";
+import Sponsors from "@/components/Sponsors";
+import Newsletter from "@/components/Newsletter";
 import { getKursEnabled } from "@/utils/getKursEnabled";
 
 type Props = {
   kursEnabled: boolean;
 }
 
-const Home: NextPage<Props> = () => {
+const KontaktPage: NextPage<Props> = () => {
   return (
     <>
-      <Intro />
-      <Promo />
-      <Pitch />
-      <OpisKursu />
-      <DowiedzSie />
+      <Sponsors />
+      <Newsletter />
     </>
   );
 };
@@ -33,4 +26,5 @@ export const getServerSideProps = async (_context: GetServerSidePropsContext): P
   };
 };
 
-export default Home;
+export default KontaktPage;
+
