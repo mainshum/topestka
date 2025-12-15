@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Justify from "./icons";
 import { HTMLAttributes, useEffect, useState } from "react";
@@ -16,6 +17,25 @@ import {
 import clsx from "clsx";
 import { buttonVariants } from "./Button";
 import { useCourseStatus } from "@/utils/useCourseStatus";
+
+// NavLink component that shows underline when active
+const NavLink = ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => {
+  const router = useRouter();
+  const isActive = router.pathname === href;
+  
+  return (
+    <Link 
+      href={href} 
+      className={cn(
+        buttonVariants({ variant: "navlink" }),
+        isActive && "underline underline-offset-4",
+        className
+      )}
+    >
+      {children}
+    </Link>
+  );
+};
 
 const HEADER_H = 106;
 const STATIC_WHEN_FROM_TOP = 500;
@@ -102,19 +122,19 @@ const TopLinks = React.forwardRef<
       {...props}
     >
       <li>
-        <Link href="/program" className={buttonVariants({ variant: "navlink" })}> Program </Link>
+        <NavLink href="/program">Program</NavLink>
       </li>
       <li>
-        <Link href="/o-nas" className={buttonVariants({ variant: "navlink" })}>O prowadzących</Link>
+        <NavLink href="/o-nas">O prowadzących</NavLink>
       </li>
       <li>
-        <Link className={buttonVariants({ variant: "navlink" })} href="/kup">{kupLabel}</Link>
+        <NavLink href="/kup">{kupLabel}</NavLink>
       </li>
       <li>
-        <Link href="/faq" className={buttonVariants({ variant: "navlink" })}>FAQ</Link>
+        <NavLink href="/faq">FAQ</NavLink>
       </li>
       <li>
-        <Link href="/kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
+        <NavLink href="/kontakt">Kontakt</NavLink>
       </li>
       {props.children}
     </ul>
