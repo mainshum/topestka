@@ -1,9 +1,10 @@
 import { cn } from "@/utils/misc";
 import Link from "next/link";
 import { useCourseStatus } from "@/utils/useCourseStatus";
+import { useEnv } from "./EnvContext";
 
-export const PowiadomLubKup = ({kursEnabled, className}: {kursEnabled: boolean, className?: string}) => {
-
+export const PowiadomLubKup = ({className}: {className?: string}) => {
+  const { kursEnabled } = useEnv();
   const href = kursEnabled ? '/platnosc' : 'https://actionnetwork.org/forms/mrkh-to-pestka';
 
   const {handlePurchase, kupLabel, isPending}  = useCourseStatus();

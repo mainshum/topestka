@@ -11,13 +11,8 @@ type Props = {
   pricing: UIPricing;
 }
 
-const KupPage: NextPage<Props> = (props) => {
-  const { kursEnabled, pricing } = props;
-  return (
-    <>
-      <KupKursSection kursEnabled={kursEnabled} pricing={pricing} />
-    </>
-  );
+const KupPage: NextPage<Props> = ({ pricing }) => {
+  return <KupKursSection pricing={pricing} />;
 };
 
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<{ props: Props }> => {

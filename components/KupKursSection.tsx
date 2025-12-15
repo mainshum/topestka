@@ -7,6 +7,7 @@ import { NEWSLETTER_URL } from "@/utils/const";
 import { cn } from "@/utils/misc";
 import { PowiadomLubKup } from "./PowiadomLubKup";
 import { UIPricing } from "@/utils/types";
+import { useEnv } from "./EnvContext";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -31,8 +32,8 @@ const grToPln = (gr: number) => {
   return gr / 100;
 }
 
-const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricing: UIPricing }) => {
-
+const KupKursSection = ({ pricing }: { pricing: UIPricing }) => {
+  const { kursEnabled } = useEnv();
   const topSpanClass = cn('pl-2 font-monarcha', pricing.type === 'coupon' && (pricing.isError ? 'text-red-400' : 'text-green-400'));
 
   return (
@@ -55,8 +56,8 @@ const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricin
         )}
         
         <div className="h-0" />
-        <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'lg' }), 'xl:hidden')} kursEnabled={kursEnabled} />
-        <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'xl' }), 'hidden xl:inline relative bottom-4 xl:bottom-0')} kursEnabled={kursEnabled} />
+        <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'lg' }), 'xl:hidden')} />
+        <PowiadomLubKup className={cn(buttonVariants({ variant: 'powiadom', size: 'xl' }), 'hidden xl:inline relative bottom-4 xl:bottom-0')} />
       </OfferingSection>
       <section className="flex flex-col xl:flex-row px-10 gap-4 justify-center items-center order-3 xl:row-start-2 space-between">
         <span className="text-xl">
