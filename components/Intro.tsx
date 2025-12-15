@@ -17,12 +17,12 @@ const Intro = () => {
         <br className="md:inline hidden"></br> informacje o zespole MRKH
       </h2>
       <section className="flex md:flex-row flex-col justify-center items-center gap-4">
-        <Link className={cn(buttonVariants({ variant: "kupkurs", size: "lg" }))} href="#kup-kurs" >
+        <Link className={cn(buttonVariants({ variant: "kupkurs", size: "lg" }))} href="/kup" >
           {kupLabel}
         </Link>
         <Link
           className={cn(buttonVariants({ variant: "program", size: "lg" }))}
-          href="#program"
+          href="/program"
         >
           Poznaj program
         </Link>

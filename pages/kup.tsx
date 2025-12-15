@@ -2,7 +2,6 @@ import type { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 // Components
 import KupKursSection from "@/components/KupKursSection";
-import FAQ from "@/components/FAQ";
 import { UIPricing } from "@/utils/types";
 import { validateDiscountToken } from "@/utils/discount";
 import { getKursEnabled } from "@/utils/getKursEnabled";
@@ -17,7 +16,6 @@ const KupPage: NextPage<Props> = (props) => {
   return (
     <>
       <KupKursSection kursEnabled={kursEnabled} pricing={pricing} />
-      <FAQ />
     </>
   );
 };

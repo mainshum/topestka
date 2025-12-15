@@ -83,13 +83,13 @@ const KupKursSection = ({ kursEnabled, pricing }: { kursEnabled: boolean, pricin
         <div className="h-4" />
         <Link
           className={`${buttonVariants({ variant: "program2", size: "lg" })} xl:hidden`}
-          href="#program"
+          href="/program"
         >
           Poznaj program
         </Link>
         <Link
           className={`${buttonVariants({ variant: "program2", size: "xl" })} hidden xl:inline`}
-          href="#program"
+          href="/program"
         >
           Poznaj program
         </Link>

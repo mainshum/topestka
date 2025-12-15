@@ -111,6 +111,9 @@ const TopLinks = React.forwardRef<
         <Link className={buttonVariants({ variant: "navlink" })} href="/kup">{kupLabel}</Link>
       </li>
       <li>
+        <Link href="/faq" className={buttonVariants({ variant: "navlink" })}>FAQ</Link>
+      </li>
+      <li>
         <Link href="/kontakt" className={buttonVariants({ variant: "navlink" })}> Kontakt </Link>
       </li>
       {props.children}

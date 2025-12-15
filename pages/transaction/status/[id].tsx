@@ -42,7 +42,6 @@ export default function Transaction() {
 
   useEffect(() => {
     if (!error && !isLoading && data) {
-      console.log('updating session');
       update();
     }
   }, [error, data, isLoading, update]);

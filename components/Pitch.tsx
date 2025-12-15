@@ -20,7 +20,7 @@ const Pitch = () => {
         wspierający i budujący poczucie bezpieczeństwa.
       </h2>
       <Link
-        href="#program-full"
+        href="/program"
         className={buttonVariants({
           variant: "program",
           size: "lg",
