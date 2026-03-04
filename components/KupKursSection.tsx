@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HomeSection from "./HomeSection";
 import { OfferingSection, OfferingList } from "./Offering";
 import { buttonVariants } from "./Button";
@@ -8,6 +8,7 @@ import { cn } from "@/utils/misc";
 import { PowiadomLubKup } from "./PowiadomLubKup";
 import { UIPricing } from "@/utils/types";
 import { useEnv } from "./EnvContext";
+import { setDiscountCookie } from "@/utils/discountCookie";
 
 type CenaProps = {
   children: React.ReactNode;
@@ -35,6 +36,13 @@ const grToPln = (gr: number) => {
 const KupKursSection = ({ pricing }: { pricing: UIPricing }) => {
   const { kursEnabled } = useEnv();
   const topSpanClass = cn('pl-2 font-monarcha', pricing.type === 'coupon' && (pricing.isError ? 'text-red-400' : 'text-green-400'));
+
+  // Save valid discount token to cookie for persistence across login flow
+  useEffect(() => {
+    if (pricing.type === 'coupon' && !pricing.isError && pricing.discountToken) {
+      setDiscountCookie(pricing.discountToken);
+    }
+  }, [pricing]);
 
   return (
     <HomeSection

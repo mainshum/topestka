@@ -6,6 +6,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/Button";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { clearDiscountCookie } from "@/utils/discountCookie";
 
 const retryTime = 120 * 1000;
 
@@ -43,6 +44,8 @@ export default function Transaction() {
   useEffect(() => {
     if (!error && !isLoading && data) {
       update();
+      // Clear discount cookie after successful purchase
+      clearDiscountCookie();
     }
   }, [error, data, isLoading, update]);
 

@@ -1,9 +1,13 @@
 import { useSession } from "next-auth/react";
 import { trpc } from "./trpc";
 import { useSearchParams } from "next/navigation";
+import { getDiscountCookie } from "./discountCookie";
 
 export function useCourseStatus() {
-  const discountToken = useSearchParams().get("discount");
+  // Check for discount in URL first, then fall back to cookie
+  const discountFromUrl = useSearchParams().get("discount");
+  const discountFromCookie = getDiscountCookie();
+  const discountToken = discountFromUrl || discountFromCookie;
   const { mutate: startTransaction, isPending } = trpc.transaction.startTransaction.useMutation({});
   const { data: session } = useSession();
 

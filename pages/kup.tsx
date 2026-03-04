@@ -5,6 +5,7 @@ import KupKursSection from "@/components/KupKursSection";
 import { UIPricing } from "@/utils/types";
 import { validateDiscountToken } from "@/utils/discount";
 import { getKursEnabled } from "@/utils/getKursEnabled";
+import { getDiscountCookieFromHeader } from "@/utils/discountCookie";
 
 type Props = {
   kursEnabled: boolean;
@@ -26,15 +27,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
   if (isNaN(coursePrice)) {
     throw new Error('COURSE_PRICE is not a number');
   }
-  const discount = context.query?.discount;
+  // Check for discount in query parameter first, then fall back to cookie
+  const discountFromQuery = context.query?.discount;
+  const discountFromCookie = getDiscountCookieFromHeader(context.req.headers.cookie);
+  const discount = discountFromQuery || discountFromCookie;
 
   if (discount == null) {
     return {
       props: {
         kursEnabled,
-        pricing: { 
-          price: coursePrice, 
-          type: 'no-coupon' as const 
+        pricing: {
+          price: coursePrice,
+          type: 'no-coupon' as const
         }
       }
     };
@@ -51,6 +55,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext): Pr
           topPriceLabel: 'Zastosowano kupon!!',
           isError: false,
           type: 'coupon' as const,
+          discountToken: discount as string, // Pass token to client for cookie storage
         }
       }
     };
