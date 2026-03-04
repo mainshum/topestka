@@ -99,12 +99,22 @@ export const transactionRouter = router({
         // Validate discount token if provided
         if (discountToken) {
           const validationResult = await validateDiscountToken(discountToken);
-          
+
           if (!validationResult.success) {
-            const errorMessage = validationResult.error === 'already-used' 
-              ? 'Kupon już został użyty' 
-              : 'Nieprawidłowy kupon';
-            
+            let errorMessage = 'Nieprawidłowy kupon';
+
+            if (validationResult.error === 'already-used') {
+              errorMessage = 'Kupon już został użyty';
+            } else if (validationResult.error === 'expired') {
+              errorMessage = 'Kupon wygasł';
+            }
+
+            logWarn("Discount token validation failed", {
+              userEmail: ctx.user.email,
+              errorType: validationResult.error,
+              errorMessage
+            });
+
             throw new TRPCError({
               code: "BAD_REQUEST",
               message: errorMessage,
