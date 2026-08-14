@@ -17,6 +17,7 @@ import { MySqlRawQueryResult } from "drizzle-orm/mysql2";
 import { getP24Transaction } from "@/utils/p24";
 import { logInfo, logError, logWarn } from "@/utils/logger";
 import { validateDiscountToken, releaseDiscountToken } from "@/utils/discount";
+import { COURSE_BASE_PRICE_GR } from "@/utils/const";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -93,7 +94,7 @@ export const transactionRouter = router({
           hasDiscountToken: !!input.discountToken
         });
 
-        let coursePrice = parseInt(process.env.COURSE_PRICE);
+        let coursePrice = COURSE_BASE_PRICE_GR;
         const discountToken = input.discountToken;
 
         // Validate discount token if provided

@@ -6,6 +6,7 @@ import { UIPricing } from "@/utils/types";
 import { validateDiscountToken } from "@/utils/discount";
 import { getKursEnabled } from "@/utils/getKursEnabled";
 import { getDiscountCookieFromHeader } from "@/utils/discountCookie";
+import { COURSE_BASE_PRICE_GR } from "@/utils/const";
 
 type Props = {
   kursEnabled: boolean;
@@ -17,16 +18,8 @@ const KupPage: NextPage<Props> = ({ pricing }) => {
 };
 
 export const getServerSideProps = async (context: GetServerSidePropsContext): Promise<{ props: Props }> => {
-  const { COURSE_PRICE } = process.env;
   const kursEnabled = getKursEnabled();
-  
-  if (COURSE_PRICE == null) {
-    throw new Error('COURSE_PRICE is not set');
-  }
-  let coursePrice = parseInt(COURSE_PRICE);
-  if (isNaN(coursePrice)) {
-    throw new Error('COURSE_PRICE is not a number');
-  }
+  const coursePrice = COURSE_BASE_PRICE_GR;
   // Check for discount in query parameter first, then fall back to cookie
   const discountFromQuery = context.query?.discount;
   const discountFromCookie = getDiscountCookieFromHeader(context.req.headers.cookie);
